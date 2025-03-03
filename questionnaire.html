@@ -1,4 +1,3 @@
----
 layout: default
 title: Get a Quote
 js: questionnaire
@@ -21,7 +20,13 @@ js: questionnaire
           </div>
         </div>
         
-        <form id="questionnaire-form" class="space-y-8">
+        <form id="questionnaire-form" class="space-y-8" action="https://formsubmit.co/tim@americanremodeling.net" method="POST">
+          <!-- Add these hidden fields for FormSubmit.co configuration -->
+          <input type="hidden" name="_subject" value="New Roofing Quote Request">
+          <input type="hidden" name="_template" value="box">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/thank-you">
+          <input type="hidden" name="_format" value="plain">
           <!-- Step 1: Basic Information -->
           <div id="step-1" class="questionnaire-step">
             <h2 class="text-xl font-semibold mb-6 text-white">Basic Information</h2>
@@ -451,7 +456,7 @@ js: questionnaire
                 
                 <div>
                   <label class="block text-gray-300 mb-1">Appearance</label>
-                  <select name="importance_appearance" class="w-full p-2 border rounded" style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;">
+                  <select name="importance_appearance" class="w-full p-2 border rounded" style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255,255, 255, 0.2); color: white;">
                     <option value="1">1 - Least Important</option>
                     <option value="2">2</option>
                     <option value="3" selected>3</option>
@@ -589,8 +594,13 @@ js: questionnaire
 
 <div id="thank-you-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
   <div class="rounded-lg p-8 max-w-md w-full" style="background-color: #1F2A44;">
-    <h2 class="text-2xl font-bold mb-4 text-white">Thank You!</h2>
-    <p class="mb-6 text-gray-300">Your information has been submitted successfully. We'll be in touch with your roofing quote shortly.</p>
+    <div class="w-16 h-16 bg-yellow-500 text-gray-900 rounded-full flex items-center justify-center mx-auto mb-4" style="background-color: #D4A017;">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+    <h2 class="text-2xl font-bold mb-4 text-white text-center">Thank You!</h2>
+    <p class="mb-6 text-gray-300 text-center">Your information has been submitted successfully. We'll be in touch with your roofing quote shortly.</p>
     <div class="text-center">
       <button id="close-modal" class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-2 px-6 rounded transition-colors" style="background-color: #D4A017;">
         Close
@@ -606,3 +616,4 @@ body, html, main, section {
 </style>
 
 <script src="{{ '/assets/js/force-background.js' | relative_url }}"></script>
+
