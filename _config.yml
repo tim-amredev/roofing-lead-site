@@ -2,8 +2,8 @@
 title: Instant Roofing Prices
 email: info@instantroofingprices.com
 description: Get instant quotes for your roofing project. Fast, reliable estimates for roof repairs, replacements, and installations.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/roofing-lead-site" # the subpath of your site - IMPORTANT: match your repository name
+url: "https://tim-amredev.github.io" # your GitHub Pages URL
 
 # Build settings
 markdown: kramdown
@@ -18,4 +18,3 @@ exclude:
   - node_modules
   - vendor
   - .gitignore
-
