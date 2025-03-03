@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  <link rel="stylesheet" href="{{ '/assets/css/tailwind.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}">
+  {% seo %}
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+  {% include header.html %}
+  
+  <main class="flex-grow">
+    {{ content }}
+  </main>
+  
+  {% include footer.html %}
+  
+  <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+  {% if page.js %}
+  <script src="{{ '/assets/js/' | append: page.js | append: '.js' | relative_url }}"></script>
+  {% endif %}
+</body>
+</html>
+

@@ -1,0 +1,33 @@
+<footer class="bg-gray-800 text-white py-8">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="text-xl font-semibold mb-4">Instant Roofing Prices</h3>
+        <p class="text-gray-300">Get fast, reliable quotes for your roofing project. We connect you with top roofing professionals in your area.</p>
+      </div>
+      
+      <div>
+        <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href="{{ '/' | relative_url }}" class="text-gray-300 hover:text-white transition-colors">Home</a></li>
+          <li><a href="{{ '/questionnaire' | relative_url }}" class="text-gray-300 hover:text-white transition-colors">Get a Quote</a></li>
+          <li><a href="{{ '/about' | relative_url }}" class="text-gray-300 hover:text-white transition-colors">About</a></li>
+          <li><a href="{{ '/contact' | relative_url }}" class="text-gray-300 hover:text-white transition-colors">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h3 class="text-xl font-semibold mb-4">Contact Us</h3>
+        <address class="not-italic text-gray-300">
+          <p>Email: info@instantroofingprices.com</p>
+          <p>Phone: (555) 123-4567</p>
+        </address>
+      </div>
+    </div>
+    
+    <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+      <p>&copy; {{ 'now' | date: "%Y" }} Instant Roofing Prices. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
