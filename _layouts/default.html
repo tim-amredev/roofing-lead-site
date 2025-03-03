@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: 'en_US' }}">
+<html lang="{{ site.lang | default: 'en_US' }}" style="background-color: #f9fafb;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -79,13 +79,25 @@
       ]
     }
     </script>
+    
+    <!-- Custom overrides - load last -->
+    <link rel="stylesheet" href="{{ '/assets/css/custom-overrides.css' | relative_url }}">
+    
+    <style>
+      body {
+        background-color: #f9fafb !important;
+      }
+      main {
+        background-color: #f9fafb !important;
+      }
+    </style>
 </head>
-<body class="min-h-screen flex flex-col bg-gray-50 text-gray-900">
+<body style="background-color: #f9fafb !important;" class="min-h-screen flex flex-col text-gray-900">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4">Skip to main content</a>
     
     {% include header.html %}
     
-    <main id="main-content" class="flex-grow">
+    <main id="main-content" style="background-color: #f9fafb !important;" class="flex-grow">
         {{ content }}
     </main>
     
