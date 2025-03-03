@@ -8,6 +8,11 @@
   --color-highlight: #3b82f6;
 }
 
+/* Force background color for the body */
+body {
+  background-color: #f9fafb !important; /* bg-gray-50 equivalent */
+}
+
 /* Custom animations */
 @keyframes float {
   0% {
