@@ -1,5 +1,106 @@
 /* Custom styles beyond Tailwind */
 
+:root {
+  --color-dark-blue: #0f172a;
+  --color-navy: #1e3a8a;
+  --color-blue-gray: #334155;
+  --color-slate: #475569;
+  --color-highlight: #3b82f6;
+}
+
+/* Custom animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom utility classes */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-dark {
+  background: linear-gradient(to right, var(--color-dark-blue), var(--color-navy));
+}
+
+.bg-gradient-blue {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+}
+
+/* Custom card styles */
+.feature-card {
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Custom button styles */
+.btn-glow:hover {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+/* Testimonial card styles */
+.testimonial-card {
+  transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: scale(1.02);
+}
+
+/* Stats counter animation */
+.stats-counter {
+  transition: all 0.3s ease;
+}
+
+.stats-counter:hover {
+  transform: scale(1.05);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
 /* Aspect ratio utilities for image cards */
 .aspect-w-4 {
   position: relative;
@@ -28,19 +129,6 @@
 /* Selected card styles */
 .material-card.selected > div,
 .roof-type-card.selected > div {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px #2563eb;
-}
-
-/* Smooth transitions */
-.questionnaire-step {
-  transition: opacity 0.3s ease-in-out;
-}
-
-.questionnaire-step.fade-out {
-  opacity: 0;
-}
-
-.questionnaire-step.fade-in {
-  opacity: 1;
+  border-color: var(--color-highlight);
+  box-shadow: 0 0 0 2px var(--color-highlight);
 }
