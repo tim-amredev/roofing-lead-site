@@ -1,0 +1,18 @@
+/* Force background colors */
+html,
+body,
+body > *,
+main,
+section,
+.bg-gray-50 {
+  background-color: #f9fafb !important; /* bg-gray-50 equivalent */
+}
+
+/* Only allow white background on specific elements */
+.bg-white,
+.card,
+.form-container,
+header,
+.header {
+  background-color: #ffffff !important;
+}
