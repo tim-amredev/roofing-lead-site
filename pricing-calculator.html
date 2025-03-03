@@ -1,500 +1,501 @@
+---
 layout: default
 title: Roofing Price Calculator
 js: pricing-calculator
 ---
 
 <section class="py-12" style="background-color: #181818 !important;">
-  <div class="container mx-auto px-4">
-    <div class="max-w-4xl mx-auto">
-      <h1 class="text-3xl font-bold text-center mb-4 text-white">Roofing Price Calculator</h1>
-      <p class="text-lg text-gray-300 text-center mb-12">Get an instant estimate for your roofing project with our interactive calculator.</p>
-      
-      <div class="rounded-lg shadow-md p-6 md:p-8 mb-10" style="background-color: #2A3555;">
-        <form id="calculator-form" class="space-y-8">
-          <!-- Roof Dimensions -->
-          <div>
-            <h2 class="text-xl font-semibold mb-6 text-white">Roof Dimensions</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label for="roof-area" class="block text-white font-medium mb-2">Roof Area (Square Feet)</label>
-                <div class="relative">
-                  <input 
-                    type="number" 
-                    id="roof-area" 
-                    name="roof-area" 
-                    min="100" 
-                    max="10000" 
-                    placeholder="1500" 
-                    class="w-full p-2 pl-3 border rounded" 
-                    style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
-                    required
-                  >
-                  <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                    <span class="text-gray-400">sq ft</span>
-                  </div>
-                </div>
-                <p class="text-sm text-gray-400 mt-1">Typical house: 1,500-2,500 sq ft</p>
-              </div>
-              
-              <div>
-                <label for="roof-pitch" class="block text-white font-medium mb-2">Roof Pitch</label>
-                <select 
-                  id="roof-pitch" 
-                  name="roof-pitch" 
-                  class="w-full p-2 border rounded" 
+<div class="container mx-auto px-4">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-center mb-4 text-white">Roofing Price Calculator</h1>
+    <p class="text-lg text-gray-300 text-center mb-12">Get an instant estimate for your roofing project with our interactive calculator.</p>
+    
+    <div class="rounded-lg shadow-md p-6 md:p-8 mb-10" style="background-color: #2A3555;">
+      <form id="calculator-form" class="space-y-8">
+        <!-- Roof Dimensions -->
+        <div>
+          <h2 class="text-xl font-semibold mb-6 text-white">Roof Dimensions</h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="roof-area" class="block text-white font-medium mb-2">Roof Area (Square Feet)</label>
+              <div class="relative">
+                <input 
+                  type="number" 
+                  id="roof-area" 
+                  name="roof-area" 
+                  min="100" 
+                  max="10000" 
+                  placeholder="1500" 
+                  class="w-full p-2 pl-3 border rounded" 
                   style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
                   required
                 >
-                  <option value="flat">Flat (0/12 pitch)</option>
-                  <option value="low">Low (2/12 to 4/12 pitch)</option>
-                  <option value="medium" selected>Medium (5/12 to 8/12 pitch)</option>
-                  <option value="steep">Steep (9/12 to 12/12 pitch)</option>
-                  <option value="very-steep">Very Steep (>12/12 pitch)</option>
-                </select>
-                <p class="text-sm text-gray-400 mt-1">Most homes have a medium pitch</p>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <span class="text-gray-400">sq ft</span>
+                </div>
               </div>
+              <p class="text-sm text-gray-400 mt-1">Typical house: 1,500-2,500 sq ft</p>
             </div>
-          </div>
-          
-          <!-- Roofing Materials -->
-          <div>
-            <h2 class="text-xl font-semibold mb-6 text-white">Roofing Materials</h2>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              <div class="material-option">
-                <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
-                  <input type="radio" name="material" id="material-asphalt" value="asphalt" class="hidden" checked>
-                  <label for="material-asphalt" class="block h-full cursor-pointer">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
-                        <span class="text-gray-300">Asphalt Shingles</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-white">Asphalt Shingles</h3>
-                    <p class="text-sm text-center text-gray-300 mt-2">$4.00 - $7.00 per sq ft</p>
-                  </label>
-                </div>
-              </div>
-              
-              <div class="material-option">
-                <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
-                  <input type="radio" name="material" id="material-metal" value="metal" class="hidden">
-                  <label for="material-metal" class="block h-full cursor-pointer">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
-                        <span class="text-gray-300">Metal Roofing</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-white">Metal Roofing</h3>
-                    <p class="text-sm text-center text-gray-300 mt-2">$8.50 - $16.00 per sq ft</p>
-                  </label>
-                </div>
-              </div>
-              
-              <div class="material-option">
-                <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
-                  <input type="radio" name="material" id="material-tile" value="tile" class="hidden">
-                  <label for="material-tile" class="block h-full cursor-pointer">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
-                        <span class="text-gray-300">Clay/Concrete Tile</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-white">Clay/Concrete Tile</h3>
-                    <p class="text-sm text-center text-gray-300 mt-2">$12.00 - $25.00 per sq ft</p>
-                  </label>
-                </div>
-              </div>
-              
-              <div class="material-option">
-                <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
-                  <input type="radio" name="material" id="material-wood" value="wood" class="hidden">
-                  <label for="material-wood" class="block h-full cursor-pointer">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
-                        <span class="text-gray-300">Wood Shingles</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-white">Wood Shingles</h3>
-                    <p class="text-sm text-center text-gray-300 mt-2">$7.50 - $14.00 per sq ft</p>
-                  </label>
-                </div>
-              </div>
-              
-              <div class="material-option">
-                <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
-                  <input type="radio" name="material" id="material-slate" value="slate" class="hidden">
-                  <label for="material-slate" class="block h-full cursor-pointer">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
-                        <span class="text-gray-300">Slate</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-white">Slate</h3>
-                    <p class="text-sm text-center text-gray-300 mt-2">$18.00 - $40.00 per sq ft</p>
-                  </label>
-                </div>
-              </div>
-              
-              <div class="material-option">
-                <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
-                  <input type="radio" name="material" id="material-premium" value="premium" class="hidden">
-                  <label for="material-premium" class="block h-full cursor-pointer">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
-                        <span class="text-gray-300">Premium Shingles</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-white">Premium Shingles</h3>
-                    <p class="text-sm text-center text-gray-300 mt-2">$6.00 - $10.00 per sq ft</p>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Additional Options -->
-          <div>
-            <h2 class="text-xl font-semibold mb-6 text-white">Additional Options</h2>
-            
-            <div class="space-y-4">
-              <div class="flex items-start">
-                <input type="checkbox" id="option-removal" name="option-removal" class="mt-1">
-                <label for="option-removal" class="ml-2 text-gray-300">
-                  <span class="font-medium">Old Roof Removal</span>
-                  <p class="text-sm text-gray-400">Includes removal and disposal of existing roofing material (1-2 layers)</p>
-                </label>
-              </div>
-              
-              <div class="flex items-start">
-                <input type="checkbox" id="option-underlayment" name="option-underlayment" class="mt-1">
-                <label for="option-underlayment" class="ml-2 text-gray-300">
-                  <span class="font-medium">Premium Underlayment</span>
-                  <p class="text-sm text-gray-400">Upgrade to high-quality synthetic underlayment for better protection</p>
-                </label>
-              </div>
-              
-              <div class="flex items-start">
-                <input type="checkbox" id="option-ventilation" name="option-ventilation" class="mt-1">
-                <label for="option-ventilation" class="ml-2 text-gray-300">
-                  <span class="font-medium">Improved Ventilation</span>
-                  <p class="text-sm text-gray-400">Add ridge vents and intake vents for better attic ventilation</p>
-                </label>
-              </div>
-              
-              <div class="flex items-start">
-                <input type="checkbox" id="option-gutters" name="option-gutters" class="mt-1">
-                <label for="option-gutters" class="ml-2 text-gray-300">
-                  <span class="font-medium">New Gutters & Downspouts</span>
-                  <p class="text-sm text-gray-400">Replace existing gutters and downspouts</p>
-                </label>
-              </div>
-              
-              <div class="flex items-start">
-                <input type="checkbox" id="option-insulation" name="option-insulation" class="mt-1">
-                <label for="option-insulation" class="ml-2 text-gray-300">
-                  <span class="font-medium">Additional Insulation</span>
-                  <p class="text-sm text-gray-400">Add extra insulation to improve energy efficiency</p>
-                </label>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Location Factor -->
-          <div>
-            <h2 class="text-xl font-semibold mb-6 text-white">Location</h2>
             
             <div>
-              <label for="location" class="block text-white font-medium mb-2">Select Your Region</label>
+              <label for="roof-pitch" class="block text-white font-medium mb-2">Roof Pitch</label>
               <select 
-                id="location" 
-                name="location" 
+                id="roof-pitch" 
+                name="roof-pitch" 
                 class="w-full p-2 border rounded" 
                 style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
                 required
               >
-                <option value="northeast">Northeast</option>
-                <option value="midwest" selected>Midwest</option>
-                <option value="south">South</option>
-                <option value="west">West</option>
-                <option value="northwest">Northwest</option>
-                <option value="southwest">Southwest</option>
+                <option value="flat">Flat (0/12 pitch)</option>
+                <option value="low">Low (2/12 to 4/12 pitch)</option>
+                <option value="medium" selected>Medium (5/12 to 8/12 pitch)</option>
+                <option value="steep">Steep (9/12 to 12/12 pitch)</option>
+                <option value="very-steep">Very Steep (>12/12 pitch)</option>
               </select>
-              <p class="text-sm text-gray-400 mt-1">Prices vary by region due to labor and material costs</p>
+              <p class="text-sm text-gray-400 mt-1">Most homes have a medium pitch</p>
             </div>
           </div>
+        </div>
+        
+        <!-- Roofing Materials -->
+        <div>
+          <h2 class="text-xl font-semibold mb-6 text-white">Roofing Materials</h2>
           
-          <div class="text-center">
-            <button 
-              type="submit" 
-              class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300 text-lg" 
-              style="background-color: #D4A017;"
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="material-option">
+              <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+                <input type="radio" name="material" id="material-asphalt" value="asphalt" class="hidden" checked>
+                <label for="material-asphalt" class="block h-full cursor-pointer">
+                  <div class="aspect-w-4 aspect-h-3 mb-3">
+                    <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
+                      <span class="text-gray-300">Asphalt Shingles</span>
+                    </div>
+                  </div>
+                  <h3 class="font-medium text-center text-white">Asphalt Shingles</h3>
+                  <p class="text-sm text-center text-gray-300 mt-2">$4.00 - $7.00 per sq ft</p>
+                </label>
+              </div>
+            </div>
+            
+            <div class="material-option">
+              <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+                <input type="radio" name="material" id="material-metal" value="metal" class="hidden">
+                <label for="material-metal" class="block h-full cursor-pointer">
+                  <div class="aspect-w-4 aspect-h-3 mb-3">
+                    <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
+                      <span class="text-gray-300">Metal Roofing</span>
+                    </div>
+                  </div>
+                  <h3 class="font-medium text-center text-white">Metal Roofing</h3>
+                  <p class="text-sm text-center text-gray-300 mt-2">$8.50 - $16.00 per sq ft</p>
+                </label>
+              </div>
+            </div>
+            
+            <div class="material-option">
+              <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+                <input type="radio" name="material" id="material-tile" value="tile" class="hidden">
+                <label for="material-tile" class="block h-full cursor-pointer">
+                  <div class="aspect-w-4 aspect-h-3 mb-3">
+                    <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
+                      <span class="text-gray-300">Clay/Concrete Tile</span>
+                    </div>
+                  </div>
+                  <h3 class="font-medium text-center text-white">Clay/Concrete Tile</h3>
+                  <p class="text-sm text-center text-gray-300 mt-2">$12.00 - $25.00 per sq ft</p>
+                </label>
+              </div>
+            </div>
+            
+            <div class="material-option">
+              <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+                <input type="radio" name="material" id="material-wood" value="wood" class="hidden">
+                <label for="material-wood" class="block h-full cursor-pointer">
+                  <div class="aspect-w-4 aspect-h-3 mb-3">
+                    <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
+                      <span class="text-gray-300">Wood Shingles</span>
+                    </div>
+                  </div>
+                  <h3 class="font-medium text-center text-white">Wood Shingles</h3>
+                  <p class="text-sm text-center text-gray-300 mt-2">$7.50 - $14.00 per sq ft</p>
+                </label>
+              </div>
+            </div>
+            
+            <div class="material-option">
+              <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+                <input type="radio" name="material" id="material-slate" value="slate" class="hidden">
+                <label for="material-slate" class="block h-full cursor-pointer">
+                  <div class="aspect-w-4 aspect-h-3 mb-3">
+                    <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
+                      <span class="text-gray-300">Slate</span>
+                    </div>
+                  </div>
+                  <h3 class="font-medium text-center text-white">Slate</h3>
+                  <p class="text-sm text-center text-gray-300 mt-2">$18.00 - $40.00 per sq ft</p>
+                </label>
+              </div>
+            </div>
+            
+            <div class="material-option">
+              <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+                <input type="radio" name="material" id="material-premium" value="premium" class="hidden">
+                <label for="material-premium" class="block h-full cursor-pointer">
+                  <div class="aspect-w-4 aspect-h-3 mb-3">
+                    <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
+                      <span class="text-gray-300">Premium Shingles</span>
+                    </div>
+                  </div>
+                  <h3 class="font-medium text-center text-white">Premium Shingles</h3>
+                  <p class="text-sm text-center text-gray-300 mt-2">$6.00 - $10.00 per sq ft</p>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Additional Options -->
+        <div>
+          <h2 class="text-xl font-semibold mb-6 text-white">Additional Options</h2>
+          
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <input type="checkbox" id="option-removal" name="option-removal" class="mt-1">
+              <label for="option-removal" class="ml-2 text-gray-300">
+                <span class="font-medium">Old Roof Removal</span>
+                <p class="text-sm text-gray-400">Includes removal and disposal of existing roofing material (1-2 layers)</p>
+              </label>
+            </div>
+            
+            <div class="flex items-start">
+              <input type="checkbox" id="option-underlayment" name="option-underlayment" class="mt-1">
+              <label for="option-underlayment" class="ml-2 text-gray-300">
+                <span class="font-medium">Premium Underlayment</span>
+                <p class="text-sm text-gray-400">Upgrade to high-quality synthetic underlayment for better protection</p>
+              </label>
+            </div>
+            
+            <div class="flex items-start">
+              <input type="checkbox" id="option-ventilation" name="option-ventilation" class="mt-1">
+              <label for="option-ventilation" class="ml-2 text-gray-300">
+                <span class="font-medium">Improved Ventilation</span>
+                <p class="text-sm text-gray-400">Add ridge vents and intake vents for better attic ventilation</p>
+              </label>
+            </div>
+            
+            <div class="flex items-start">
+              <input type="checkbox" id="option-gutters" name="option-gutters" class="mt-1">
+              <label for="option-gutters" class="ml-2 text-gray-300">
+                <span class="font-medium">New Gutters & Downspouts</span>
+                <p class="text-sm text-gray-400">Replace existing gutters and downspouts</p>
+              </label>
+            </div>
+            
+            <div class="flex items-start">
+              <input type="checkbox" id="option-insulation" name="option-insulation" class="mt-1">
+              <label for="option-insulation" class="ml-2 text-gray-300">
+                <span class="font-medium">Additional Insulation</span>
+                <p class="text-sm text-gray-400">Add extra insulation to improve energy efficiency</p>
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Location Factor -->
+        <div>
+          <h2 class="text-xl font-semibold mb-6 text-white">Location</h2>
+          
+          <div>
+            <label for="location" class="block text-white font-medium mb-2">Select Your Region</label>
+            <select 
+              id="location" 
+              name="location" 
+              class="w-full p-2 border rounded" 
+              style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
+              required
             >
-              Calculate Estimate
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <div class="bg-yellow-500 bg-opacity-10 border-l-4 border-yellow-500 p-4 mb-8 rounded" style="border-color: #D4A017;">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-            </svg>
-          </div>
-          <div class="ml-3">
-            <p class="text-sm text-yellow-400" style="color: #D4A017;">
-              <strong>Important Note About Pricing:</strong>
-            </p>
-            <p class="text-gray-300 mt-1">
-              The prices shown are industry averages as of March 2025. Actual costs may vary significantly based on your specific location, property access, roof complexity, material availability, and current market conditions. For the most accurate pricing, we recommend getting a professional on-site assessment.
-            </p>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Results Section (Hidden by Default) -->
-      <div id="results-section" class="rounded-lg shadow-md p-6 md:p-8 hidden" style="background-color: #2A3555;">
-        <h2 class="text-2xl font-bold mb-6 text-white text-center">Your Roofing Estimate</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          <div class="rounded-lg p-6" style="background-color: rgba(255, 255, 255, 0.05);">
-            <h3 class="text-xl font-semibold mb-4 text-white">Estimated Cost Range</h3>
-            
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-gray-300">Low Estimate:</span>
-              <span id="low-estimate" class="text-xl font-bold text-white">$0</span>
-            </div>
-            
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-gray-300">High Estimate:</span>
-              <span id="high-estimate" class="text-xl font-bold text-white">$0</span>
-            </div>
-            
-            <div class="mt-4 pt-4 border-t border-gray-700">
-              <div class="flex items-center justify-between">
-                <span class="text-gray-300">Average Cost:</span>
-                <span id="average-estimate" class="text-2xl font-bold text-yellow-400" style="color: #D4A017;">$0</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="rounded-lg p-6" style="background-color: rgba(255, 255, 255, 0.05);">
-            <h3 class="text-xl font-semibold mb-4 text-white">Project Details</h3>
-            
-            <div class="space-y-2 text-gray-300">
-              <div class="flex items-center justify-between">
-                <span>Roof Area:</span>
-                <span id="result-area" class="font-medium">0 sq ft</span>
-              </div>
-              
-              <div class="flex items-center justify-between">
-                <span>Material:</span>
-                <span id="result-material" class="font-medium">Asphalt Shingles</span>
-              </div>
-              
-              <div class="flex items-center justify-between">
-                <span>Roof Pitch:</span>
-                <span id="result-pitch" class="font-medium">Medium</span>
-              </div>
-              
-              <div class="flex items-center justify-between">
-                <span>Location:</span>
-                <span id="result-location" class="font-medium">Midwest</span>
-              </div>
-              
-              <div id="result-additions" class="pt-2 mt-2 border-t border-gray-700 hidden">
-                <p class="font-medium mb-1">Additional Options:</p>
-                <ul class="list-disc pl-5 space-y-1 text-sm" id="additions-list">
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="bg-blue-900 rounded-lg p-6 mb-6" style="background-color: #1F2A44;">
-          <h3 class="text-lg font-semibold mb-3 text-white">Important Notes</h3>
-          <ul class="list-disc pl-5 space-y-2 text-gray-300 text-sm">
-            <li>This estimate is based on average costs in your region and may vary by 15-30% depending on local market conditions.</li>
-            <li>Material costs fluctuate based on supply chain factors, petroleum prices (for asphalt products), and metal market prices.</li>
-            <li>Labor costs vary significantly by region, season, and contractor availability.</li>
-            <li>Complex roof designs with multiple angles, dormers, skylights, or chimneys will increase costs.</li>
-            <li>This estimate includes materials, standard labor, and manufacturer warranty. Extended warranties may incur additional costs.</li>
-            <li>Additional costs may apply for structural repairs, deck replacement, or code upgrades if needed.</li>
-          </ul>
-        </div>
-        
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <button 
-            id="recalculate-btn" 
-            class="inline-flex items-center justify-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-lg transition-colors"
-          >
-            Recalculate
-          </button>
-          
-          <a 
-            href="{{ '/questionnaire' | relative_url }}" 
-            class="inline-flex items-center justify-center px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300" 
-            style="background-color: #D4A017;"
-          >
-            Get Detailed Quote
-          </a>
-        </div>
-      </div>
-      
-      <!-- Pricing Information -->
-      <div class="mt-16">
-        <h2 class="text-2xl font-bold mb-8 text-white text-center">Understanding Roofing Costs</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          <div class="rounded-lg p-6" style="background-color: #2A3555;">
-            <h3 class="text-xl font-semibold mb-4 text-white">What Affects Roofing Costs?</h3>
-            <ul class="space-y-3 text-gray-300">
-              <li class="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 mr-2 mt-0.5" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                </svg>
-                <span><strong>Roof Size:</strong> Larger roofs require more materials and labor.</span>
-              </li>
-              <li class="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 mr-2 mt-0.5" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                </svg>
-                <span><strong>Roof Pitch:</strong> Steeper roofs are more difficult and dangerous to work on.</span>
-              </li>
-              <li class="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 mr-2 mt-0.5" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                </svg>
-                <span><strong>Material Quality:</strong> Higher quality materials last longer but cost more.</span>
-              </li>
-              <li class="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 mr-2 mt-0.5" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                </svg>
-                <span><strong>Complexity:</strong> Multiple levels, dormers, and skylights increase cost.</span>
-              </li>
-              <li class="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 mr-2 mt-0.5" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                </svg>
-                <span><strong>Location:</strong> Labor and material costs vary by region.</span>
-              </li>
-            </ul>
-          </div>
-          
-          <div class="rounded-lg p-6" style="background-color: #2A3555;">
-            <h3 class="text-xl font-semibold mb-4 text-white">Material Lifespan Comparison</h3>
-            <div class="space-y-4">
-              <div>
-                <div class="flex justify-between mb-1">
-                  <span class="text-gray-300">Asphalt Shingles</span>
-                  <span class="text-gray-300">15-30 years</span>
-                </div>
-                <div class="w-full bg-gray-700 rounded-full h-2.5">
-                  <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 40%; background-color: #D4A017;"></div>
-                </div>
-              </div>
-              
-              <div>
-                <div class="flex justify-between mb-1">
-                  <span class="text-gray-300">Metal Roofing</span>
-                  <span class="text-gray-300">40-70 years</span>
-                </div>
-                <div class="w-full bg-gray-700 rounded-full h-2.5">
-                  <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 70%; background-color: #D4A017;"></div>
-                </div>
-              </div>
-              
-              <div>
-                <div class="flex justify-between mb-1">
-                  <span class="text-gray-300">Clay/Concrete Tile</span>
-                  <span class="text-gray-300">50-100+ years</span>
-                </div>
-                <div class="w-full bg-gray-700 rounded-full h-2.5">
-                  <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 85%; background-color: #D4A017;"></div>
-                </div>
-              </div>
-              
-              <div>
-                <div class="flex justify-between mb-1">
-                  <span class="text-gray-300">Wood Shingles</span>
-                  <span class="text-gray-300">25-40 years</span>
-                </div>
-                <div class="w-full bg-gray-700 rounded-full h-2.5">
-                  <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 50%; background-color: #D4A017;"></div>
-                </div>
-              </div>
-              
-              <div>
-                <div class="flex justify-between mb-1">
-                  <span class="text-gray-300">Slate</span>
-                  <span class="text-gray-300">75-200+ years</span>
-                </div>
-                <div class="w-full bg-gray-700 rounded-full h-2.5">
-                  <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 95%; background-color: #D4A017;"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-12 mb-16">
-          <h2 class="text-2xl font-bold mb-8 text-white text-center">Current Market Factors Affecting Roofing Prices</h2>
-          
-          <div class="rounded-lg p-6" style="background-color: #2A3555;">
-            <div class="space-y-6">
-              <div>
-                <h3 class="text-xl font-semibold mb-3 text-white">Material Cost Fluctuations</h3>
-                <p class="text-gray-300">The roofing industry has experienced significant price volatility in recent years. Petroleum-based products like asphalt shingles are affected by oil prices, while metal roofing costs fluctuate with global metal markets. Supply chain disruptions can cause temporary price increases of 10-25% in some regions.</p>
-              </div>
-              
-              <div>
-                <h3 class="text-xl font-semibold mb-3 text-white">Seasonal Variations</h3>
-                <p class="text-gray-300">Roofing costs often increase during peak seasons (late spring through fall) when demand is highest. You may save 5-10% by scheduling your project during the off-season, though weather conditions may limit when work can be performed in some regions.</p>
-              </div>
-              
-              <div>
-                <h3 class="text-xl font-semibold mb-3 text-white">Regional Labor Markets</h3>
-                <p class="text-gray-300">Labor costs can vary by 30-40% between different regions of the country. Urban areas typically have higher labor rates than rural areas. Areas with high construction activity or recovering from recent storms may experience labor shortages and higher prices.</p>
-              </div>
-              
-              <div>
-                <h3 class="text-xl font-semibold mb-3 text-white">Energy Efficiency Incentives</h3>
-                <p class="text-gray-300">Federal tax credits, local rebates, and utility incentives may offset some roofing costs when you choose energy-efficient materials. These incentives change frequently, so it's worth researching current programs in your area before making a final decision.</p>
-              </div>
-            </div>
+              <option value="northeast">Northeast</option>
+              <option value="midwest" selected>Midwest</option>
+              <option value="south">South</option>
+              <option value="west">West</option>
+              <option value="northwest">Northwest</option>
+              <option value="southwest">Southwest</option>
+            </select>
+            <p class="text-sm text-gray-400 mt-1">Prices vary by region due to labor and material costs</p>
           </div>
         </div>
         
         <div class="text-center">
-          <a 
-            href="{{ '/questionnaire' | relative_url }}" 
+          <button 
+            type="submit" 
             class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300 text-lg" 
             style="background-color: #D4A017;"
           >
-            Get Your Personalized Quote
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4-4z" clip-rule="evenodd" />
-            </svg>
-          </a>
+            Calculate Estimate
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="bg-yellow-500 bg-opacity-10 border-l-4 border-yellow-500 p-4 mb-8 rounded" style="border-color: #D4A017;">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm text-yellow-400" style="color: #D4A017;">
+            <strong>Important Note About Pricing:</strong>
+          </p>
+          <p class="text-gray-300 mt-1">
+            The prices shown are industry averages as of March 2025. Actual costs may vary significantly based on your specific location, property access, roof complexity, material availability, and current market conditions. For the most accurate pricing, we recommend getting a professional on-site assessment.
+          </p>
         </div>
       </div>
     </div>
+    
+    <!-- Results Section (Hidden by Default) -->
+    <div id="results-section" class="rounded-lg shadow-md p-6 md:p-8 hidden" style="background-color: #2A3555;">
+      <h2 class="text-2xl font-bold mb-6 text-white text-center">Your Roofing Estimate</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div class="rounded-lg p-6" style="background-color: rgba(255, 255, 255, 0.05);">
+          <h3 class="text-xl font-semibold mb-4 text-white">Estimated Cost Range</h3>
+          
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-gray-300">Low Estimate:</span>
+            <span id="low-estimate" class="text-xl font-bold text-white">$0</span>
+          </div>
+          
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-gray-300">High Estimate:</span>
+            <span id="high-estimate" class="text-xl font-bold text-white">$0</span>
+          </div>
+          
+          <div class="mt-4 pt-4 border-t border-gray-700">
+            <div class="flex items-center justify-between">
+              <span class="text-gray-300">Average Cost:</span>
+              <span id="average-estimate" class="text-2xl font-bold text-yellow-400" style="color: #D4A017;">$0</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="rounded-lg p-6" style="background-color: rgba(255, 255, 255, 0.05);">
+          <h3 class="text-xl font-semibold mb-4 text-white">Project Details</h3>
+          
+          <div class="space-y-2 text-gray-300">
+            <div class="flex items-center justify-between">
+              <span>Roof Area:</span>
+              <span id="result-area" class="font-medium">0 sq ft</span>
+            </div>
+            
+            <div class="flex items-center justify-between">
+              <span>Material:</span>
+              <span id="result-material" class="font-medium">Asphalt Shingles</span>
+            </div>
+            
+            <div class="flex items-center justify-between">
+              <span>Roof Pitch:</span>
+              <span id="result-pitch" class="font-medium">Medium</span>
+            </div>
+            
+            <div class="flex items-center justify-between">
+              <span>Location:</span>
+              <span id="result-location" class="font-medium">Midwest</span>
+            </div>
+            
+            <div id="result-additions" class="pt-2 mt-2 border-t border-gray-700 hidden">
+              <p class="font-medium mb-1">Additional Options:</p>
+              <ul class="list-disc pl-5 space-y-1 text-sm" id="additions-list">
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-blue-900 rounded-lg p-6 mb-6" style="background-color: #1F2A44;">
+        <h3 class="text-lg font-semibold mb-3 text-white">Important Notes</h3>
+        <ul class="list-disc pl-5 space-y-2 text-gray-300 text-sm">
+          <li>This estimate is based on average costs in your region and may vary by 15-30% depending on local market conditions.</li>
+          <li>Material costs fluctuate based on supply chain factors, petroleum prices (for asphalt products), and metal market prices.</li>
+          <li>Labor costs vary significantly by region, season, and contractor availability.</li>
+          <li>Complex roof designs with multiple angles, dormers, skylights, or chimneys will increase costs.</li>
+          <li>This estimate includes materials, standard labor, and manufacturer warranty. Extended warranties may incur additional costs.</li>
+          <li>Additional costs may apply for structural repairs, deck replacement, or code upgrades if needed.</li>
+        </ul>
+      </div>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button 
+          id="recalculate-btn" 
+          class="inline-flex items-center justify-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-lg transition-colors"
+        >
+          Recalculate
+        </button>
+        
+        <a 
+          href="{{ '/questionnaire' | relative_url }}" 
+          class="inline-flex items-center justify-center px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300" 
+          style="background-color: #D4A017;"
+        >
+          Get Detailed Quote
+        </a>
+      </div>
+    </div>
+    
+    <!-- Pricing Information -->
+    <div class="mt-16">
+      <h2 class="text-2xl font-bold mb-8 text-white text-center">Understanding Roofing Costs</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div class="rounded-lg p-6" style="background-color: #2A3555;">
+          <h3 class="text-xl font-semibold mb-4 text-white">What Affects Roofing Costs?</h3>
+          <ul class="space-y-3 text-gray-300">
+            <li class="flex items-start">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 mr-2 mt-0.5" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span><strong>Roof Size:</strong> Larger roofs require more materials and labor.</span>
+            </li>
+            <li class="flex items-start">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 mr-2 mt-0.5" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span><strong>Roof Pitch:</strong> Steeper roofs are more difficult and dangerous to work on.</span>
+            </li>
+            <li class="flex items-start">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 mr-2 mt-0.5" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span><strong>Material Quality:</strong> Higher quality materials last longer but cost more.</span>
+            </li>
+            <li class="flex items-start">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 mr-2 mt-0.5" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span><strong>Complexity:</strong> Multiple levels, dormers, and skylights increase cost.</span>
+            </li>
+            <li class="flex items-start">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 mr-2 mt-0.5" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span><strong>Location:</strong> Labor and material costs vary by region.</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="rounded-lg p-6" style="background-color: #2A3555;">
+          <h3 class="text-xl font-semibold mb-4 text-white">Material Lifespan Comparison</h3>
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-gray-300">Asphalt Shingles</span>
+                <span class="text-gray-300">15-30 years</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2.5">
+                <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 40%; background-color: #D4A017;"></div>
+              </div>
+            </div>
+            
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-gray-300">Metal Roofing</span>
+                <span class="text-gray-300">40-70 years</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2.5">
+                <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 70%; background-color: #D4A017;"></div>
+              </div>
+            </div>
+            
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-gray-300">Clay/Concrete Tile</span>
+                <span class="text-gray-300">50-100+ years</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2.5">
+                <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 85%; background-color: #D4A017;"></div>
+              </div>
+            </div>
+            
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-gray-300">Wood Shingles</span>
+                <span class="text-gray-300">25-40 years</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2.5">
+                <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 50%; background-color: #D4A017;"></div>
+              </div>
+            </div>
+            
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-gray-300">Slate</span>
+                <span class="text-gray-300">75-200+ years</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2.5">
+                <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 95%; background-color: #D4A017;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 mb-16">
+        <h2 class="text-2xl font-bold mb-8 text-white text-center">Current Market Factors Affecting Roofing Prices</h2>
+        
+        <div class="rounded-lg p-6" style="background-color: #2A3555;">
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-white">Material Cost Fluctuations</h3>
+              <p class="text-gray-300">The roofing industry has experienced significant price volatility in recent years. Petroleum-based products like asphalt shingles are affected by oil prices, while metal roofing costs fluctuate with global metal markets. Supply chain disruptions can cause temporary price increases of 10-25% in some regions.</p>
+            </div>
+            
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-white">Seasonal Variations</h3>
+              <p class="text-gray-300">Roofing costs often increase during peak seasons (late spring through fall) when demand is highest. You may save 5-10% by scheduling your project during the off-season, though weather conditions may limit when work can be performed in some regions.</p>
+            </div>
+            
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-white">Regional Labor Markets</h3>
+              <p class="text-gray-300">Labor costs can vary by 30-40% between different regions of the country. Urban areas typically have higher labor rates than rural areas. Areas with high construction activity or recovering from recent storms may experience labor shortages and higher prices.</p>
+            </div>
+            
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-white">Energy Efficiency Incentives</h3>
+              <p class="text-gray-300">Federal tax credits, local rebates, and utility incentives may offset some roofing costs when you choose energy-efficient materials. These incentives change frequently, so it's worth researching current programs in your area before making a final decision.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center">
+        <a 
+          href="{{ '/questionnaire' | relative_url }}" 
+          class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300 text-lg" 
+          style="background-color: #D4A017;"
+        >
+          Get Your Personalized Quote
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4-4z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+    </div>
   </div>
+</div>
 </section>
 
 <style>
-  body, html, main, section {
-    background-color: #181818 !important;
-  }
-  
-  .material-option input[type="radio"]:checked + label > div {
-    border-color: #D4A017;
-    box-shadow: 0 0 0 2px #D4A017;
-    background-color: #3E4E88;
-  }
+body, html, main, section {
+  background-color: #181818 !important;
+}
+
+.material-option input[type="radio"]:checked + label > div {
+  border-color: #D4A017;
+  box-shadow: 0 0 0 2px #D4A017;
+  background-color: #3E4E88;
+}
 </style>
 
