@@ -1,18 +1,117 @@
-/* Force background colors */
-html,
+/* Force dark theme colors */
+html, 
 body,
 body > *,
 main,
-section,
-.bg-gray-50 {
-  background-color: #f9fafb !important; /* bg-gray-50 equivalent */
+section {
+  background-color: #181818 !important;
+  color: #FFFFFF !important;
 }
 
-/* Only allow white background on specific elements */
-.bg-white,
+/* Header styling */
+header {
+  background-color: #1F2A44 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+header a, header span {
+  color: #FFFFFF !important;
+}
+
+header a:hover {
+  color: #D4A017 !important;
+}
+
+/* Card backgrounds */
+.bg-white, 
 .card,
-.form-container,
-header,
-.header {
-  background-color: #ffffff !important;
+.form-container {
+  background-color: #2A3555 !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Text colors */
+.text-gray-900,
+.text-gray-800,
+.text-gray-700,
+.text-gray-600 {
+  color: #FFFFFF !important;
+}
+
+.text-gray-500,
+.text-gray-400,
+.text-gray-300 {
+  color: #D3D3D3 !important;
+}
+
+/* Button colors */
+.bg-blue-600 {
+  background-color: #2E4A7D !important;
+}
+
+.bg-blue-700 {
+  background-color: #3E4E88 !important;
+}
+
+.hover\:bg-blue-700:hover {
+  background-color: #3E4E88 !important;
+}
+
+.bg-green-600 {
+  background-color: #D4A017 !important;
+  color: #181818 !important;
+}
+
+.hover\:bg-green-700:hover {
+  background-color: #E5B42A !important;
+}
+
+/* Form elements */
+input, select, textarea {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #FFFFFF !important;
+}
+
+/* Card backgrounds for questionnaire */
+.material-card > div,
+.roof-type-card > div {
+  background-color: #2A3555 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.material-card > div:hover,
+.roof-type-card > div:hover {
+  background-color: #3E4E88 !important;
+}
+
+.material-card.selected > div,
+.roof-type-card.selected > div {
+  border-color: #D4A017 !important;
+  box-shadow: 0 0 0 2px #D4A017 !important;
+}
+
+/* Progress bar */
+.bg-gray-200 {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.bg-blue-600 {
+  background-color: #D4A017 !important;
+}
+
+/* Footer styling */
+footer {
+  background-color: #1F2A44 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Links */
+a {
+  color: #D4A017 !important;
+}
+
+a:hover {
+  color: #E5B42A !important;
 }
