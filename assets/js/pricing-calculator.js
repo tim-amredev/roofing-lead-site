@@ -5,21 +5,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Material price ranges (per sq ft)
   const materialPrices = {
-    asphalt: { min: 3.5, max: 5.5 },
-    metal: { min: 7.0, max: 12.0 },
-    tile: { min: 10.0, max: 18.0 },
-    wood: { min: 6.5, max: 11.0 },
-    slate: { min: 15.0, max: 30.0 },
-    premium: { min: 5.0, max: 8.0 },
+    asphalt: { min: 4.0, max: 7.0 },
+    metal: { min: 8.5, max: 16.0 },
+    tile: { min: 12.0, max: 25.0 },
+    wood: { min: 7.5, max: 14.0 },
+    slate: { min: 18.0, max: 40.0 },
+    premium: { min: 6.0, max: 10.0 },
   }
 
   // Additional options costs
   const additionalCosts = {
-    "option-removal": { min: 1.0, max: 2.0, label: "Old Roof Removal" },
-    "option-underlayment": { min: 0.5, max: 1.0, label: "Premium Underlayment" },
-    "option-ventilation": { min: 1.0, max: 2.5, label: "Improved Ventilation" },
-    "option-gutters": { min: 2.0, max: 4.0, label: "New Gutters & Downspouts" },
-    "option-insulation": { min: 1.5, max: 3.0, label: "Additional Insulation" },
+    "option-removal": { min: 1.25, max: 2.5, label: "Old Roof Removal" },
+    "option-underlayment": { min: 0.75, max: 1.5, label: "Premium Underlayment" },
+    "option-ventilation": { min: 1.5, max: 3.0, label: "Improved Ventilation" },
+    "option-gutters": { min: 2.5, max: 5.0, label: "New Gutters & Downspouts" },
+    "option-insulation": { min: 2.0, max: 4.0, label: "Additional Insulation" },
   }
 
   // Pitch multipliers (affects labor cost)
@@ -33,12 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Location cost factors
   const locationFactors = {
-    northeast: 1.2,
+    northeast: 1.25,
     midwest: 1.0,
     south: 0.9,
-    west: 1.3,
-    northwest: 1.15,
-    southwest: 1.1,
+    west: 1.35,
+    northwest: 1.2,
+    southwest: 1.15,
   }
 
   // Format currency
