@@ -1,15 +1,36 @@
 # Site settings
-title: Instant Roofing Prices
+title: "Instant Roofing Prices - Fast & Accurate Roofing Quotes"
 email: info@instantroofingprices.com
-description: Get instant quotes for your roofing project. Fast, reliable estimates for roof repairs, replacements, and installations.
+description: "Get instant, accurate roofing quotes in minutes. Free estimates for roof repairs, replacements, and installations. No obligations, just reliable pricing information."
 baseurl: "/roofing-lead-site" # the subpath of your site - IMPORTANT: match your repository name
 url: "https://tim-amredev.github.io" # your GitHub Pages URL
+author: Instant Roofing Prices
+logo: "/assets/images/logo.png"
+
+# Social media
+twitter:
+  username: instantroofing
+  card: summary_large_image
+facebook:
+  publisher: instantroofingprices
+social:
+  name: Instant Roofing Prices
+  links:
+    - https://twitter.com/instantroofing
+    - https://facebook.com/instantroofingprices
+    - https://linkedin.com/company/instant-roofing-prices
+
+# SEO specific settings
+lang: en_US
+locale: en_US
+google_analytics: # Add your GA tracking ID
 
 # Build settings
 markdown: kramdown
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-sitemap
 
 # Exclude from processing
 exclude:
