@@ -1,3 +1,4 @@
+---
 layout: default
 title: Get a Quote
 js: questionnaire
@@ -23,10 +24,18 @@ js: questionnaire
         <form id="questionnaire-form" class="space-y-8" action="https://formsubmit.co/tim@americanremodeling.net" method="POST">
           <!-- Add these hidden fields for FormSubmit.co configuration -->
           <input type="hidden" name="_subject" value="New Roofing Quote Request">
-          <input type="hidden" name="_template" value="box">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/thank-you">
-          <input type="hidden" name="_format" value="plain">
+          
+          <!-- Add a honeypot field to prevent spam -->
+          <input type="text" name="_honey" style="display:none">
+          
+          <!-- Disable the default FormSubmit.co email template -->
+          <input type="hidden" name="_template" value="table">
+          
+          <!-- Summary field that will contain all the formatted data -->
+          <input type="hidden" id="form_summary" name="form_summary" value="">
+          
           <!-- Step 1: Basic Information -->
           <div id="step-1" class="questionnaire-step">
             <h2 class="text-xl font-semibold mb-6 text-white">Basic Information</h2>
@@ -456,7 +465,7 @@ js: questionnaire
                 
                 <div>
                   <label class="block text-gray-300 mb-1">Appearance</label>
-                  <select name="importance_appearance" class="w-full p-2 border rounded" style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255,255, 255, 0.2); color: white;">
+                  <select name="importance_appearance" class="w-full p-2 border rounded" style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;">
                     <option value="1">1 - Least Important</option>
                     <option value="2">2</option>
                     <option value="3" selected>3</option>
