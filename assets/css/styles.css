@@ -1,16 +1,22 @@
 /* Custom styles beyond Tailwind */
 
 :root {
-  --color-dark-blue: #0f172a;
-  --color-navy: #1e3a8a;
-  --color-blue-gray: #334155;
-  --color-slate: #475569;
-  --color-highlight: #3b82f6;
+  --color-dark-blue: #2E4A7D;
+  --color-navy: #1F2A44;
+  --color-blue-gray: #2A3555;
+  --color-slate: #3E4E88;
+  --color-highlight: #D4A017;
+  --color-text: #FFFFFF;
+  --color-text-secondary: #D3D3D3;
+  --color-background: #181818;
+  --color-card-bg: #2A3555;
+  --color-card-hover: #3E4E88;
 }
 
 /* Force background color for the body */
 body {
-  background-color: #f9fafb !important; /* bg-gray-50 equivalent */
+  background-color: var(--color-background) !important;
+  color: var(--color-text) !important;
 }
 
 /* Custom animations */
@@ -37,6 +43,18 @@ body {
   }
 }
 
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(212, 160, 23, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(212, 160, 23, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(212, 160, 23, 0.5);
+  }
+}
+
 /* Custom utility classes */
 .animate-float {
   animation: float 3s ease-in-out infinite;
@@ -46,37 +64,87 @@ body {
   animation: fadeIn 0.6s ease-out forwards;
 }
 
+.btn-glow:hover {
+  animation: glow 1.5s ease-in-out infinite;
+}
+
 /* Gradient backgrounds */
 .bg-gradient-dark {
-  background: linear-gradient(to right, var(--color-dark-blue), var(--color-navy));
+  background: linear-gradient(to right, var(--color-background), var(--color-navy));
 }
 
 .bg-gradient-blue {
-  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-dark-blue) 100%);
 }
 
 /* Custom card styles */
 .feature-card {
   transition: all 0.3s ease;
+  background-color: var(--color-card-bg);
+  color: var(--color-text);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .feature-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  background-color: var(--color-card-hover);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
 /* Custom button styles */
-.btn-glow:hover {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+.btn-primary {
+  background-color: var(--color-dark-blue);
+  color: var(--color-text);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-slate);
+}
+
+.btn-cta {
+  background-color: var(--color-highlight);
+  color: var(--color-background);
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-cta:hover {
+  background-color: #E5B42A;
+  transform: translateY(-2px);
+}
+
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-glow:after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(30deg);
+  transition: all 0.3s ease;
+}
+
+.btn-glow:hover:after {
+  transform: rotate(30deg) translate(-30%, -30%);
 }
 
 /* Testimonial card styles */
 .testimonial-card {
   transition: all 0.3s ease;
+  background-color: var(--color-card-bg);
+  color: var(--color-text);
 }
 
 .testimonial-card:hover {
   transform: scale(1.02);
+  background-color: var(--color-card-hover);
 }
 
 /* Stats counter animation */
@@ -94,16 +162,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e293b;
+  background: var(--color-background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3b82f6;
+  background: var(--color-dark-blue);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
+  background: var(--color-slate);
 }
 
 /* Aspect ratio utilities for image cards */
@@ -136,4 +204,72 @@ body {
 .roof-type-card.selected > div {
   border-color: var(--color-highlight);
   box-shadow: 0 0 0 2px var(--color-highlight);
+  background-color: var(--color-card-hover);
+}
+
+/* Form elements */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+select,
+textarea {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-highlight);
+  box-shadow: 0 0 0 2px rgba(212, 160, 23, 0.3);
+  outline: none;
+}
+
+/* Radio and checkbox styles */
+input[type="radio"],
+input[type="checkbox"] {
+  accent-color: var(--color-highlight);
+}
+
+/* Card styles for questionnaire */
+.questionnaire-card {
+  background-color: var(--color-card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.questionnaire-card:hover {
+  background-color: var(--color-card-hover);
+  transform: translateY(-3px);
+}
+
+.questionnaire-card.selected {
+  border-color: var(--color-highlight);
+  box-shadow: 0 0 0 2px var(--color-highlight);
+}
+
+/* Progress bar */
+.progress-bar-bg {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.progress-bar-fill {
+  background-color: var(--color-highlight);
+}
+
+/* Modal styles */
+.modal-bg {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  background-color: var(--color-navy);
+  color: var(--color-text);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
