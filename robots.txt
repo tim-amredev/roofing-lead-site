@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tim-amredev.github.io/roofing-lead-site/sitemap.xml
