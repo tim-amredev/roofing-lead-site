@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("submit-btn")
   const thankYouModal = document.getElementById("thank-you-modal")
   const closeModalBtn = document.getElementById("close-modal")
+  const formSummaryField = document.getElementById("form_summary")
 
   let currentStep = 0
   const totalSteps = steps.length
@@ -95,6 +96,63 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Format form data as text
+  function formatFormData() {
+    const formData = new FormData(form)
+    let textData = "ROOFING QUOTE REQUEST\n"
+    textData += "====================\n\n"
+
+    // Add timestamp
+    textData += `Submission Date: ${new Date().toLocaleString()}\n\n`
+
+    // Basic Information
+    textData += "BASIC INFORMATION\n"
+    textData += "-----------------\n"
+    const reasons = formData.getAll("reason")
+    textData += `Primary Reason: ${reasons.join(", ") || "Not specified"}\n`
+    textData += `Roof Age: ${formData.get("roof_age") || "Not specified"}\n`
+    textData += `Square Footage: ${formData.get("square_footage") || "Not specified"}\n\n`
+
+    // Roof Details
+    textData += "ROOF DETAILS\n"
+    textData += "------------\n"
+    textData += `Current Material: ${formData.get("current_material") || "Not specified"}\n`
+    textData += `Desired Material: ${formData.get("desired_material") || "Not specified"}\n`
+    textData += `Roof Type: ${formData.get("roof_type") || "Not specified"}\n\n`
+
+    // Project Specifics
+    textData += "PROJECT SPECIFICS\n"
+    textData += "----------------\n"
+    const issues = formData.getAll("issues")
+    textData += `Current Issues: ${issues.join(", ") || "None specified"}\n`
+    const features = formData.getAll("features")
+    textData += `Additional Features: ${features.join(", ") || "None specified"}\n`
+    textData += `Timeframe: ${formData.get("timeframe") || "Not specified"}\n\n`
+
+    // Budget and Preferences
+    textData += "BUDGET AND PREFERENCES\n"
+    textData += "----------------------\n"
+    textData += `Budget: ${formData.get("budget") || "Not specified"}\n`
+    textData += `Importance - Cost: ${formData.get("importance_cost") || "3"}/5\n`
+    textData += `Importance - Durability: ${formData.get("importance_durability") || "4"}/5\n`
+    textData += `Importance - Appearance: ${formData.get("importance_appearance") || "3"}/5\n`
+    textData += `Importance - Energy Efficiency: ${formData.get("importance_energy") || "4"}/5\n`
+    textData += `Importance - Warranty: ${formData.get("importance_warranty") || "3"}/5\n`
+    textData += `Referral Source: ${formData.get("referral") || "Not specified"}\n\n`
+
+    // Contact Information
+    textData += "CONTACT INFORMATION\n"
+    textData += "-------------------\n"
+    textData += `Name: ${formData.get("name") || "Not provided"}\n`
+    textData += `Email: ${formData.get("email") || "Not provided"}\n`
+    textData += `Phone: ${formData.get("phone") || "Not provided"}\n`
+    textData += `Zip Code: ${formData.get("zip") || "Not provided"}\n`
+    textData += `Preferred Contact Method: ${formData.get("contact_method") || "Not specified"}\n`
+    textData += `Additional Comments: ${formData.get("comments") || "None"}\n`
+
+    return textData
+  }
+
   // Event listeners
   if (nextBtn) {
     nextBtn.addEventListener("click", nextStep)
@@ -106,77 +164,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (form) {
     form.addEventListener("submit", (e) => {
-      // Don't prevent default - let the form submit to FormSubmit.co
-
-      // Format the form data as text for the email
-      const formData = new FormData(form);
-      let textData = "ROOFING QUOTE REQUEST\n";
-      textData += "====================\n\n";
-
-      // Add timestamp
-      textData += `Submission Date: ${new Date().toLocaleString()}\n\n`;
-
-      // Basic Information
-      textData += "BASIC INFORMATION\n";
-      textData += "-----------------\n";
-      const reasons = formData.getAll('reason');
-      textData += `Primary Reason: ${reasons.join(', ')}\n`;
-      textData += `Roof Age: ${formData.get('roof_age')}\n`;
-      textData += `Square Footage: ${formData.get('square_footage')}\n\n`;
-
-      // Roof Details
-      textData += "ROOF DETAILS\n";
-      textData += "------------\n";
-      textData += `Current Material: ${formData.get('current_material')}\n`;
-      textData += `Desired Material: ${formData.get('desired_material')}\n`;
-      textData += `Roof Type: ${formData.get('roof_type')}\n\n`;
-
-      // Project Specifics
-      textData += "PROJECT SPECIFICS\n";
-      textData += "----------------\n";
-      const issues = formData.getAll('issues');
-      textData += `Current Issues: ${issues.join(', ')}\n`;
-      const features = formData.getAll('features');
-      textData += `Additional Features: ${features.join(', ')}\n`;
-      textData += `Timeframe: ${formData.get('timeframe')}\n\n`;
-
-      // Budget and Preferences
-      textData += "BUDGET AND PREFERENCES\n";
-      textData += "----------------------\n";
-      textData += `Budget: ${formData.get('budget')}\n`;
-      textData += `Importance - Cost: ${formData.get('importance_cost')}/5\n`;
-      textData += `Importance - Durability: ${formData.get('importance_durability')}/5\n`;
-      textData += `Importance - Appearance: ${formData.get('importance_appearance')}/5\n`;
-      textData += `Importance - Energy Efficiency: ${formData.get('importance_energy')}/5\n`;
-      textData += `Importance - Warranty: ${formData.get('importance_warranty')}/5\n`;
-      textData += `Referral Source: ${formData.get('referral')}\n\n`;
-
-      // Contact Information
-      textData += "CONTACT INFORMATION\n";
-      textData += "-------------------\n";
-      textData += `Name: ${formData.get('name')}\n`;
-      textData += `Email: ${formData.get('email')}\n`;
-      textData += `Phone: ${formData.get('phone')}\n`;
-      textData += `Zip Code: ${formData.get('zip')}\n`;
-      textData += `Preferred Contact Method: ${formData.get('contact_method')}\n`;
-      textData += `Additional Comments: ${formData.get('comments')}\n`;
-
-      // Create a hidden field to store the formatted text data
-      const textDataInput = document.createElement('input');
-      textDataInput.type = 'hidden';
-      textDataInput.name = 'formatted_data';
-      textDataInput.value = textData;
-      form.appendChild(textDataInput);
+      // Format the form data and set it to the hidden field
+      if (formSummaryField) {
+        formSummaryField.value = formatFormData()
+      }
 
       // Show the thank you modal if the form is submitted locally (for testing)
-      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        e.preventDefault();
+      if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+        e.preventDefault()
         if (thankYouModal) {
-          thankYouModal.classList.remove("hidden");
+          thankYouModal.classList.remove("hidden")
         }
-        form.reset();
+        form.reset()
       }
-    });
+    })
   }
 
   if (closeModalBtn && thankYouModal) {
@@ -192,3 +193,4 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize the first step
   showStep(currentStep)
 })
+
