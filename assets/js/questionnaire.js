@@ -112,12 +112,32 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData(form)
       const formDataObj = {}
 
+      // Special handling for checkbox arrays
+      const checkboxArrays = {
+        "issues[]": [],
+        "features[]": [],
+      }
+
       formData.forEach((value, key) => {
         // Skip FormSubmit's internal fields
-        if (!key.startsWith("_")) {
+        if (key.startsWith("_")) return
+
+        // Handle checkbox arrays
+        if (key === "issues[]" || key === "features[]") {
+          checkboxArrays[key].push(value)
+        } else {
           formDataObj[key] = value
         }
       })
+
+      // Add the checkbox arrays to the form data object
+      for (const [key, values] of Object.entries(checkboxArrays)) {
+        if (values.length > 0) {
+          // Store without the [] suffix
+          const cleanKey = key.replace("[]", "")
+          formDataObj[cleanKey] = values
+        }
+      }
 
       // Save to localStorage
       localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
