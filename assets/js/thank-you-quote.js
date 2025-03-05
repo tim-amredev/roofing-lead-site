@@ -2,22 +2,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const quoteSection = document.getElementById("quote-section")
   if (!quoteSection) return
 
-  // Get URL parameters
-  const urlParams = new URLSearchParams(window.location.search)
+  // Get form data from localStorage
+  let formData = {
+    reason: "replace",
+    roof_age: "11-15",
+    square_footage: "1501-2000",
+    current_material: "asphalt",
+    desired_material: "asphalt",
+    roof_type: "gabled",
+    issues: "age",
+    features: "none",
+    timeframe: "few-months",
+    budget: "10k-15k",
+    name: "",
+  }
 
-  // Extract form data from URL parameters
-  const formData = {
-    reason: urlParams.get("reason") || "replace",
-    roof_age: urlParams.get("roof_age") || "11-15",
-    square_footage: urlParams.get("square_footage") || "1501-2000",
-    current_material: urlParams.get("current_material") || "asphalt",
-    desired_material: urlParams.get("desired_material") || "asphalt",
-    roof_type: urlParams.get("roof_type") || "gabled",
-    issues: urlParams.get("issues") || "age",
-    features: urlParams.get("features") || "none",
-    timeframe: urlParams.get("timeframe") || "few-months",
-    budget: urlParams.get("budget") || "10k-15k",
-    name: urlParams.get("name") || "",
+  // Try to get stored form data
+  try {
+    const storedData = localStorage.getItem("roofingFormData")
+    if (storedData) {
+      const parsedData = JSON.parse(storedData)
+      // Merge with default data
+      formData = { ...formData, ...parsedData }
+      // Clear localStorage after using it
+      localStorage.removeItem("roofingFormData")
+    }
+  } catch (error) {
+    console.error("Error retrieving form data:", error)
   }
 
   // Pricing data (simplified version of the calculator pricing)
