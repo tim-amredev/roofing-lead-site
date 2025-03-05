@@ -2,7 +2,7 @@
 title: "Instant Roofing Prices - Fast & Accurate Roofing Quotes"
 email: info@instantroofingprices.com
 description: "Get instant, accurate roofing quotes in minutes. Free estimates for roof repairs, replacements, and installations. No obligations, just reliable pricing information."
-baseurl: "/roofing-lead-site" # the subpath of your site - IMPORTANT: match your repository name
+baseurl: "" # the subpath of your site - IMPORTANT: match your repository name
 url: "https://instantroofingprices.com" 
 author: Instant Roofing Prices
 logo: "/assets/images/logo.png"
