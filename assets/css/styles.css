@@ -1,25 +1,26 @@
 /* Custom styles beyond Tailwind */
 
-/* Dark theme form elements */
+/* Form elements in dark theme */
 .form-checkbox,
 .form-radio {
-  @apply rounded border-gray-600 bg-secondary-700 text-primary-600;
+  @apply rounded border-2 border-gray-500 bg-gray-700 text-blue-500;
+  transition: all 0.2s ease-in-out;
 }
 
 .form-checkbox:checked,
 .form-radio:checked {
-  @apply border-primary-600 bg-primary-600;
+  @apply border-blue-500 bg-blue-500;
 }
 
 .form-checkbox:focus,
 .form-radio:focus {
-  @apply ring-2 ring-primary-500 ring-offset-2 ring-offset-secondary-800;
+  @apply ring-2 ring-blue-500 ring-offset-2 ring-offset-gray-800;
 }
 
 /* Selected card styles */
 .material-card.selected > div,
 .roof-type-card.selected > div {
-  @apply border-primary-500 ring-2 ring-primary-500;
+  @apply border-blue-500 ring-2 ring-blue-500 bg-white/20;
 }
 
 /* Aspect ratio utilities */
@@ -47,28 +48,85 @@
   align-items: center;
 }
 
+/* Question groups */
+.question-group {
+  @apply relative;
+}
+
+.question-group::before {
+  content: "";
+  @apply absolute -left-4 top-0 h-full w-1 bg-blue-500 rounded opacity-0 transition-opacity;
+}
+
+.question-group:hover::before {
+  @apply opacity-100;
+}
+
 /* Animations */
 .questionnaire-step {
-  transition: opacity 0.3s ease-in-out;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .questionnaire-step.fade-out {
   opacity: 0;
+  transform: translateX(-20px);
 }
 
 .questionnaire-step.fade-in {
   opacity: 1;
+  transform: translateX(0);
 }
 
 /* Progress bar animation */
 #progress-bar {
-  transition: width 0.3s ease-in-out;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Add background image to the body */
-body {
-  background-image: url('/new roof.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-blue-500 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-blue-600;
+}
+
+/* Input fields */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea,
+select {
+  @apply bg-white/5 border border-gray-600 rounded-lg px-4 py-3 text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+textarea:focus,
+select:focus {
+  @apply bg-white/10;
+}
+
+/* Button hover effects */
+button {
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
