@@ -77,16 +77,20 @@ document.addEventListener("DOMContentLoaded", () => {
     let lowBase = area * materialInfo.low * pitchMultiplier
     let highBase = area * materialInfo.high * pitchMultiplier
 
-    // Add complexity factor based on issues
-    if (formData.issues === "leaks" || formData.issues === "sagging") {
+    // Add complexity factor based on issues (now handling array)
+    const issues = Array.isArray(formData.issues) ? formData.issues : [formData.issues]
+    if (issues.includes("leaks") || issues.includes("sagging")) {
       lowBase *= 1.15
       highBase *= 1.15
     }
 
-    // Add features cost
-    if (formData.features !== "none") {
-      lowBase *= 1.1
-      highBase *= 1.1
+    // Add features cost (now handling array)
+    const features = Array.isArray(formData.features) ? formData.features : [formData.features]
+    if (features.length > 0 && !features.includes("none")) {
+      // Add 5% per feature (up to 20%)
+      const featureMultiplier = 1 + Math.min(features.length, 4) * 0.05
+      lowBase *= featureMultiplier
+      highBase *= featureMultiplier
     }
 
     // Ensure minimum project cost
