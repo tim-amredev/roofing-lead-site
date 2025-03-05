@@ -29,7 +29,7 @@ js: questionnaire
           <input type="hidden" name="_subject" value="New Roofing Quote Request">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/thank-you">
-          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_captcha" value="true">
           
           <!-- Step 1: Basic Information -->
           <div id="step-1" class="questionnaire-step">
@@ -332,27 +332,27 @@ js: questionnaire
                   </label>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
-                      <input type="radio" name="issues" value="leaks" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <input type="checkbox" name="issues[]" value="leaks" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
                       <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">Leaks or water damage</span>
                     </label>
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
-                      <input type="radio" name="issues" value="missing" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <input type="checkbox" name="issues[]" value="missing" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
                       <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">Missing/broken shingles</span>
                     </label>
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
-                      <input type="radio" name="issues" value="age" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <input type="checkbox" name="issues[]" value="age" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
                       <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">Age/deterioration</span>
                     </label>
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
-                      <input type="radio" name="issues" value="sagging" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <input type="checkbox" name="issues[]" value="sagging" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
                       <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">Sagging roof deck</span>
                     </label>
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
-                      <input type="radio" name="issues" value="ventilation" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <input type="checkbox" name="issues[]" value="ventilation" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
                       <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">Poor ventilation</span>
                     </label>
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
-                      <input type="radio" name="issues" value="none" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <input type="checkbox" name="issues[]" value="none" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
                       <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">No issues (preventative replacement)</span>
                     </label>
                   </div>
@@ -364,33 +364,33 @@ js: questionnaire
                   </label>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
-                      <input type="radio" name="features" value="skylight" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <input type="checkbox" name="features[]" value="skylight" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
                       <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">Skylights</span>
                     </label>
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
-                      <input type="radio" name="features" value="solar" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <input type="checkbox" name="features[]" value="solar" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
                       <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">Solar panel integration</span>
                     </label>
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
-                      <input type="radio" name="features" value="insulation" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <input type="checkbox" name="features[]" value="insulation" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
                       <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">Improved insulation</span>
                     </label>
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
-                      <input type="radio" name="features" value="gutters" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <input type="checkbox" name="features[]" value="gutters" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
                       <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">New gutter system</span>
                     </label>
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
-                      <input type="radio" name="features" value="ventilation" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <input type="checkbox" name="features[]" value="ventilation" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
                       <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">Enhanced ventilation</span>
                     </label>
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
-                      <input type="radio" name="features" value="none" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <input type="checkbox" name="features[]" value="none" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
                       <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">None of the above</span>
                     </label>
                   </div>
                 </div>
                 
-                
+              
                 <div class="question-group">
                   <label class="block text-xl font-medium text-blue-100 mb-4">
                     #9: What is your timeframe for this project?
