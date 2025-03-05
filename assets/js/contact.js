@@ -5,17 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeContactModal = document.getElementById("close-contact-modal")
 
   if (contactForm) {
-    contactForm.addEventListener("submit", (e) => {
-      e.preventDefault()
-
-      // Simulate form submission
-      setTimeout(() => {
-        if (contactSuccessModal) {
-          contactSuccessModal.classList.remove("hidden")
-        }
-        contactForm.reset()
-      }, 1000)
-    })
+    // No custom form handling needed as we're using FormSubmit's native functionality
   }
 
   if (closeContactModal && contactSuccessModal) {
@@ -24,3 +14,4 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   }
 })
+
