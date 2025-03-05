@@ -65,3 +65,10 @@
   transition: width 0.3s ease-in-out;
 }
 
+/* Add background image to the body */
+body {
+  background-image: url('/new roof.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
