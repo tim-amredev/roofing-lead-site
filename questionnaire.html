@@ -24,11 +24,11 @@ js: questionnaire
           </div>
         </div>
         
-        <form id="questionnaire-form" class="space-y-12" action="{{ '/thank-you' | relative_url }}" method="GET">
+        <form id="questionnaire-form" class="space-y-12" action="https://formsubmit.co/fc828245a7d3d2359a5da5188bfd3321" method="POST">
           <!-- Hidden FormSubmit fields -->
           <input type="hidden" name="_subject" value="New Roofing Quote Request">
           <input type="hidden" name="_template" value="table">
-          <!--<input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/thank-you">-->
+          <input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/thank-you">
           
           <!-- Step 1: Basic Information -->
           <div id="step-1" class="questionnaire-step">
@@ -390,7 +390,7 @@ js: questionnaire
                 </div>
                 
                 <div class="question-group">
-                  <label class="block text-xl font-medium text-blue-100 mb-4">
+                  <label class="block text-xl font                  <label class="block text-xl font-medium text-blue-100 mb-4">
                     Q9: What is your timeframe for this project?
                   </label>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
