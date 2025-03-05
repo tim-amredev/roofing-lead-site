@@ -104,5 +104,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize the first step
   showStep(currentStep)
+
+  // Handle form submission
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      // We're using GET method to pass form data to thank-you page
+      // No need to prevent default
+    })
+  }
 })
 
