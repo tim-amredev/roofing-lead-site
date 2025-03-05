@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Thank You
+js: thank-you-quote
 ---
 
 <section class="py-24 bg-secondary-900">
@@ -15,18 +16,77 @@ title: Thank You
         
         <h1 class="text-3xl font-bold text-white mb-4">Thank You!</h1>
         
+        <div class="hidden mb-4">
+          <p class="text-xl text-gray-300">
+            Hello <span id="customer-name" class="font-semibold"></span>, thank you for your submission!
+          </p>
+        </div>
+        
         <p class="text-xl text-gray-300 mb-8">
           Your submission has been received. We'll be in touch with you shortly.
         </p>
         
-        <a href="{{ '/' | relative_url }}" class="inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-          </svg>
-          Return to Home
-        </a>
+        <!-- Quote Section -->
+        <div id="quote-section" class="mt-8 mb-8 bg-blue-900 bg-opacity-30 rounded-lg p-6 text-left">
+          <h2 class="text-2xl font-bold text-white mb-4 text-center">Your Estimated Roofing Quote</h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-blue-900 bg-opacity-20 p-4 rounded-lg">
+              <h3 class="text-lg font-semibold text-white mb-2">Project Details</h3>
+              <div class="space-y-2">
+                <div class="flex justify-between">
+                  <span class="text-gray-300">Material:</span>
+                  <span id="quote-material" class="text-white font-medium">Asphalt Shingles</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-300">Estimated Area:</span>
+                  <span id="quote-area" class="text-white font-medium">1,800 sq ft</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-blue-900 bg-opacity-20 p-4 rounded-lg">
+              <h3 class="text-lg font-semibold text-white mb-2">Price Range</h3>
+              <div class="space-y-2">
+                <div class="flex justify-between">
+                  <span class="text-gray-300">Low Estimate:</span>
+                  <span id="quote-low" class="text-white font-medium">$8,000</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-300">High Estimate:</span>
+                  <span id="quote-high" class="text-white font-medium">$12,000</span>
+                </div>
+                <div class="flex justify-between pt-2 border-t border-blue-800">
+                  <span class="text-gray-300">Average:</span>
+                  <span id="quote-average" class="text-yellow-400 font-bold">$10,000</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-blue-900 bg-opacity-10 border-l-4 border-yellow-500 p-4 rounded">
+            <p class="text-gray-300 text-sm">
+              <strong class="text-yellow-400">Note:</strong> This is a preliminary estimate based on the information you provided. For a more accurate quote, our roofing specialists will contact you soon to discuss your project in detail.
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="{{ '/' | relative_url }}" class="inline-flex items-center justify-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-lg transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Return to Home
+          </a>
+          
+          <a href="{{ '/pricing-calculator' | relative_url }}" class="inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors">
+            Try Our Price Calculator
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   </div>
 </section>
-
