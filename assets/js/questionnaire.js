@@ -108,7 +108,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Handle form submission
   if (form) {
     form.addEventListener("submit", (e) => {
-      // We're using GET method to pass form data to thank-you page
+      // Store form data in localStorage before submission
+      const formData = new FormData(form)
+      const formDataObj = {}
+
+      formData.forEach((value, key) => {
+        formDataObj[key] = value
+      })
+
+      // Save to localStorage
+      localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
+
+      // Continue with normal form submission to FormSubmit
       // No need to prevent default
     })
   }
