@@ -1,180 +1,28 @@
 /* Custom styles beyond Tailwind */
 
-:root {
-  --color-dark-blue: #2e4a7d;
-  --color-navy: #1f2a44;
-  --color-blue-gray: #2a3555;
-  --color-slate: #3e4e88;
-  --color-highlight: #d4a017;
-  --color-text: #ffffff;
-  --color-text-secondary: #d3d3d3;
-  --color-background: #181818;
-  --color-card-bg: #2a3555;
-  --color-card-hover: #3e4e88;
+/* Dark theme form elements */
+.form-checkbox,
+.form-radio {
+  @apply rounded border-gray-600 bg-secondary-700 text-primary-600;
 }
 
-/* Force background color for the body */
-body {
-  background-color: var(--color-background) !important;
-  color: var(--color-text) !important;
+.form-checkbox:checked,
+.form-radio:checked {
+  @apply border-primary-600 bg-primary-600;
 }
 
-/* Custom animations */
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+.form-checkbox:focus,
+.form-radio:focus {
+  @apply ring-2 ring-primary-500 ring-offset-2 ring-offset-secondary-800;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Selected card styles */
+.material-card.selected > div,
+.roof-type-card.selected > div {
+  @apply border-primary-500 ring-2 ring-primary-500;
 }
 
-@keyframes glow {
-  0% {
-    box-shadow: 0 0 5px rgba(212, 160, 23, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(212, 160, 23, 0.8);
-  }
-  100% {
-    box-shadow: 0 0 5px rgba(212, 160, 23, 0.5);
-  }
-}
-
-/* Custom utility classes */
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
-}
-
-.btn-glow:hover {
-  animation: glow 1.5s ease-in-out infinite;
-}
-
-/* Gradient backgrounds */
-.bg-gradient-dark {
-  background: linear-gradient(to right, var(--color-background), var(--color-navy));
-}
-
-.bg-gradient-blue {
-  background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-dark-blue) 100%);
-}
-
-/* Custom card styles */
-.feature-card {
-  transition: all 0.3s ease;
-  background-color: var(--color-card-bg);
-  color: var(--color-text);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.feature-card:hover {
-  transform: translateY(-5px);
-  background-color: var(--color-card-hover);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-}
-
-/* Custom button styles */
-.btn-primary {
-  background-color: var(--color-dark-blue);
-  color: var(--color-text);
-  transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-  background-color: var(--color-slate);
-}
-
-.btn-cta {
-  background-color: var(--color-highlight);
-  color: var(--color-background);
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-.btn-cta:hover {
-  background-color: #e5b42a;
-  transform: translateY(-2px);
-}
-
-.btn-glow {
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-glow:after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: rgba(255, 255, 255, 0.1);
-  transform: rotate(30deg);
-  transition: all 0.3s ease;
-}
-
-.btn-glow:hover:after {
-  transform: rotate(30deg) translate(-30%, -30%);
-}
-
-/* Testimonial card styles */
-.testimonial-card {
-  transition: all 0.3s ease;
-  background-color: var(--color-card-bg);
-  color: var(--color-text);
-}
-
-.testimonial-card:hover {
-  transform: scale(1.02);
-  background-color: var(--color-card-hover);
-}
-
-/* Stats counter animation */
-.stats-counter {
-  transition: all 0.3s ease;
-}
-
-.stats-counter:hover {
-  transform: scale(1.05);
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-dark-blue);
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-slate);
-}
-
-/* Aspect ratio utilities for image cards */
+/* Aspect ratio utilities */
 .aspect-w-4 {
   position: relative;
   padding-bottom: calc(var(--tw-aspect-h) / var(--tw-aspect-w) * 100%);
@@ -199,78 +47,21 @@ body {
   align-items: center;
 }
 
-/* Selected card styles */
-.material-card.selected > div,
-.roof-type-card.selected > div {
-  border-color: var(--color-highlight);
-  box-shadow: 0 0 0 2px var(--color-highlight);
-  background-color: var(--color-card-hover);
+/* Animations */
+.questionnaire-step {
+  transition: opacity 0.3s ease-in-out;
 }
 
-/* Form elements */
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="number"],
-select,
-textarea {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--color-text);
+.questionnaire-step.fade-out {
+  opacity: 0;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="tel"]:focus,
-input[type="number"]:focus,
-select:focus,
-textarea:focus {
-  border-color: var(--color-highlight);
-  box-shadow: 0 0 0 2px rgba(212, 160, 23, 0.3);
-  outline: none;
+.questionnaire-step.fade-in {
+  opacity: 1;
 }
 
-/* Radio and checkbox styles */
-input[type="radio"],
-input[type="checkbox"] {
-  accent-color: var(--color-highlight);
-}
-
-/* Card styles for questionnaire */
-.questionnaire-card {
-  background-color: var(--color-card-bg);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
-  transition: all 0.3s ease;
-}
-
-.questionnaire-card:hover {
-  background-color: var(--color-card-hover);
-  transform: translateY(-3px);
-}
-
-.questionnaire-card.selected {
-  border-color: var(--color-highlight);
-  box-shadow: 0 0 0 2px var(--color-highlight);
-}
-
-/* Progress bar */
-.progress-bar-bg {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.progress-bar-fill {
-  background-color: var(--color-highlight);
-}
-
-/* Modal styles */
-.modal-bg {
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-.modal-content {
-  background-color: var(--color-navy);
-  color: var(--color-text);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* Progress bar animation */
+#progress-bar {
+  transition: width 0.3s ease-in-out;
 }
 
