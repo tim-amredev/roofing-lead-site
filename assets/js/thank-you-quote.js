@@ -2,7 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const quoteSection = document.getElementById("quote-section")
   if (!quoteSection) return
 
-  // Get form data from localStorage
+  // Try to get URL parameters first (for direct access)
+  const urlParams = new URLSearchParams(window.location.search)
+
+  // Default form data
   let formData = {
     reason: "replace",
     roof_age: "11-15",
@@ -17,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     name: "",
   }
 
-  // Try to get stored form data
+  // Try to get stored form data from localStorage
   try {
     const storedData = localStorage.getItem("roofingFormData")
     if (storedData) {
