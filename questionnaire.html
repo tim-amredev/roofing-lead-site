@@ -4,585 +4,378 @@ title: Get a Quote
 js: questionnaire
 ---
 
-<section class="py-12 bg-secondary-900">
-  <div class="container mx-auto px-4">
+<section class="min-h-screen bg-gradient-to-b from-[#1B2337] to-[#2A3447]">
+  <div class="container mx-auto px-4 py-12">
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-3xl font-bold text-center mb-8 text-white">Roof Remodeling Questionnaire</h1>
-      <p class="text-lg text-gray-300 text-center mb-12">Answer a few questions to get an instant estimate for your roofing project.</p>
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-white mb-4">Roof Remodeling Questionnaire</h1>
+        <p class="text-lg text-blue-100">Answer a few questions to get an instant estimate for your roofing project.</p>
+      </div>
       
-      <div class="bg-secondary-800 rounded-lg shadow-xl p-6 md:p-8">
-        <div class="mb-6">
+      <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-8 border border-white/20">
+        <!-- Progress Bar -->
+        <div class="mb-10">
           <div class="flex justify-between items-center mb-4">
-            <div id="progress-text" class="text-sm font-medium text-gray-300">Step 1 of 5</div>
-            <div class="text-sm font-medium text-primary-400"><span id="current-step">1</span>/5</div>
+            <div id="progress-text" class="text-sm font-medium text-blue-200">Step <span id="current-step">1</span> of 5</div>
+            <div class="text-sm font-medium text-blue-200">Progress: <span class="text-blue-400">20%</span></div>
           </div>
-          <div class="w-full bg-secondary-700 rounded-full h-2.5">
-            <div id="progress-bar" class="bg-primary-600 h-2.5 rounded-full" style="width: 20%"></div>
+          <div class="relative h-2 bg-gray-700 rounded-full overflow-hidden">
+            <div id="progress-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 to-blue-400 transition-all duration-500 ease-out" style="width: 20%"></div>
           </div>
         </div>
         
-        <form id="questionnaire-form" class="space-y-8" action="https://formsubmit.co/fc828245a7d3d2359a5da5188bfd3321" method="POST">
+        <form id="questionnaire-form" class="space-y-12" action="https://formsubmit.co/fc828245a7d3d2359a5da5188bfd3321" method="POST">
           <!-- Hidden FormSubmit fields -->
           <input type="hidden" name="_subject" value="New Roofing Quote Request">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/thank-you">
+          
           <!-- Step 1: Basic Information -->
           <div id="step-1" class="questionnaire-step">
-            <h2 class="text-xl font-semibold mb-6 text-white">Basic Information</h2>
-            
-            <div class="mb-6">
-              <label class="block text-gray-200 font-medium mb-3">Q1: What is the primary reason for your roofing project?</label>
-              <div class="space-y-2">
-                <label class="flex items-start">
-                  <input type="checkbox" name="reason" value="repair" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Repair damaged roof</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="reason" value="replace" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Replace entire roof</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="reason" value="upgrade" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Upgrade to better materials</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="reason" value="new" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">New construction</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="reason" value="other" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Other</span>
-                </label>
-              </div>
-            </div>
-            
-            <div class="mb-6">
-              <label class="block text-gray-200 font-medium mb-3">Q2: How old is your current roof?</label>
-              <div class="space-y-2">
-                <label class="flex items-center">
-                  <input type="radio" name="roof_age" value="0-5" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">0-5 years</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="roof_age" value="6-10" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">6-10 years</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="roof_age" value="11-15" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">11-15 years</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="roof_age" value="16-20" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">16-20 years</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="roof_age" value="20+" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">20+ years</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="roof_age" value="unknown" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">I don't know</span>
-                </label>
-              </div>
-            </div>
-            
-            <div class="mb-6">
-              <label class="block text-gray-200 font-medium mb-3">Q3: What is the approximate square footage of your roof?</label>
-              <div class="space-y-2">
-                <label class="flex items-center">
-                  <input type="radio" name="square_footage" value="less-1000" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Less than 1,000 sq ft</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="square_footage" value="1000-1500" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">1,000 - 1,500 sq ft</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="square_footage" value="1501-2000" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">1,501 - 2,000 sq ft</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="square_footage" value="2001-2500" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">2,001 - 2,500 sq ft</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="square_footage" value="2500+" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">More than 2,500 sq ft</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="square_footage" value="unknown" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">I don't know</span>
-                </label>
+            <div class="bg-white/5 rounded-xl p-6 mb-8">
+              <h2 class="text-2xl font-bold text-white mb-8 flex items-center">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm mr-3">1</span>
+                Basic Information
+              </h2>
+              
+              <div class="space-y-8">
+                <div class="question-group">
+                  <label class="block text-lg font-medium text-blue-100 mb-4">
+                    Q1: What is the primary reason for your roofing project?
+                  </label>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="checkbox" name="reason" value="repair" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700 rounded">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">Repair damaged roof</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="checkbox" name="reason" value="replace" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700 rounded">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">Replace entire roof</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="checkbox" name="reason" value="upgrade" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700 rounded">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">Upgrade to better materials</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="checkbox" name="reason" value="new" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700 rounded">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">New construction</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="checkbox" name="reason" value="other" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700 rounded">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">Other</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="question-group">
+                  <label class="block text-lg font-medium text-blue-100 mb-4">
+                    Q2: How old is your current roof?
+                  </label>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="roof_age" value="0-5" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">0-5 years</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="roof_age" value="6-10" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">6-10 years</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="roof_age" value="11-15" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">11-15 years</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="roof_age" value="16-20" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">16-20 years</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="roof_age" value="20+" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">20+ years</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="roof_age" value="unknown" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">I don't know</span>
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="question-group">
+                  <label class="block text-lg font-medium text-blue-100 mb-4">
+                    Q3: What is the approximate square footage of your roof?
+                  </label>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="square_footage" value="less-1000" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">Less than 1,000 sq ft</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="square_footage" value="1000-1500" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">1,000 - 1,500 sq ft</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="square_footage" value="1501-2000" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">1,501 - 2,000 sq ft</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="square_footage" value="2001-2500" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">2,001 - 2,500 sq ft</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="square_footage" value="2500+" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">More than 2,500 sq ft</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="square_footage" value="unknown" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">I don't know</span>
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           
           <!-- Step 2: Roof Details -->
           <div id="step-2" class="questionnaire-step hidden">
-            <h2 class="text-xl font-semibold mb-6 text-white">Roof Details</h2>
-            
-            <div class="mb-6">
-              <label class="block text-gray-200 font-medium mb-3">Q4: What is your current roofing material?</label>
-              <div class="space-y-2">
-                <label class="flex items-center">
-                  <input type="radio" name="current_material" value="asphalt" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Asphalt Shingles</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="current_material" value="metal" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Metal Roofing</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="current_material" value="tile" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Clay or Concrete Tile</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="current_material" value="wood" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Wood Shingles/Shakes</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="current_material" value="slate" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Slate</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="current_material" value="other" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Other</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="current_material" value="unknown" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">I don't know</span>
-                </label>
-              </div>
-            </div>
-            
-            <div class="mb-6">
-              <label class="block text-gray-200 font-medium mb-3">Q5: What material are you considering for your new roof?</label>
-              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <div class="material-card" data-value="asphalt">
-                  <div class="bg-secondary-700 border border-secondary-600 rounded-lg p-4 h-full cursor-pointer hover:border-primary-500 transition-colors">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="bg-secondary-800 rounded w-full h-full flex items-center justify-center">
-                        <span class="text-gray-400">Asphalt Shingles</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-gray-200">Asphalt Shingles</h3>
+            <div class="bg-white/5 rounded-xl p-6 mb-8">
+              <h2 class="text-2xl font-bold text-white mb-8 flex items-center">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm mr-3">2</span>
+                Roof Details
+              </h2>
+              
+              <div class="space-y-8">
+                <div class="question-group">
+                  <label class="block text-lg font-medium text-blue-100 mb-4">
+                    Q4: What is your current roofing material?
+                  </label>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="current_material" value="asphalt" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">Asphalt Shingles</span>
+                    </label>
+                    <!-- Add similar styling for other radio options -->
                   </div>
                 </div>
-                <div class="material-card" data-value="metal">
-                  <div class="bg-secondary-700 border border-secondary-600 rounded-lg p-4 h-full cursor-pointer hover:border-primary-500 transition-colors">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="bg-secondary-800 rounded w-full h-full flex items-center justify-center">
-                        <span class="text-gray-400">Metal Roofing</span>
+                
+                <div class="question-group">
+                  <label class="block text-lg font-medium text-blue-100 mb-4">
+                    Q5: What material are you considering for your new roof?
+                  </label>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="material-card" data-value="asphalt">
+                      <div class="bg-white/5 border border-gray-500 rounded-lg p-4 h-full cursor-pointer hover:border-blue-500 transition-colors">
+                        <div class="aspect-w-4 aspect-h-3 mb-3">
+                          <div class="bg-white/10 rounded w-full h-full flex items-center justify-center">
+                            <span class="text-gray-400">Asphalt Shingles</span>
+                          </div>
+                        </div>
+                        <h3 class="font-medium text-center text-gray-200">Asphalt Shingles</h3>
                       </div>
                     </div>
-                    <h3 class="font-medium text-center text-gray-200">Metal Roofing</h3>
+                    <!-- Add similar styling for other material cards -->
                   </div>
+                  <input type="hidden" name="desired_material" id="desired_material">
                 </div>
-                <div class="material-card" data-value="tile">
-                  <div class="bg-secondary-700 border border-secondary-600 rounded-lg p-4 h-full cursor-pointer hover:border-primary-500 transition-colors">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="bg-secondary-800 rounded w-full h-full flex items-center justify-center">
-                        <span class="text-gray-400">Clay/Concrete Tile</span>
+                
+                <div class="question-group">
+                  <label class="block text-lg font-medium text-blue-100 mb-4">
+                    Q6: What type of roof structure do you have?
+                  </label>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="roof-type-card" data-value="gabled">
+                      <div class="bg-white/5 border border-gray-500 rounded-lg p-4 h-full cursor-pointer hover:border-blue-500 transition-colors">
+                        <div class="aspect-w-4 aspect-h-3 mb-3">
+                          <div class="bg-white/10 rounded w-full h-full flex items-center justify-center">
+                            <span class="text-gray-400">Gabled Roof</span>
+                          </div>
+                        </div>
+                        <h3 class="font-medium text-center text-gray-200">Gabled</h3>
                       </div>
                     </div>
-                    <h3 class="font-medium text-center text-gray-200">Clay/Concrete Tile</h3>
+                    <!-- Add similar styling for other roof type cards -->
                   </div>
-                </div>
-                <div class="material-card" data-value="wood">
-                  <div class="bg-secondary-700 border border-secondary-600 rounded-lg p-4 h-full cursor-pointer hover:border-primary-500 transition-colors">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="bg-secondary-800 rounded w-full h-full flex items-center justify-center">
-                        <span class="text-gray-400">Wood Shingles</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-gray-200">Wood Shingles</h3>
-                  </div>
-                </div>
-                <div class="material-card" data-value="slate">
-                  <div class="bg-secondary-700 border border-secondary-600 rounded-lg p-4 h-full cursor-pointer hover:border-primary-500 transition-colors">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="bg-secondary-800 rounded w-full h-full flex items-center justify-center">
-                        <span class="text-gray-400">Slate</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-gray-200">Slate</h3>
-                  </div>
-                </div>
-                <div class="material-card" data-value="other">
-                  <div class="bg-secondary-700 border border-secondary-600 rounded-lg p-4 h-full cursor-pointer hover:border-primary-500 transition-colors">
-                    <div class="aspect-w-4 aspect-h-3 mb-3 flex items-center justify-center bg-secondary-800 rounded">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <h3 class="font-medium text-center text-gray-200">Other</h3>
-                  </div>
+                  <input type="hidden" name="roof_type" id="roof_type">
                 </div>
               </div>
-              <input type="hidden" name="desired_material" id="desired_material">
-            </div>
-            
-            <div class="mb-6">
-              <label class="block text-gray-200 font-medium mb-3">Q6: What type of roof structure do you have?</label>
-              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <div class="roof-type-card" data-value="gabled">
-                  <div class="bg-secondary-700 border border-secondary-600 rounded-lg p-4 h-full cursor-pointer hover:border-primary-500 transition-colors">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="bg-secondary-800 rounded w-full h-full flex items-center justify-center">
-                        <span class="text-gray-400">Gabled Roof</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-gray-200">Gabled</h3>
-                  </div>
-                </div>
-                <div class="roof-type-card" data-value="hip">
-                  <div class="bg-secondary-700 border border-secondary-600 rounded-lg p-4 h-full cursor-pointer hover:border-primary-500 transition-colors">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="bg-secondary-800 rounded w-full h-full flex items-center justify-center">
-                        <span class="text-gray-400">Hip Roof</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-gray-200">Hip</h3>
-                  </div>
-                </div>
-                <div class="roof-type-card" data-value="flat">
-                  <div class="bg-secondary-700 border border-secondary-600 rounded-lg p-4 h-full cursor-pointer hover:border-primary-500 transition-colors">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="bg-secondary-800 rounded w-full h-full flex items-center justify-center">
-                        <span class="text-gray-400">Flat Roof</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-gray-200">Flat</h3>
-                  </div>
-                </div>
-                <div class="roof-type-card" data-value="mansard">
-                  <div class="bg-secondary-700 border border-secondary-600 rounded-lg p-4 h-full cursor-pointer hover:border-primary-500 transition-colors">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="bg-secondary-800 rounded w-full h-full flex items-center justify-center">
-                        <span class="text-gray-400">Mansard Roof</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-gray-200">Mansard</h3>
-                  </div>
-                </div>
-                <div class="roof-type-card" data-value="gambrel">
-                  <div class="bg-secondary-700 border border-secondary-600 rounded-lg p-4 h-full cursor-pointer hover:border-primary-500 transition-colors">
-                    <div class="aspect-w-4 aspect-h-3 mb-3">
-                      <div class="bg-secondary-800 rounded w-full h-full flex items-center justify-center">
-                        <span class="text-gray-400">Gambrel Roof</span>
-                      </div>
-                    </div>
-                    <h3 class="font-medium text-center text-gray-200">Gambrel</h3>
-                  </div>
-                </div>
-                <div class="roof-type-card" data-value="other">
-                  <div class="bg-secondary-700 border border-secondary-600 rounded-lg p-4 h-full cursor-pointer hover:border-primary-500 transition-colors">
-                    <div class="aspect-w-4 aspect-h-3 mb-3 flex items-center justify-center bg-secondary-800 rounded">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <h3 class="font-medium text-center text-gray-200">Other</h3>
-                  </div>
-                </div>
-              </div>
-              <input type="hidden" name="roof_type" id="roof_type">
             </div>
           </div>
           
           <!-- Step 3: Project Specifics -->
           <div id="step-3" class="questionnaire-step hidden">
-            <h2 class="text-xl font-semibold mb-6 text-white">Project Specifics</h2>
-            
-            <div class="mb-6">
-              <label class="block text-gray-200 font-medium mb-3">Q7: What issues are you currently experiencing with your roof?</label>
-              <div class="space-y-2">
-                <label class="flex items-start">
-                  <input type="checkbox" name="issues" value="leaks" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Leaks or water damage</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="issues" value="missing" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Missing or damaged shingles/tiles</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="issues" value="sagging" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Sagging roof deck</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="issues" value="ventilation" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Poor ventilation</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="issues" value="energy" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">High energy bills</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="issues" value="appearance" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Appearance/curb appeal</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="issues" value="none" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">No issues (preventative/upgrade)</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="issues" value="other" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Other</span>
-                </label>
-              </div>
-            </div>
-            
-            <div class="mb-6">
-              <label class="block text-gray-200 font-medium mb-3">Q8: Are you interested in any additional features?</label>
-              <div class="space-y-2">
-                <label class="flex items-start">
-                  <input type="checkbox" name="features" value="skylight" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Skylights</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="features" value="solar" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Solar panels</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="features" value="gutters" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">New gutters</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="features" value="insulation" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Improved insulation</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="features" value="ventilation" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">Better ventilation</span>
-                </label>
-                <label class="flex items-start">
-                  <input type="checkbox" name="features" value="none" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded">
-                  <span class="ml-2 text-gray-300">None</span>
-                </label>
-              </div>
-            </div>
-            
-            <div class="mb-6">
-              <label class="block text-gray-200 font-medium mb-3">Q9: What is your timeframe for this project?</label>
-              <div class="space-y-2">
-                <label class="flex items-center">
-                  <input type="radio" name="timeframe" value="emergency" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Emergency (ASAP)</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="timeframe" value="1-month" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Within 1 month</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="timeframe" value="1-3-months" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">1-3 months</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="timeframe" value="3-6-months" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">3-6 months</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="timeframe" value="6-months+" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">6+ months</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="timeframe" value="planning" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Just planning</span>
-                </label>
+            <div class="bg-white/5 rounded-xl p-6 mb-8">
+              <h2 class="text-2xl font-bold text-white mb-8 flex items-center">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm mr-3">3</span>
+                Project Specifics
+              </h2>
+              
+              <div class="space-y-8">
+                <div class="question-group">
+                  <label class="block text-lg font-medium text-blue-100 mb-4">
+                    Q7: What issues are you currently experiencing with your roof?
+                  </label>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="checkbox" name="issues" value="leaks" class="mt-1 form-checkbox text-blue-500 border-gray-500 bg-gray-700 rounded">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">Leaks or water damage</span>
+                    </label>
+                    <!-- Add similar styling for other checkbox options -->
+                  </div>
+                </div>
+                
+                <div class="question-group">
+                  <label class="block text-lg font-medium text-blue-100 mb-4">
+                    Q8: Are you interested in any additional features?
+                  </label>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="checkbox" name="features" value="skylight" class="mt-1 form-checkbox text-blue-500 border-gray-500 bg-gray-700 rounded">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">Skylights</span>
+                    </label>
+                    <!-- Add similar styling for other checkbox options -->
+                  </div>
+                </div>
+                
+                <div class="question-group">
+                  <label class="block text-lg font-medium text-blue-100 mb-4">
+                    Q9: What is your timeframe for this project?
+                  </label>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="timeframe" value="emergency" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">Emergency (ASAP)</span>
+                    </label>
+                    <!-- Add similar styling for other radio options -->
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           
           <!-- Step 4: Budget and Preferences -->
           <div id="step-4" class="questionnaire-step hidden">
-            <h2 class="text-xl font-semibold mb-6 text-white">Budget and Preferences</h2>
-            
-            <div class="mb-6">
-              <label class="block text-gray-200 font-medium mb-3">Q10: What is your budget for this project?</label>
-              <div class="space-y-2">
-                <label class="flex items-center">
-                  <input type="radio" name="budget" value="under-5k" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Under $5,000</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="budget" value="5k-10k" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">$5,000 - $10,000</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="budget" value="10k-15k" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">$10,000 - $15,000</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="budget" value="15k-25k" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">$15,000 - $25,000</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="budget" value="25k+" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">$25,000+</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="budget" value="unsure" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">I'm not sure</span>
-                </label>
-              </div>
-            </div>
-            
-            <div class="mb-6">
-              <label class="block text-gray-200 font-medium mb-3">Q11: Rank the importance of the following factors (1 = least important, 5 = most important):</label>
+            <div class="bg-white/5 rounded-xl p-6 mb-8">
+              <h2 class="text-2xl font-bold text-white mb-8 flex items-center">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm mr-3">4</span>
+                Budget and Preferences
+              </h2>
               
-              <div class="space-y-4">
-                <div>
-                  <label class="block text-gray-300 mb-1">Cost</label>
-                  <select name="importance_cost" class="w-full p-2 border border-gray-600 bg-secondary-700 rounded text-gray-200">
-                    <option value="1">1 - Least Important</option>
-                    <option value="2">2</option>
-                    <option value="3" selected>3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 - Most Important</option>
-                  </select>
+              <div class="space-y-8">
+                <div class="question-group">
+                  <label class="block text-lg font-medium text-blue-100 mb-4">
+                    Q10: What is your budget for this project?
+                  </label>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="budget" value="under-5k" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">Under $5,000</span>
+                    </label>
+                    <!-- Add similar styling for other radio options -->
+                  </div>
                 </div>
                 
-                <div>
-                  <label class="block text-gray-300 mb-1">Durability/Longevity</label>
-                  <select name="importance_durability" class="w-full p-2 border border-gray-600 bg-secondary-700 rounded text-gray-200">
-                    <option value="1">1 - Least Important</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4" selected>4</option>
-                    <option value="5">5 - Most Important</option>
-                  </select>
+                <div class="question-group">
+                  <label class="block text-lg font-medium text-blue-100 mb-4">
+                    Q11: Rank the importance of the following factors (1 = least important, 5 = most important):
+                  </label>
+                  
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-gray-300 mb-1">Cost</label>
+                      <select name="importance_cost" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200">
+                        <option value="1">1 - Least Important</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5 - Most Important</option>
+                      </select>
+                    </div>
+                    <!-- Add similar styling for other select options -->
+                  </div>
                 </div>
                 
-                <div>
-                  <label class="block text-gray-300 mb-1">Appearance</label>
-                  <select name="importance_appearance" class="w-full p-2 border border-gray-600 bg-secondary-700 rounded text-gray-200">
-                    <option value="1">1 - Least Important</option>
-                    <option value="2">2</option>
-                    <option value="3" selected>3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 - Most Important</option>
-                  </select>
+                <div class="question-group">
+                  <label class="block text-lg font-medium text-blue-100 mb-4">
+                    Q12: How did you hear about us?
+                  </label>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="referral" value="search" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">Search Engine</span>
+                    </label>
+                    <!-- Add similar styling for other radio options -->
+                  </div>
                 </div>
-                
-                <div>
-                  <label class="block text-gray-300 mb-1">Energy Efficiency</label>
-                  <select name="importance_energy" class="w-full p-2 border border-gray-600 bg-secondary-700 rounded text-gray-200">
-                    <option value="1">1 - Least Important</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4" selected>4</option>
-                    <option value="5">5 - Most Important</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label class="block text-gray-300 mb-1">Warranty</label>
-                  <select name="importance_warranty" class="w-full p-2 border border-gray-600 bg-secondary-700 rounded text-gray-200">
-                    <option value="1">1 - Least Important</option>
-                    <option value="2">2</option>
-                    <option value="3" selected>3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 - Most Important</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            
-            <div class="mb-6">
-              <label class="block text-gray-200 font-medium mb-3">Q12: How did you hear about us?</label>
-              <div class="space-y-2">
-                <label class="flex items-center">
-                  <input type="radio" name="referral" value="search" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Search Engine</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="referral" value="social" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Social Media</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="referral" value="friend" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Friend/Family</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="referral" value="ad" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Advertisement</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="referral" value="other" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Other</span>
-                </label>
               </div>
             </div>
           </div>
           
           <!-- Step 5: Contact Information -->
           <div id="step-5" class="questionnaire-step hidden">
-            <h2 class="text-xl font-semibold mb-6 text-white">Contact Information</h2>
-            
-            <div class="mb-6">
-              <label class="block text-gray-200 font-medium mb-3">Q13: How would you prefer to be contacted?</label>
-              <div class="space-y-2">
-                <label class="flex items-center">
-                  <input type="radio" name="contact_method" value="email" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Email</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="contact_method" value="phone" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Phone</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="contact_method" value="text" class="form-radio text-primary-600 border-gray-600 bg-secondary-700">
-                  <span class="ml-2 text-gray-300">Text Message</span>
-                </label>
-              </div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div>
-                <label for="name" class="block text-gray-200 font-medium mb-2">Full Name</label>
-                <input type="text" id="name" name="name" class="w-full p-2 border border-gray-600 bg-secondary-700 rounded text-gray-200" required>
-              </div>
+            <div class="bg-white/5 rounded-xl p-6 mb-8">
+              <h2 class="text-2xl font-bold text-white mb-8 flex items-center">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm mr-3">5</span>
+                Contact Information
+              </h2>
               
-              <div>
-                <label for="email" class="block text-gray-200 font-medium mb-2">Email Address</label>
-                <input type="email" id="email" name="email" class="w-full p-2 border border-gray-600 bg-secondary-700 rounded text-gray-200" required>
+              <div class="space-y-8">
+                <div class="question-group">
+                  <label class="block text-lg font-medium text-blue-100 mb-4">
+                    Q13: How would you prefer to be contacted?
+                  </label>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                      <input type="radio" name="contact_method" value="email" class="form-radio text-blue-500 border-gray-500 bg-gray-700">
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors">Email</span>
+                    </label>
+                    <!-- Add similar styling for other radio options -->
+                  </div>
+                </div>
+                
+                <div class="question-group">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label for="name" class="block text-lg font-medium text-blue-100 mb-2">Full Name</label>
+                      <input type="text" id="name" name="name" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200" required>
+                    </div>
+                    <!-- Add similar styling for other input fields -->
+                  </div>
+                </div>
+                
+                <div class="question-group">
+                  <label for="comments" class="block text-lg font-medium text-blue-100 mb-2">Q14: Additional Comments or Questions</label>
+                  <textarea id="comments" name="comments" rows="4" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200"></textarea>
+                </div>
+                
+                <div class="question-group">
+                  <label class="flex items-start">
+                    <input type="checkbox" name="terms" class="mt-1 form-checkbox text-blue-500 border-gray-500 bg-gray-700 rounded" required>
+                    <span class="ml-3 text-sm text-gray-300">I agree to the <a href="#" class="text-blue-400 hover:underline">Terms and Conditions</a> and consent to being contacted about my roofing project.</span>
+                  </label>
+                </div>
               </div>
-              
-              <div>
-                <label for="phone" class="block text-gray-200 font-medium mb-2">Phone Number</label>
-                <input type="tel" id="phone" name="phone" class="w-full p-2 border border-gray-600 bg-secondary-700 rounded text-gray-200" required>
-              </div>
-              
-              <div>
-                <label for="zip" class="block text-gray-200 font-medium mb-2">Zip Code</label>
-                <input type="text" id="zip" name="zip" class="w-full p-2 border border-gray-600 bg-secondary-700 rounded text-gray-200" required>
-              </div>
-            </div>
-            
-            <div class="mb-6">
-              <label for="comments" class="block text-gray-200 font-medium mb-2">Q14: Additional Comments or Questions</label>
-              <textarea id="comments" name="comments" rows="4" class="w-full p-2 border border-gray-600 bg-secondary-700 rounded text-gray-200"></textarea>
-            </div>
-            
-            <div class="mb-6">
-              <label class="flex items-start">
-                <input type="checkbox" name="terms" class="mt-1 form-checkbox text-primary-600 border-gray-600 bg-secondary-700 rounded" required>
-                <span class="ml-2 text-sm text-gray-300">I agree to the <a href="#" class="text-primary-400 hover:underline">Terms and Conditions</a> and consent to being contacted about my roofing project.</span>
-              </label>
             </div>
           </div>
           
-          <div class="flex justify-between mt-8">
-            <button type="button" id="prev-btn" class="bg-secondary-700 hover:bg-secondary-600 text-gray-200 font-bold py-2 px-6 rounded transition-colors hidden">
+          <!-- Navigation buttons -->
+          <div class="flex justify-between pt-6 border-t border-white/10">
+            <button type="button" id="prev-btn" class="hidden px-8 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+              </svg>
               Previous
             </button>
             
-            <button type="button" id="next-btn" class="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2 px-6 rounded transition-colors">
+            <button type="button" id="next-btn" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center">
               Next
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
             </button>
             
-            <button type="submit" id="submit-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded transition-colors hidden">
+            <button type="submit" id="submit-btn" class="hidden px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center">
               Submit
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
             </button>
           </div>
         </form>
