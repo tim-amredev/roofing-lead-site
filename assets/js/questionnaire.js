@@ -113,7 +113,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const formDataObj = {}
 
       formData.forEach((value, key) => {
-        formDataObj[key] = value
+        // Skip FormSubmit's internal fields
+        if (!key.startsWith("_")) {
+          formDataObj[key] = value
+        }
       })
 
       // Save to localStorage
