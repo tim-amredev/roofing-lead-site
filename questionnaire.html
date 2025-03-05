@@ -467,66 +467,7 @@ js: questionnaire
                 
                 <div class="question-group">
                   <label class="block text-xl font-medium text-blue-100 mb-4">
-                    Q11: Rank the importance of the following factors (1 = least important, 5 = most important):
-                  </label>
-                  
-                  <div class="space-y-4">
-                    <div>
-                      <label class="block text-gray-300 mb-1">Cost</label>
-                      <select name="importance_cost" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200">
-                        <option value="1">1 - Least Important</option>
-                        <option value="2">2</option>
-                        <option value="3" selected>3</option>
-                        <option value="4">4</option>
-                        <option value="5">5 - Most Important</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label class="block text-gray-300 mb-1">Quality/Durability</label>
-                      <select name="importance_quality" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200">
-                        <option value="1">1 - Least Important</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4" selected>4</option>
-                        <option value="5">5 - Most Important</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label class="block text-gray-300 mb-1">Timeline/Speed</label>
-                      <select name="importance_timeline" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200">
-                        <option value="1">1 - Least Important</option>
-                        <option value="2">2</option>
-                        <option value="3" selected>3</option>
-                        <option value="4">4</option>
-                        <option value="5">5 - Most Important</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label class="block text-gray-300 mb-1">Energy Efficiency</label>
-                      <select name="importance_efficiency" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200">
-                        <option value="1">1 - Least Important</option>
-                        <option value="2">2</option>
-                        <option value="3" selected>3</option>
-                        <option value="4">4</option>
-                        <option value="5">5 - Most Important</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label class="block text-gray-300 mb-1">Warranty/Support</label>
-                      <select name="importance_warranty" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200">
-                        <option value="1">1 - Least Important</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4" selected>4</option>
-                        <option value="5">5 - Most Important</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="question-group">
-                  <label class="block text-xl font-medium text-blue-100 mb-4">
-                    Q12: How did you hear about us?
+                    Q11: How did you hear about us?
                   </label>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
@@ -558,7 +499,7 @@ js: questionnaire
                 
                 <div class="question-group">
                   <label class="block text-xl font-medium text-blue-100 mb-4">
-                    Q13: How would you prefer to be contacted?
+                    Q12: How would you prefer to be contacted?
                   </label>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
@@ -602,7 +543,7 @@ js: questionnaire
                 </div>
                 
                 <div class="question-group">
-                  <label for="comments" class="block text-xl font-medium text-blue-100 mb-2">Q14: Additional Comments or Questions</label>
+                  <label for="comments" class="block text-xl font-medium text-blue-100 mb-2">Q13: Additional Comments or Questions</label>
                   <textarea id="comments" name="comments" rows="4" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200"></textarea>
                 </div>
                 
@@ -613,7 +554,7 @@ js: questionnaire
                       We respect your privacy and are committed to protecting your personal information. The information you provide will be used solely to generate your roofing quote and connect you with qualified professionals. We will never sell your information to third parties.
                     </p>
                     <p class="text-gray-300 text-base">
-                      By submitting this form, you acknowledge that you have read and understood our <a href="#" class="text-blue-400 hover:underline">full Privacy Policy</a> and <a href="#" class="text-blue-400 hover:underline">Terms of Service</a>.
+                      By submitting this form, you acknowledge that you have read and understood our <a href="{{ '/privacy-policy' | relative_url }}" class="text-blue-400 hover:underline">full Privacy Policy</a> and <a href="{{ '/terms-of-service' | relative_url }}" class="text-blue-400 hover:underline">Terms of Service</a>.
                     </p>
                   </div>
 
@@ -624,7 +565,7 @@ js: questionnaire
 
                   <label class="flex items-start">
                     <input type="checkbox" name="terms" class="mt-1 form-checkbox text-blue-500 border-gray-500 bg-gray-700 rounded" required>
-                    <span class="ml-3 text-base text-gray-300">I agree to the <a href="#" class="text-blue-400 hover:underline">Terms and Conditions</a> and consent to being contacted about my roofing project.</span>
+                    <span class="ml-3 text-base text-gray-300">I agree to the <a href="{{ '/terms-of-service' | relative_url }}" class="text-blue-400 hover:underline">Terms and Conditions</a> and consent to being contacted about my roofing project.</span>
                   </label>
                 </div>
               </div>
