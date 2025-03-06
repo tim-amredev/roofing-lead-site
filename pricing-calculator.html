@@ -68,9 +68,7 @@ js: pricing-calculator
                 <input type="radio" name="material" id="material-asphalt" value="asphalt" class="hidden" checked>
                 <label for="material-asphalt" class="block h-full cursor-pointer">
                   <div class="aspect-w-4 aspect-h-3 mb-3">
-                    <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
-                      <span class="text-gray-300">Asphalt Shingles</span>
-                    </div>
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/asphalt.jpg-UeGUZOEIdP4JhUBcrM9EsubybweqQh.jpeg" alt="Various styles of asphalt shingles in different colors" class="w-full h-full object-cover rounded">
                   </div>
                   <h3 class="font-medium text-center text-white">Asphalt Shingles</h3>
                 </label>
@@ -82,9 +80,7 @@ js: pricing-calculator
                 <input type="radio" name="material" id="material-metal" value="metal" class="hidden">
                 <label for="material-metal" class="block h-full cursor-pointer">
                   <div class="aspect-w-4 aspect-h-3 mb-3">
-                    <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
-                      <span class="text-gray-300">Metal Roofing</span>
-                    </div>
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/metal.jpg-tHBSkbc1ItFcVw9ziTiRI3DMFzTaNc.jpeg" alt="Corrugated metal roofing panels in silver and blue" class="w-full h-full object-cover rounded">
                   </div>
                   <h3 class="font-medium text-center text-white">Metal Roofing</h3>
                 </label>
@@ -96,9 +92,7 @@ js: pricing-calculator
                 <input type="radio" name="material" id="material-tile" value="tile" class="hidden">
                 <label for="material-tile" class="block h-full cursor-pointer">
                   <div class="aspect-w-4 aspect-h-3 mb-3">
-                    <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
-                      <span class="text-gray-300">Clay/Concrete Tile</span>
-                    </div>
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/clay.jpg-DmNBgYiEOMVGA80EElTT62owKQNdCc.jpeg" alt="Traditional terracotta clay roof tiles" class="w-full h-full object-cover rounded">
                   </div>
                   <h3 class="font-medium text-center text-white">Clay/Concrete Tile</h3>
                 </label>
@@ -110,9 +104,7 @@ js: pricing-calculator
                 <input type="radio" name="material" id="material-wood" value="wood" class="hidden">
                 <label for="material-wood" class="block h-full cursor-pointer">
                   <div class="aspect-w-4 aspect-h-3 mb-3">
-                    <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
-                      <span class="text-gray-300">Wood Shingles</span>
-                    </div>
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wood.jpg-rvzQIG9Sv1wltYlKmRRLHHufb77Er5.jpeg" alt="Natural cedar wood shingles" class="w-full h-full object-cover rounded">
                   </div>
                   <h3 class="font-medium text-center text-white">Wood Shingles</h3>
                 </label>
@@ -124,9 +116,7 @@ js: pricing-calculator
                 <input type="radio" name="material" id="material-slate" value="slate" class="hidden">
                 <label for="material-slate" class="block h-full cursor-pointer">
                   <div class="aspect-w-4 aspect-h-3 mb-3">
-                    <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
-                      <span class="text-gray-300">Slate</span>
-                    </div>
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/slate.jpg-2wGZ7wRKV4tRGsi2WQ7Xlmmc8Fd1r2.jpeg" alt="Natural slate roof tiles in dark gray" class="w-full h-full object-cover rounded">
                   </div>
                   <h3 class="font-medium text-center text-white">Slate</h3>
                 </label>
@@ -490,6 +480,18 @@ body, html, main, section {
   border-color: #D4A017;
   box-shadow: 0 0 0 2px #D4A017;
   background-color: #3E4E88;
+}
+
+.material-option img {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.material-option:hover img {
+  opacity: 0.9;
+}
+
+.material-option input[type="radio"]:checked + label img {
+  opacity: 0.8;
 }
 </style>
 
