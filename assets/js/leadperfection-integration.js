@@ -4,14 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (questionnaireForm) {
     questionnaireForm.addEventListener("submit", function (e) {
-      // Don't prevent default - let the form submit normally to FormSubmit
-
       // Create form data for LeadPerfection
       const formData = new FormData(this)
-      const leadPerfectionData = new URLSearchParams() // Use URLSearchParams for URL-encoded format
+      const leadPerfectionData = new URLSearchParams()
 
       // Map form fields to LeadPerfection parameters
-      // Personal information
       leadPerfectionData.append("firstname", formData.get("firstname") || "")
       leadPerfectionData.append("lastname", formData.get("lastname") || "")
       leadPerfectionData.append("address1", formData.get("street_address") || "")
@@ -55,40 +52,30 @@ document.addEventListener("DOMContentLoaded", () => {
       leadPerfectionData.append("sender", "Instantroofingprices.com")
       leadPerfectionData.append("srs_id", "1669")
 
-      // Use the Navigator.sendBeacon API for more reliable delivery during page unload
+      // Use the Navigator.sendBeacon API for more reliable delivery
       const leadPerfectionUrl = "https://th97.leadperfection.com/batch/addleads.asp"
 
-      try {
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon(leadPerfectionUrl, leadPerfectionData)
-          console.log("Lead data sent to LeadPerfection via sendBeacon")
-        } else {
-          // Fallback to fetch if sendBeacon is not available
-          fetch(leadPerfectionUrl, {
-            method: "POST",
-            body: leadPerfectionData,
-            keepalive: true, // This helps the request survive page navigation
-          })
-            .then((response) => {
-              console.log("Lead data sent to LeadPerfection via fetch")
-            })
-            .catch((error) => {
-              console.error("Error sending to LeadPerfection:", error)
-            })
-        }
+      // Send to LeadPerfection using fetch instead of sendBeacon
+      fetch(leadPerfectionUrl, {
+        method: "POST",
+        body: leadPerfectionData,
+        mode: "no-cors", // Add this line
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }).catch((error) => {
+        console.error("Error sending to LeadPerfection:", error)
+      })
 
-        // Track conversion with Facebook Pixel if available
-        if (typeof fbq === "function") {
-          fbq("track", "Lead", {
-            content_name: "Roofing Quote",
-            content_category: "Roofing",
-          })
-        }
-      } catch (error) {
-        console.error("Error sending data to LeadPerfection:", error)
+      // Track conversion with Facebook Pixel if available
+      if (typeof fbq === "function") {
+        fbq("track", "Lead", {
+          content_name: "Roofing Quote",
+          content_category: "Roofing",
+        })
       }
 
-      // Continue with normal form submission
+      // Allow the form to continue its normal submission
       return true
     })
   }
