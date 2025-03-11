@@ -6,23 +6,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressBar = document.getElementById("progress-bar")
   const progressText = document.getElementById("progress-text")
   const currentStepText = document.getElementById("current-step")
-
+  
   // Get all prev and next buttons by their step-specific IDs
   const prevButtons = [
     document.getElementById("prev-btn-1"),
     document.getElementById("prev-btn-2"),
     document.getElementById("prev-btn-3"),
     document.getElementById("prev-btn-4"),
-    document.getElementById("prev-btn-5"),
+    document.getElementById("prev-btn-5")
   ]
-
+  
   const nextButtons = [
     document.getElementById("next-btn-1"),
     document.getElementById("next-btn-2"),
     document.getElementById("next-btn-3"),
-    document.getElementById("next-btn-4"),
+    document.getElementById("next-btn-4")
   ]
-
+  
   const submitBtn = document.getElementById("submit-btn")
 
   let currentStep = 0
@@ -39,14 +39,14 @@ document.addEventListener("DOMContentLoaded", () => {
       // Update hidden input
       document.getElementById("desired_material").value = this.dataset.value
       console.log("Material selected:", this.dataset.value)
-
+      
       // Add visual feedback
       const allCardDivs = document.querySelectorAll(".material-card > div")
-      allCardDivs.forEach((div) => {
+      allCardDivs.forEach(div => {
         div.style.borderColor = "rgba(255, 255, 255, 0.1)"
         div.style.boxShadow = "none"
       })
-
+      
       const selectedDiv = this.querySelector("div")
       if (selectedDiv) {
         selectedDiv.style.borderColor = "#D4A017"
@@ -66,14 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
       // Update hidden input
       document.getElementById("roof_type").value = this.dataset.value
       console.log("Roof type selected:", this.dataset.value)
-
+      
       // Add visual feedback
       const allCardDivs = document.querySelectorAll(".roof-type-card > div")
-      allCardDivs.forEach((div) => {
+      allCardDivs.forEach(div => {
         div.style.borderColor = "rgba(255, 255, 255, 0.1)"
         div.style.boxShadow = "none"
       })
-
+      
       const selectedDiv = this.querySelector("div")
       if (selectedDiv) {
         selectedDiv.style.borderColor = "#D4A017"
@@ -84,6 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to show a specific step
   function showStep(stepIndex) {
+    console.log("Showing step:", stepIndex)
+    
     // Hide all steps
     steps.forEach((step, index) => {
       if (index === stepIndex) {
@@ -108,20 +110,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show/hide previous buttons based on current step
     prevButtons.forEach((btn, index) => {
       if (btn) {
-        btn.style.display = index === stepIndex && stepIndex > 0 ? "flex" : "none"
+        // Only show the previous button for the current step, and only if we're not on the first step
+        btn.style.display = (index === stepIndex && stepIndex > 0) ? 'flex' : 'none'
       }
     })
-
+    
     // Show/hide next buttons based on current step
     nextButtons.forEach((btn, index) => {
       if (btn) {
-        btn.style.display = index === stepIndex ? "flex" : "none"
+        // Only show the next button for the current step
+        btn.style.display = (index === stepIndex) ? 'flex' : 'none'
       }
     })
-
+    
     // Show/hide submit button on last step
     if (submitBtn) {
-      submitBtn.style.display = stepIndex === totalSteps - 1 ? "flex" : "none"
+      submitBtn.style.display = (stepIndex === totalSteps - 1) ? 'flex' : 'none'
     }
   }
 
@@ -130,6 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btn) {
       btn.addEventListener("click", (e) => {
         e.preventDefault()
+        console.log(`Next button ${index + 1} clicked`)
         if (currentStep < totalSteps - 1) {
           currentStep++
           showStep(currentStep)
@@ -144,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btn) {
       btn.addEventListener("click", (e) => {
         e.preventDefault()
+        console.log(`Previous button ${index + 1} clicked`)
         if (currentStep > 0) {
           currentStep--
           showStep(currentStep)
@@ -195,4 +201,3 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   }
 })
-
