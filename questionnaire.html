@@ -588,106 +588,202 @@ js: questionnaire leadperfection-integration
                           <option value="WV">West Virginia</option>
                           <option value="WI">Wisconsin</option>
                           <option value="WY">Wyoming</option>
-                          <option value="DC">District of Columbia</option>
                         </select>
                       </div>
                       <div>
-                        <label for="zip_code" class="block text-base font-medium text-blue-100 mb-2">Zip Code</label>
-                        <input type="text" id="zip_code" name="zip_code" maxlength="10" pattern="^\d{5}(-\d{4})?$" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200" required placeholder="e.g. 12345">
+                        <label for="zip" class="block text-base font-medium text-blue-100 mb-2">Zip Code</label>
+                        <input type="text" id="zip" name="zip" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200" required>
                       </div>
                     </div>
                   </div>
-                </div>
-                
-                <div class="question-group">
-                  <label for="comments" class="block text-xl font-medium text-blue-100 mb-2">#13: Additional Comments or Questions</label>
-                  <textarea id="comments" name="comments" rows="4" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200"></textarea>
-                </div>
-                
-                <div class="question-group">
-                  <div class="bg-white/5 p-6 rounded-lg mb-6">
-                    <h3 class="text-lg font-semibold text-white mb-4">Privacy Policy</h3>
-                    <p class="text-gray-300 text-base mb-4">
-                      We respect your privacy and are committed to protecting your personal information. The information you provide will be used solely to generate your roofing quote and connect you with qualified professionals. We will never sell your information to third parties.
-                    </p>
-                    <p class="text-gray-300 text-base">
-                      By submitting this form, you acknowledge that you have read and understood our <a href="{{ '/privacy-policy' | relative_url }}" class="text-blue-400 hover:underline">full Privacy Policy</a> and <a href="{{ '/terms-of-service' | relative_url }}" class="text-blue-400 hover:underline">Terms of Service</a>.
-                    </p>
-                  </div>
-
-                  <label class="flex items-start mb-4">
-                    <input type="checkbox" name="sms_consent" class="mt-1 form-checkbox text-blue-500 border-gray-500 bg-gray-700 rounded">
-                    <span class="ml-3 text-base text-gray-300">I consent to receive SMS messages about my roofing project, including quotes, updates, and promotional offers. Message and data rates may apply. Message frequency varies. Reply STOP to cancel at any time.</span>
-                  </label>
-
-                  <label class="flex items-start">
-                    <input type="checkbox" name="terms" class="mt-1 form-checkbox text-blue-500 border-gray-500 bg-gray-700 rounded" required>
-                    <span class="ml-3 text-base text-gray-300">I agree to the <a href="{{ '/terms-of-service' | relative_url }}" class="text-blue-400 hover:underline">Terms and Conditions</a> and consent to being contacted about my roofing project.</span>
-                  </label>
                 </div>
               </div>
             </div>
           </div>
           
-          <!-- Navigation buttons -->
-          <div class="flex justify-between pt-6 border-t border-white/10">
-            <button type="button" id="prev-btn" class="hidden px-8 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-              </svg>
-              Previous
-            </button>
-            
-            <button type="button" id="next-btn" class="px-8 py-3 bg-[#D4A017] hover:bg-[#E5B42A] text-gray-900 rounded-lg transition-colors flex items-center">
-              Next
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-              </svg>
-            </button>
-            
-            <button type="submit" id="submit-btn" class="hidden px-8 py-3 bg-[#D4A017] hover:bg-[#E5B42A] text-gray-900 rounded-lg transition-colors flex items-center">
-              Submit
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-            </button>
+          <!-- Step 5: Confirmation and Submission -->
+          <div id="step-5" class="questionnaire-step hidden">
+            <div class="bg-white/5 rounded-xl p-6 mb-8">
+              <h2 class="text-2xl font-bold text-white mb-8 flex items-center">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm mr-3">5</span>
+                Confirmation
+              </h2>
+              
+              <div class="space-y-8">
+                <p class="text-lg text-blue-100">Please review your answers before submitting.</p>
+                
+                <div id="confirmation-summary" class="space-y-4">
+                  <!-- Confirmation summary will be dynamically generated here -->
+                </div>
+                
+                <div class="flex justify-end">
+                  <button type="submit" id="submit-btn" class="hidden bg-[#D4A017] text-[#181818] py-3 px-8 rounded-xl font-bold text-xl">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Navigation Buttons -->
+          <div class="flex justify-between mt-8">
+            <button type="button" id="prev-btn" class="hidden bg-white/10 text-white py-3 px-8 rounded-xl font-bold text-xl">Previous</button>
+            <button type="button" id="next-btn" class="bg-[#D4A017] text-[#181818] py-3 px-8 rounded-xl font-bold text-xl">Next</button>
           </div>
         </form>
       </div>
     </div>
   </div>
-</section>
-
-<div id="thank-you-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-  <div class="bg-white rounded-lg p-8 max-w-md w-full">
-    <h2 class="text-2xl font-bold mb-4">Thank You!</h2>
-    <p class="mb-6">Your information has been submitted successfully. We'll be in touch with your roofing quote shortly.</p>
-    <div class="text-center">
-      <button id="close-modal" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition-colors">
-        Close
-      </button>
-    </div>
-  </div>
-</div>
+  
+<style>
+  /* Emergency inline styles to fix questionnaire */
+  body, html, main, section {
+    background-color: #181818 !important;
+    color: #FFFFFF !important;
+  }
+  
+  section.min-h-screen {
+    background-color: #181818 !important;
+  }
+  
+  .bg-[#2A3555], .bg-white\/5 {
+    background-color: #2A3555 !important;
+  }
+  
+  /* Fix for the navigation buttons */
+  #next-btn, #submit-btn {
+    background-color: #D4A017 !important;
+    color: #181818 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.75rem 2rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: bold !important;
+  }
+  
+  #prev-btn {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #FFFFFF !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.75rem 2rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: bold !important;
+  }
+  
+  /* Fix for radio and checkbox elements */
+  .form-radio, .form-checkbox {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    width: 1.2em !important;
+    height: 1.2em !important;
+    border-radius: 0.25rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
+  
+  .form-radio:checked, .form-checkbox:checked {
+    background-color: #D4A017 !important;
+    border-color: #D4A017 !important;
+  }
+</style>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const form = document.getElementById("questionnaire-form");
-    const thankYouModal = document.getElementById("thank-you-modal");
-    const closeModalBtn = document.getElementById("close-modal");
+  // Emergency JavaScript fix for navigation buttons
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log("Emergency fix script loaded");
     
-    if (form) {
-      form.addEventListener("submit", function() {
-        // Store that the form was submitted in localStorage
-        localStorage.setItem("formSubmitted", "true");
-      });
+    const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const steps = document.querySelectorAll('.questionnaire-step');
+    const progressBar = document.getElementById('progress-bar');
+    let currentStep = 0;
+    
+    // Ensure buttons have correct styling
+    if (nextBtn) {
+      nextBtn.style.backgroundColor = "#D4A017";
+      nextBtn.style.color = "#181818";
+      nextBtn.style.display = "flex";
+      
+      // Add direct click handler
+      nextBtn.onclick = function(e) {
+        e.preventDefault();
+        console.log("Next button clicked (emergency handler)");
+        
+        if (currentStep < steps.length - 1) {
+          // Hide current step
+          steps[currentStep].classList.add('hidden');
+          
+          // Show next step
+          currentStep++;
+          steps[currentStep].classList.remove('hidden');
+          
+          // Update progress
+          if (progressBar) {
+            const progress = ((currentStep + 1) / steps.length) * 100;
+            progressBar.style.width = `${progress}%`;
+          }
+          
+          // Update buttons
+          if (currentStep > 0 && prevBtn) {
+            prevBtn.classList.remove('hidden');
+          }
+          
+          if (currentStep === steps.length - 1) {
+            nextBtn.classList.add('hidden');
+            if (submitBtn) submitBtn.classList.remove('hidden');
+          }
+        }
+      };
     }
     
-    if (closeModalBtn) {
-      closeModalBtn.addEventListener("click", function() {
-        thankYouModal.classList.add("hidden");
-      });
+    // Add direct click handler for previous button
+    if (prevBtn) {
+      prevBtn.onclick = function(e) {
+        e.preventDefault();
+        console.log("Previous button clicked (emergency handler)");
+        
+        if (currentStep > 0) {
+          // Hide current step
+          steps[currentStep].classList.add('hidden');
+          
+          // Show previous step
+          currentStep--;
+          steps[currentStep].classList.remove('hidden');
+          
+          // Update progress
+          if (progressBar) {
+            const progress = ((currentStep + 1) / steps.length) * 100;
+            progressBar.style.width = `${progress}%`;
+          }
+          
+          // Update buttons
+          if (currentStep === 0) {
+            prevBtn.classList.add('hidden');
+          }
+          
+          nextBtn.classList.remove('hidden');
+          if (submitBtn) submitBtn.classList.add('hidden');
+        }
+      };
     }
+    
+    // Initialize first step
+    if (steps.length > 0) {
+      steps.forEach(step => step.classList.add('hidden'));
+      steps[0].classList.remove('hidden');
+      if (prevBtn) prevBtn.classList.add('hidden');
+    }
+    
+    // Force dark theme
+    document.body.style.backgroundColor = "#181818";
+    document.documentElement.style.backgroundColor = "#181818";
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+      section.style.backgroundColor = "#181818";
+    });
   });
 </script>
+</section>
 
