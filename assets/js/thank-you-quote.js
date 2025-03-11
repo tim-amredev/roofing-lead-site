@@ -79,24 +79,42 @@ document.addEventListener("DOMContentLoaded", () => {
           Sending...
         `
 
-        // Create the form data for submission
-        const formData = new FormData()
+        // Create a status element
+        const statusElement = document.createElement("div")
+        statusElement.className = "mt-4 p-3 rounded"
+        manualContainer.appendChild(statusElement)
 
-        // Add required fields
-        formData.append("zip", data.zip || "")
-        formData.append("phone1", formatPhoneNumber(data.phone || ""))
-        formData.append("sender", "Instantroofingprices.com")
-        formData.append("srs_id", "1669")
+        // Prepare the URL-encoded data string exactly as shown in the Postman example
+        let urlEncodedData = ""
+        const urlEncodedDataPairs = []
 
-        // Add optional fields
-        formData.append("firstname", truncate(data.firstname || "", 25))
-        formData.append("lastname", truncate(data.lastname || "", 25))
-        formData.append("address1", truncate(data.street_address || "", 35))
-        formData.append("city", truncate(data.city || "", 35))
-        formData.append("state", truncate(data.state || "", 2))
-        formData.append("email", truncate(data.email || "", 100))
-        formData.append("productid", "Roof")
-        formData.append("proddescr", "Roofing")
+        // Add required fields first
+        urlEncodedDataPairs.push(encodeURIComponent("zip") + "=" + encodeURIComponent(data.zip || ""))
+        urlEncodedDataPairs.push(
+          encodeURIComponent("phone1") + "=" + encodeURIComponent(formatPhoneNumber(data.phone || "")),
+        )
+        urlEncodedDataPairs.push(encodeURIComponent("sender") + "=" + encodeURIComponent("Instantroofingprices.com"))
+        urlEncodedDataPairs.push(encodeURIComponent("srs_id") + "=" + encodeURIComponent("1669"))
+
+        // Add optional contact fields
+        urlEncodedDataPairs.push(
+          encodeURIComponent("firstname") + "=" + encodeURIComponent(truncate(data.firstname || "", 25)),
+        )
+        urlEncodedDataPairs.push(
+          encodeURIComponent("lastname") + "=" + encodeURIComponent(truncate(data.lastname || "", 25)),
+        )
+        urlEncodedDataPairs.push(
+          encodeURIComponent("address1") + "=" + encodeURIComponent(truncate(data.street_address || "", 35)),
+        )
+        urlEncodedDataPairs.push(encodeURIComponent("city") + "=" + encodeURIComponent(truncate(data.city || "", 35)))
+        urlEncodedDataPairs.push(encodeURIComponent("state") + "=" + encodeURIComponent(truncate(data.state || "", 2)))
+        urlEncodedDataPairs.push(
+          encodeURIComponent("email") + "=" + encodeURIComponent(truncate(data.email || "", 100)),
+        )
+
+        // Add product information
+        urlEncodedDataPairs.push(encodeURIComponent("productid") + "=" + encodeURIComponent("Roof"))
+        urlEncodedDataPairs.push(encodeURIComponent("proddescr") + "=" + encodeURIComponent("Roofing"))
 
         // Build notes
         let notes = "Project Details:\n"
@@ -122,16 +140,18 @@ document.addEventListener("DOMContentLoaded", () => {
         notes += `Timeframe: ${data.timeframe || "N/A"}\n`
         notes += `Budget: ${data.budget || "N/A"}\n`
 
-        formData.append("notes", truncate(notes, 2000))
+        urlEncodedDataPairs.push(encodeURIComponent("notes") + "=" + encodeURIComponent(truncate(notes, 2000)))
 
-        // Create a status element
-        const statusElement = document.createElement("div")
-        statusElement.className = "mt-4 p-3 rounded"
-        manualContainer.appendChild(statusElement)
+        // Combine the pairs into a single string
+        urlEncodedData = urlEncodedDataPairs.join("&").replace(/%20/g, "+")
 
         // Use XMLHttpRequest for the submission
         const xhr = new XMLHttpRequest()
-        xhr.open("POST", "https://th97.leadperfection.com/batch/addleads.asp", true)
+        xhr.open("POST", "https://th97.leadperfection.com/batch/addleads.asp")
+
+        // Set the proper content type header
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+        xhr.setRequestHeader("Content-Length", urlEncodedData.length.toString())
 
         xhr.onreadystatechange = () => {
           if (xhr.readyState === 4) {
@@ -186,8 +206,19 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
+        // Log the data being sent
+        console.log("Sending data to LeadPerfection:", urlEncodedData)
+
+        // Add debug info
+        const debugInfo = document.getElementById("debug-info")
+        if (debugInfo) {
+          debugInfo.style.display = "block"
+          debugInfo.innerHTML = "<strong>Sending Data to LeadPerfection:</strong><br>"
+          debugInfo.innerHTML += `<pre style="white-space: pre-wrap; word-break: break-all;">${urlEncodedData}</pre>`
+        }
+
         // Send the request
-        xhr.send(formData)
+        xhr.send(urlEncodedData)
       })
 
       manualContainer.appendChild(button)
