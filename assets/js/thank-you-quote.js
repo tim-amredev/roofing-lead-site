@@ -37,6 +37,50 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Error retrieving form data:", error)
   }
 
+  // Send data to LeadPerfection if available
+  try {
+    const leadPerfectionData = localStorage.getItem("leadPerfectionData")
+    if (leadPerfectionData) {
+      const parsedData = JSON.parse(leadPerfectionData)
+      console.log("Retrieved LeadPerfection data from localStorage:", parsedData)
+
+      // Send to LeadPerfection
+      sendToLeadPerfection(parsedData)
+
+      // Clear localStorage after using it
+      localStorage.removeItem("leadPerfectionData")
+    }
+  } catch (error) {
+    console.error("Error sending data to LeadPerfection:", error)
+  }
+
+  // Function to send data to LeadPerfection
+  function sendToLeadPerfection(data) {
+    const leadPerfectionUrl = "https://th97.leadperfection.com/batch/addleads.asp"
+    const params = new URLSearchParams()
+
+    // Add all data to params
+    Object.keys(data).forEach((key) => {
+      params.append(key, data[key])
+    })
+
+    // Use fetch with no-cors mode
+    fetch(leadPerfectionUrl, {
+      method: "POST",
+      body: params,
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+      .then(() => {
+        console.log("Data sent to LeadPerfection successfully")
+      })
+      .catch((error) => {
+        console.error("Error sending to LeadPerfection:", error)
+      })
+  }
+
   // Pricing data (simplified version of the calculator pricing)
   const pricing = {
     materials: {
