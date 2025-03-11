@@ -624,9 +624,16 @@ js: questionnaire leadperfection-integration
           </div>
           
           <!-- Navigation Buttons -->
-          <div class="flex justify-between mt-8">
-            <button type="button" id="prev-btn" class="hidden bg-white/10 text-white py-3 px-8 rounded-xl font-bold text-xl">Previous</button>
-            <button type="button" id="next-btn" class="bg-[#D4A017] text-[#181818] py-3 px-8 rounded-xl font-bold text-xl">Next</button>
+          <div class="flex justify-between pt-6 border-t border-white/10" style="display: flex !important; justify-content: space-between !important; margin-top: 2rem !important; padding-top: 1.5rem !important; border-top: 1px solid rgba(255, 255, 255, 0.1) !important;">
+            <button type="button" id="prev-btn" class="hidden bg-white/10 text-white py-3 px-8 rounded-xl font-bold text-xl" style="display: none !important; background-color: rgba(255, 255, 255, 0.1) !important; color: white !important; padding: 0.75rem 2rem !important; border-radius: 0.5rem !important; font-weight: bold !important;">
+              <span>Previous</span>
+            </button>
+            <button type="button" id="next-btn" class="bg-[#D4A017] text-[#181818] py-3 px-8 rounded-xl font-bold text-xl" style="display: flex !important; background-color: #D4A017 !important; color: #181818 !important; padding: 0.75rem 2rem !important; border-radius: 0.5rem !important; font-weight: bold !important;">
+              <span>Next</span>
+            </button>
+            <button type="submit" id="submit-btn" class="hidden bg-[#D4A017] text-[#181818] py-3 px-8 rounded-xl font-bold text-xl" style="display: none !important; background-color: #D4A017 !important; color: #181818 !important; padding: 0.75rem 2rem !important; border-radius: 0.5rem !important; font-weight: bold !important;">
+              <span>Submit</span>
+            </button>
           </div>
         </form>
       </div>
@@ -658,6 +665,12 @@ js: questionnaire leadperfection-integration
     padding: 0.75rem 2rem !important;
     border-radius: 0.5rem !important;
     font-weight: bold !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 50 !important;
+    min-width: 120px !important;
+    min-height: 48px !important;
   }
   
   #prev-btn {
@@ -669,6 +682,12 @@ js: questionnaire leadperfection-integration
     padding: 0.75rem 2rem !important;
     border-radius: 0.5rem !important;
     font-weight: bold !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 50 !important;
+    min-width: 120px !important;
+    min-height: 48px !important;
   }
   
   /* Fix for radio and checkbox elements */
@@ -686,95 +705,174 @@ js: questionnaire leadperfection-integration
     background-color: #D4A017 !important;
     border-color: #D4A017 !important;
   }
+  
+  /* Emergency button container fix */
+  .flex.justify-between.pt-6.border-t.border-white\/10 {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 2rem !important;
+    padding-top: 1.5rem !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    width: 100% !important;
+    position: relative !important;
+    z-index: 100 !important;
+  }
 </style>
+
+<!-- Emergency Fallback Buttons -->
+<div id="emergency-buttons" style="position: fixed; bottom: 20px; left: 0; right: 0; display: flex; justify-content: center; gap: 20px; z-index: 9999;">
+  <button id="emergency-prev" style="background-color: rgba(255, 255, 255, 0.1); color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; display: none;">Previous</button>
+  <button id="emergency-next" style="background-color: #D4A017; color: #181818; padding: 10px 20px; border-radius: 8px; font-weight: bold;">Next</button>
+  <button id="emergency-submit" style="background-color: #D4A017; color: #181818; padding: 10px 20px; border-radius: 8px; font-weight: bold; display: none;">Submit</button>
+</div>
 
 <script>
   // Emergency JavaScript fix for navigation buttons
   document.addEventListener('DOMContentLoaded', function() {
     console.log("Emergency fix script loaded");
     
+    // Regular buttons
     const nextBtn = document.getElementById('next-btn');
     const prevBtn = document.getElementById('prev-btn');
     const submitBtn = document.getElementById('submit-btn');
+    
+    // Emergency fallback buttons
+    const emergencyNext = document.getElementById('emergency-next');
+    const emergencyPrev = document.getElementById('emergency-prev');
+    const emergencySubmit = document.getElementById('emergency-submit');
+    
     const steps = document.querySelectorAll('.questionnaire-step');
     const progressBar = document.getElementById('progress-bar');
     let currentStep = 0;
+    const totalSteps = steps.length;
     
-    // Ensure buttons have correct styling
+    console.log("Found steps:", steps.length);
+    console.log("Next button:", nextBtn);
+    console.log("Prev button:", prevBtn);
+    
+    // Function to show a specific step
+    function showStep(stepIndex) {
+      console.log("Showing step:", stepIndex);
+      
+      // Hide all steps
+      steps.forEach((step, index) => {
+        if (index === stepIndex) {
+          step.classList.remove('hidden');
+        } else {
+          step.classList.add('hidden');
+        }
+      });
+      
+      // Update progress
+      if (progressBar) {
+        const progress = ((stepIndex + 1) / totalSteps) * 100;
+        progressBar.style.width = `${progress}%`;
+      }
+      
+      // Update buttons visibility
+      if (stepIndex === 0) {
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (emergencyPrev) emergencyPrev.style.display = 'none';
+      } else {
+        if (prevBtn) {
+          prevBtn.style.display = 'flex';
+          prevBtn.classList.remove('hidden');
+        }
+        if (emergencyPrev) emergencyPrev.style.display = 'block';
+      }
+      
+      if (stepIndex === totalSteps - 1) {
+        if (nextBtn) nextBtn.style.display = 'none';
+        if (submitBtn) {
+          submitBtn.style.display = 'flex';
+          submitBtn.classList.remove('hidden');
+        }
+        if (emergencyNext) emergencyNext.style.display = 'none';
+        if (emergencySubmit) emergencySubmit.style.display = 'block';
+      } else {
+        if (nextBtn) nextBtn.style.display = 'flex';
+        if (submitBtn) submitBtn.style.display = 'none';
+        if (emergencyNext) emergencyNext.style.display = 'block';
+        if (emergencySubmit) emergencySubmit.style.display = 'none';
+      }
+    }
+    
+    // Next button click handler
+    function handleNextClick(e) {
+      if (e) e.preventDefault();
+      console.log("Next button clicked");
+      
+      if (currentStep < totalSteps - 1) {
+        currentStep++;
+        showStep(currentStep);
+        window.scrollTo(0, 0);
+      }
+    }
+    
+    // Previous button click handler
+    function handlePrevClick(e) {
+      if (e) e.preventDefault();
+      console.log("Previous button clicked");
+      
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+        window.scrollTo(0, 0);
+      }
+    }
+    
+    // Add click handlers to regular buttons
     if (nextBtn) {
+      console.log("Adding click handler to next button");
+      nextBtn.addEventListener('click', handleNextClick);
+      
+      // Force button styling
       nextBtn.style.backgroundColor = "#D4A017";
       nextBtn.style.color = "#181818";
       nextBtn.style.display = "flex";
-      
-      // Add direct click handler
-      nextBtn.onclick = function(e) {
-        e.preventDefault();
-        console.log("Next button clicked (emergency handler)");
-        
-        if (currentStep < steps.length - 1) {
-          // Hide current step
-          steps[currentStep].classList.add('hidden');
-          
-          // Show next step
-          currentStep++;
-          steps[currentStep].classList.remove('hidden');
-          
-          // Update progress
-          if (progressBar) {
-            const progress = ((currentStep + 1) / steps.length) * 100;
-            progressBar.style.width = `${progress}%`;
-          }
-          
-          // Update buttons
-          if (currentStep > 0 && prevBtn) {
-            prevBtn.classList.remove('hidden');
-          }
-          
-          if (currentStep === steps.length - 1) {
-            nextBtn.classList.add('hidden');
-            if (submitBtn) submitBtn.classList.remove('hidden');
-          }
-        }
-      };
+      nextBtn.style.alignItems = "center";
+      nextBtn.style.justifyContent = "center";
+      nextBtn.style.padding = "0.75rem 2rem";
+      nextBtn.style.borderRadius = "0.5rem";
+      nextBtn.style.fontWeight = "bold";
+      nextBtn.style.opacity = "1";
+      nextBtn.style.visibility = "visible";
     }
     
-    // Add direct click handler for previous button
     if (prevBtn) {
-      prevBtn.onclick = function(e) {
+      console.log("Adding click handler to prev button");
+      prevBtn.addEventListener('click', handlePrevClick);
+      
+      // Force button styling
+      prevBtn.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+      prevBtn.style.color = "#FFFFFF";
+      prevBtn.style.alignItems = "center";
+      prevBtn.style.justifyContent = "center";
+      prevBtn.style.padding = "0.75rem 2rem";
+      prevBtn.style.borderRadius = "0.5rem";
+      prevBtn.style.fontWeight = "bold";
+      prevBtn.style.opacity = "1";
+      prevBtn.style.visibility = "visible";
+    }
+    
+    // Add click handlers to emergency buttons
+    if (emergencyNext) {
+      emergencyNext.addEventListener('click', handleNextClick);
+    }
+    
+    if (emergencyPrev) {
+      emergencyPrev.addEventListener('click', handlePrevClick);
+    }
+    
+    if (emergencySubmit && submitBtn) {
+      emergencySubmit.addEventListener('click', function(e) {
         e.preventDefault();
-        console.log("Previous button clicked (emergency handler)");
-        
-        if (currentStep > 0) {
-          // Hide current step
-          steps[currentStep].classList.add('hidden');
-          
-          // Show previous step
-          currentStep--;
-          steps[currentStep].classList.remove('hidden');
-          
-          // Update progress
-          if (progressBar) {
-            const progress = ((currentStep + 1) / steps.length) * 100;
-            progressBar.style.width = `${progress}%`;
-          }
-          
-          // Update buttons
-          if (currentStep === 0) {
-            prevBtn.classList.add('hidden');
-          }
-          
-          nextBtn.classList.remove('hidden');
-          if (submitBtn) submitBtn.classList.add('hidden');
-        }
-      };
+        submitBtn.click(); // Trigger the real submit button
+      });
     }
     
     // Initialize first step
-    if (steps.length > 0) {
-      steps.forEach(step => step.classList.add('hidden'));
-      steps[0].classList.remove('hidden');
-      if (prevBtn) prevBtn.classList.add('hidden');
-    }
+    showStep(currentStep);
     
     // Force dark theme
     document.body.style.backgroundColor = "#181818";
@@ -783,6 +881,33 @@ js: questionnaire leadperfection-integration
     sections.forEach(section => {
       section.style.backgroundColor = "#181818";
     });
+    
+    // Check if buttons are visible after a short delay
+    setTimeout(function() {
+      const nextBtnVisible = nextBtn && (window.getComputedStyle(nextBtn).display !== 'none');
+      console.log("Next button visible:", nextBtnVisible);
+      
+      // If regular buttons aren't visible, show emergency buttons
+      if (!nextBtnVisible) {
+        console.log("Regular buttons not visible, showing emergency buttons");
+        document.getElementById('emergency-buttons').style.display = 'flex';
+      } else {
+        document.getElementById('emergency-buttons').style.display = 'none';
+      }
+    }, 1000);
+  });
+  
+  // Additional window load handler as a backup
+  window.addEventListener('load', function() {
+    console.log("Window load event fired");
+    
+    // Force button visibility again
+    const nextBtn = document.getElementById('next-btn');
+    if (nextBtn) {
+      nextBtn.style.display = "flex";
+      nextBtn.style.visibility = "visible";
+      nextBtn.style.opacity = "1";
+    }
   });
 </script>
 </section>
