@@ -26,8 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
       formData = { ...formData, ...parsedData }
       console.log("Retrieved form data from localStorage:", formData)
 
-      // Send data to LeadPerfection using URL-encoded form submission
-      sendToLeadPerfection(formData)
+      // Create manual submission button for LeadPerfection
+      createManualSubmissionButton(formData)
     } else {
       console.log("No form data found in localStorage")
     }
@@ -35,175 +35,179 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Error retrieving form data:", error)
   }
 
-  // Function to send data to LeadPerfection using URL-encoded form submission
-  function sendToLeadPerfection(data) {
+  // Function to create a manual submission button
+  function createManualSubmissionButton(data) {
     try {
-      console.log("Preparing to send data to LeadPerfection...")
+      // Create a container for the manual submission
+      const manualContainer = document.createElement("div")
+      manualContainer.className = "mt-8 p-4 bg-blue-900 bg-opacity-30 rounded-lg max-w-3xl mx-auto text-center"
+      manualContainer.style.backgroundColor = "rgba(30, 58, 138, 0.3)"
 
-      // Create a form element
-      const form = document.createElement("form")
-      form.method = "POST"
-      form.action = "https://th97.leadperfection.com/batch/addleads.asp"
-      form.style.display = "none"
-      form.enctype = "application/x-www-form-urlencoded" // Explicitly set encoding type
+      // Create heading
+      const heading = document.createElement("h3")
+      heading.className = "text-xl font-bold text-white mb-4"
+      heading.textContent = "Complete Your Submission"
+      manualContainer.appendChild(heading)
 
-      // Check if we have the required fields
-      if (!data.zip || !data.phone) {
-        console.error("Missing required fields for LeadPerfection submission")
-        const debugInfo = document.getElementById("debug-info")
-        if (debugInfo) {
-          debugInfo.style.display = "block"
-          debugInfo.innerHTML += `<br><strong>Error:</strong> Missing required fields (zip and phone are required)`
-          if (!data.zip) debugInfo.innerHTML += `<br>- Missing zip code`
-          if (!data.phone) debugInfo.innerHTML += `<br>- Missing phone number`
+      // Create description
+      const description = document.createElement("p")
+      description.className = "text-gray-300 mb-4"
+      description.textContent = "Click the button below to send your information to our roofing specialists."
+      manualContainer.appendChild(description)
+
+      // Create the button
+      const button = document.createElement("button")
+      button.type = "button"
+      button.className =
+        "inline-flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+      button.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        Complete Submission
+      `
+
+      // Add click event to the button
+      button.addEventListener("click", function () {
+        // Disable the button to prevent multiple clicks
+        this.disabled = true
+        this.innerHTML = `
+          <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Sending...
+        `
+
+        // Create the form data for submission
+        const formData = new FormData()
+
+        // Add required fields
+        formData.append("zip", data.zip || "")
+        formData.append("phone1", formatPhoneNumber(data.phone || ""))
+        formData.append("sender", "Instantroofingprices.com")
+        formData.append("srs_id", "1669")
+
+        // Add optional fields
+        formData.append("firstname", truncate(data.firstname || "", 25))
+        formData.append("lastname", truncate(data.lastname || "", 25))
+        formData.append("address1", truncate(data.street_address || "", 35))
+        formData.append("city", truncate(data.city || "", 35))
+        formData.append("state", truncate(data.state || "", 2))
+        formData.append("email", truncate(data.email || "", 100))
+        formData.append("productid", "Roof")
+        formData.append("proddescr", "Roofing")
+
+        // Build notes
+        let notes = "Project Details:\n"
+        notes += `Reason: ${data.reason || "N/A"}\n`
+        notes += `Roof Age: ${data.roof_age || "N/A"}\n`
+        notes += `Square Footage: ${data.square_footage || "N/A"}\n`
+        notes += `Current Material: ${data.current_material || "N/A"}\n`
+        notes += `Desired Material: ${data.desired_material || "N/A"}\n`
+        notes += `Roof Type: ${data.roof_type || "N/A"}\n`
+
+        // Handle issues array
+        if (data.issues) {
+          const issues = Array.isArray(data.issues) ? data.issues : [data.issues]
+          notes += `Issues: ${issues.join(", ")}\n`
         }
-        return // Don't proceed with submission
-      }
 
-      // Add required fields first (according to documentation)
-      // Required: zip, phone1, sender, srs_id
-      addFormField(form, "zip", data.zip || "")
-      addFormField(form, "phone1", formatPhoneNumber(data.phone || ""))
-      addFormField(form, "sender", "Instantroofingprices.com")
-      addFormField(form, "srs_id", "1669")
+        // Handle features array
+        if (data.features) {
+          const features = Array.isArray(data.features) ? data.features : [data.features]
+          notes += `Desired Features: ${features.join(", ")}\n`
+        }
 
-      // Add optional contact fields (with size limits per documentation)
-      addFormField(form, "firstname", truncate(data.firstname || "", 25))
-      addFormField(form, "lastname", truncate(data.lastname || "", 25))
-      addFormField(form, "address1", truncate(data.street_address || "", 35))
-      addFormField(form, "city", truncate(data.city || "", 35))
-      addFormField(form, "state", truncate(data.state || "", 2))
-      addFormField(form, "email", truncate(data.email || "", 100))
+        notes += `Timeframe: ${data.timeframe || "N/A"}\n`
+        notes += `Budget: ${data.budget || "N/A"}\n`
 
-      // Add product information
-      addFormField(form, "productid", "Roof")
-      addFormField(form, "proddescr", "Roofing")
+        formData.append("notes", truncate(notes, 2000))
 
-      // Build notes from form data (max 2000 chars per documentation)
-      let notes = "Project Details:\n"
-      notes += `Reason: ${data.reason || "N/A"}\n`
-      notes += `Roof Age: ${data.roof_age || "N/A"}\n`
-      notes += `Square Footage: ${data.square_footage || "N/A"}\n`
-      notes += `Current Material: ${data.current_material || "N/A"}\n`
-      notes += `Desired Material: ${data.desired_material || "N/A"}\n`
-      notes += `Roof Type: ${data.roof_type || "N/A"}\n`
+        // Create a status element
+        const statusElement = document.createElement("div")
+        statusElement.className = "mt-4 p-3 rounded"
+        manualContainer.appendChild(statusElement)
 
-      // Handle issues array
-      if (data.issues) {
-        const issues = Array.isArray(data.issues) ? data.issues : [data.issues]
-        notes += `Issues: ${issues.join(", ")}\n`
-      }
+        // Use XMLHttpRequest for the submission
+        const xhr = new XMLHttpRequest()
+        xhr.open("POST", "https://th97.leadperfection.com/batch/addleads.asp", true)
 
-      // Handle features array
-      if (data.features) {
-        const features = Array.isArray(data.features) ? data.features : [data.features]
-        notes += `Desired Features: ${features.join(", ")}\n`
-      }
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              // Success
+              statusElement.className = "mt-4 p-3 bg-green-800 bg-opacity-50 text-white rounded"
+              statusElement.innerHTML = `
+                <div class="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <span>Submission successful! Our team will contact you soon.</span>
+                </div>
+              `
 
-      notes += `Timeframe: ${data.timeframe || "N/A"}\n`
-      notes += `Budget: ${data.budget || "N/A"}\n`
+              // Clear localStorage
+              localStorage.removeItem("roofingFormData")
 
-      addFormField(form, "notes", truncate(notes, 2000))
-
-      // Add the form to the document
-      document.body.appendChild(form)
-
-      // Log the form data for debugging
-      console.log("Form data being sent to LeadPerfection:", {
-        zip: data.zip || "",
-        phone1: formatPhoneNumber(data.phone || ""),
-        sender: "Instantroofingprices.com",
-        srs_id: "1669",
-        firstname: truncate(data.firstname || "", 25),
-        lastname: truncate(data.lastname || "", 25),
-        address1: truncate(data.street_address || "", 35),
-        city: truncate(data.city || "", 35),
-        state: truncate(data.state || "", 2),
-        email: truncate(data.email || "", 100),
-        productid: "Roof",
-        proddescr: "Roofing",
-        notes: truncate(notes, 2000),
-      })
-
-      // Create a hidden iframe to capture the response
-      const responseFrame = document.createElement("iframe")
-      responseFrame.name = "lp_response_frame"
-      responseFrame.style.display = "none"
-      document.body.appendChild(responseFrame)
-
-      // Set the form target to the iframe
-      form.target = "lp_response_frame"
-
-      // Add event listener to capture the response
-      responseFrame.onload = () => {
-        try {
-          const frameContent = responseFrame.contentDocument || responseFrame.contentWindow.document
-          const responseText = frameContent.body.textContent || frameContent.body.innerText
-
-          console.log("LeadPerfection Response:", responseText)
-
-          // Show response in debug div
-          const debugInfo = document.getElementById("debug-info")
-          if (debugInfo) {
-            debugInfo.style.display = "block"
-            debugInfo.innerHTML += `<br><strong>LeadPerfection Response:</strong> ${responseText}`
-
-            // Check if response is [OK]
-            if (responseText.trim() === "[OK]") {
-              debugInfo.innerHTML += `<br><span style="color: green;">✓ Success! Lead sent to LeadPerfection.</span>`
+              // Update button
+              button.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                Submission Complete
+              `
+              button.disabled = true
+              button.className =
+                "inline-flex items-center justify-center px-6 py-3 bg-green-700 text-white font-medium rounded-lg cursor-not-allowed"
             } else {
-              debugInfo.innerHTML += `<br><span style="color: red;">✗ Error: Unexpected response from LeadPerfection.</span>`
+              // Error
+              statusElement.className = "mt-4 p-3 bg-red-800 bg-opacity-50 text-white rounded"
+              statusElement.innerHTML = `
+                <div class="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                  </svg>
+                  <span>There was an error with your submission. Please try again or contact us directly.</span>
+                </div>
+                <div class="mt-2 text-sm">Error: ${xhr.status} ${xhr.statusText}</div>
+                <div class="mt-2 text-sm">Response: ${xhr.responseText}</div>
+              `
+
+              // Update button
+              button.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                </svg>
+                Try Again
+              `
+              button.disabled = false
             }
           }
-
-          // Clear localStorage after successful submission
-          if (responseText.trim() === "[OK]") {
-            setTimeout(() => {
-              localStorage.removeItem("roofingFormData")
-              console.log("Form data cleared from localStorage")
-            }, 2000)
-          }
-        } catch (error) {
-          console.error("Error reading response:", error)
-
-          // Show error in debug div
-          const debugInfo = document.getElementById("debug-info")
-          if (debugInfo) {
-            debugInfo.style.display = "block"
-            debugInfo.innerHTML += `<br><strong>Error Reading Response:</strong> ${error.message}`
-          }
         }
-      }
 
-      // Submit the form
-      console.log("Submitting form to LeadPerfection...")
-      form.submit()
+        // Send the request
+        xhr.send(formData)
+      })
 
-      // Show submission status in debug div
+      manualContainer.appendChild(button)
+
+      // Add the container to the page
+      document.querySelector(".container").appendChild(manualContainer)
+
+      // Add debug info
       const debugInfo = document.getElementById("debug-info")
       if (debugInfo) {
         debugInfo.style.display = "block"
-        debugInfo.innerHTML += "<br><strong>LeadPerfection Submission:</strong> Form submitted"
+        debugInfo.innerHTML = "<strong>Form Data Ready for Submission:</strong><br>"
+        debugInfo.innerHTML += `Zip: ${data.zip || "Not provided"}<br>`
+        debugInfo.innerHTML += `Phone: ${data.phone || "Not provided"}<br>`
+        debugInfo.innerHTML += `Name: ${data.firstname || ""} ${data.lastname || ""}<br>`
+        debugInfo.innerHTML += `Email: ${data.email || "Not provided"}<br>`
       }
     } catch (error) {
-      console.error("Error sending data to LeadPerfection:", error)
-
-      // Show error in debug div
-      const debugInfo = document.getElementById("debug-info")
-      if (debugInfo) {
-        debugInfo.style.display = "block"
-        debugInfo.innerHTML += `<br><strong>LeadPerfection Error:</strong> ${error.message}`
-      }
+      console.error("Error creating manual submission button:", error)
     }
-  }
-
-  // Helper function to add a field to the form
-  function addFormField(form, name, value) {
-    const input = document.createElement("input")
-    input.type = "hidden"
-    input.name = name
-    input.value = value
-    form.appendChild(input)
   }
 
   // Helper function to truncate strings to specified length
@@ -314,24 +318,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Generate the quote
   generateQuote()
 
-  // Declare fbq and gtag as functions to avoid errors if they are not defined
-  const fbq =
-    window.fbq ||
-    (() => {
-      console.warn("Facebook Pixel not available")
-    })
-
-  const gtag =
-    window.gtag ||
-    (() => {
-      console.warn("Google Analytics not available")
-    })
-
   // Track conversion with Facebook Pixel if available
   try {
-    if (typeof fbq === "function") {
+    if (typeof window.fbq === "function") {
       console.log("Tracking conversion with Facebook Pixel")
-      fbq("track", "Lead", {
+      window.fbq("track", "Lead", {
         content_name: "Roofing Quote",
         content_category: "Roofing",
       })
@@ -344,9 +335,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Add Google Analytics event tracking if it exists
   try {
-    if (typeof gtag === "function") {
+    if (typeof window.gtag === "function") {
       console.log("Tracking conversion with Google Analytics")
-      gtag("event", "generate_lead", {
+      window.gtag("event", "generate_lead", {
         event_category: "conversion",
         event_label: "roofing_quote",
       })
