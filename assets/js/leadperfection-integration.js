@@ -49,15 +49,5 @@ document.addEventListener("DOMContentLoaded", () => {
       return true
     })
   }
-
-  // Also handle the contact form if needed
-  const contactForm = document.getElementById("contact-form")
-
-  if (contactForm) {
-    contactForm.addEventListener("submit", (e) => {
-      // Don't prevent default - let the form submit normally to FormSubmit
-      // Don't do anything else that might interfere with the form submission
-    })
-  }
 })
 
