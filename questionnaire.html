@@ -14,17 +14,17 @@ js: questionnaire leadperfection-integration
       
       <div class="bg-[#2A3555] rounded-2xl shadow-2xl p-8 border border-white/20">
         <!-- Progress Bar -->
-        <div class="mb-10">
-          <div class="flex justify-between items-center mb-4">
-            <div id="progress-text" class="text-sm font-medium text-blue-200">Step <span id="current-step">1</span> of 5</div>
-            <div class="text-sm font-medium text-blue-200">Progress: <span class="text-blue-400">20%</span></div>
-          </div>
-          <div class="relative h-2 bg-gray-700 rounded-full overflow-hidden">
-            <div id="progress-bar" class="absolute top-0 left-0 h-full bg-[#D4A017] transition-all duration-500 ease-out" style="width: 20%"></div>
-          </div>
-        </div>
         
-        <form id="questionnaire-form" class="space-y-12" action="https://formsubmit.co/34621b6167978998b0c76f8366420183" method="POST">
+<div class="mb-10">
+  <div class="flex justify-between items-center mb-4">
+    <div id="progress-text" class="text-sm font-medium text-blue-200">Step <span id="current-step">1</span> of 4</div>
+  </div>
+  <div class="relative h-2 bg-gray-700 rounded-full overflow-hidden">
+    <div id="progress-bar" class="absolute top-0 left-0 h-full bg-[#D4A017] transition-all duration-500 ease-out" style="width: 25%"></div>
+  </div>
+</div>
+        
+        <form id="questionnaire-form" class="space-y-12" action="https://formsubmit.co/leads@americanremodeling.net" method="POST">
           <!-- Hidden FormSubmit fields -->
           <input type="hidden" name="_subject" value="New Roofing Quote Request">
           <input type="hidden" name="_template" value="table">
@@ -616,40 +616,30 @@ js: questionnaire leadperfection-integration
                     </div>
                   </div>
                 </div>
+                
+                <div class="question-group mt-8">
+                  <div class="space-y-4">
+                    <label class="flex items-start cursor-pointer">
+                      <input type="checkbox" name="sms_consent" class="form-checkbox mt-1 text-blue-500 border-gray-500 bg-gray-700" required>
+                      <span class="ml-3 text-gray-300 text-sm">
+                        I consent to receive SMS messages about my roofing project. Message and data rates may apply. Message frequency varies. Reply STOP to cancel.
+                      </span>
+                    </label>
+                    
+                    <label class="flex items-start cursor-pointer">
+                      <input type="checkbox" name="terms_consent" class="form-checkbox mt-1 text-blue-500 border-gray-500 bg-gray-700" required>
+                      <span class="ml-3 text-gray-300 text-sm">
+                        I agree to the <a href="{{ '/terms-of-service' | relative_url }}" class="text-blue-400 hover:underline" target="_blank">Terms of Service</a> and <a href="{{ '/privacy-policy' | relative_url }}" class="text-blue-400 hover:underline" target="_blank">Privacy Policy</a>. I understand my information will be used as described in the Privacy Policy.
+                      </span>
+                    </label>
+                  </div>
+                </div>
               </div>
               
               <!-- Navigation Buttons -->
               <div class="mt-8 flex justify-between border-t border-white/10 pt-6">
                 <button type="button" id="prev-btn-4" class="bg-white/10 text-white py-3 px-8 rounded-lg font-bold text-lg hover:bg-white/20 transition-colors">Previous</button>
-                <button type="button" id="next-btn-4" class="bg-[#D4A017] text-[#181818] py-3 px-8 rounded-lg font-bold text-lg hover:bg-[#E5B42A] transition-colors">Next</button>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Step 5: Confirmation and Submission -->
-          <div id="step-5" class="questionnaire-step hidden">
-            <div class="bg-white/5 rounded-xl p-6 mb-8">
-              <h2 class="text-2xl font-bold text-white mb-8 flex items-center">
-                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm mr-3">5</span>
-                Confirmation
-              </h2>
-              
-              <div class="space-y-8">
-                <p class="text-lg text-blue-100">Please review your answers before submitting.</p>
-                
-                <div id="confirmation-summary" class="space-y-4">
-                  <!-- Confirmation summary will be dynamically generated here -->
-                </div>
-                
-                <div class="flex justify-end">
-                  <button type="submit" id="submit-btn" class="hidden bg-[#D4A017] text-[#181818] py-3 px-8 rounded-xl font-bold text-xl">Submit</button>
-                </div>
-              </div>
-              
-              <!-- Navigation Buttons -->
-              <div class="mt-8 flex justify-between border-t border-white/10 pt-6">
-                <button type="button" id="prev-btn-5" class="bg-white/10 text-white py-3 px-8 rounded-lg font-bold text-lg hover:bg-white/20 transition-colors">Previous</button>
-                <button type="submit" id="submit-btn" class="bg-[#D4A017] text-[#181818] py-3 px-8 rounded-lg font-bold text-lg hover:bg-[#E5B42A] transition-colors">Submit</button>
+                <button type="submit" id="submit-btn-4" class="bg-[#D4A017] text-[#181818] py-3 px-8 rounded-lg font-bold text-lg hover:bg-[#E5B42A] transition-colors">Submit</button>
               </div>
             </div>
           </div>
@@ -1042,4 +1032,3 @@ js: questionnaire leadperfection-integration
   });
 </script>
 </section>
-
