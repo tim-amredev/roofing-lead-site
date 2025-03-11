@@ -41,6 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // Store in localStorage
         localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
         console.log("Form data saved to localStorage for LeadPerfection integration")
+
+        // Log the data that was saved
+        console.log("Form data object:", formDataObj)
       } catch (error) {
         console.error("Error saving form data:", error)
       }
@@ -48,6 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Don't interfere with the form submission
       return true
     })
+  } else {
+    console.warn("Questionnaire form not found - LeadPerfection integration may not work")
   }
 })
 
