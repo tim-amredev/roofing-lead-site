@@ -14,19 +14,11 @@ header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-header a,
-header span {
-  color: #ffffff !important;
-}
-
-header a:hover {
-  color: #d4a017 !important;
-}
-
 /* Card backgrounds */
 .bg-white,
 .card,
-.form-container {
+.form-container,
+.questionnaire-step .bg-white\/5 {
   background-color: #2a3555 !important;
   color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -36,7 +28,9 @@ header a:hover {
 .text-gray-900,
 .text-gray-800,
 .text-gray-700,
-.text-gray-600 {
+.text-gray-600,
+.text-blue-100,
+.text-xl {
   color: #ffffff !important;
 }
 
@@ -46,47 +40,67 @@ header a:hover {
   color: #d3d3d3 !important;
 }
 
-/* Button colors */
-.bg-blue-600 {
-  background-color: #2e4a7d !important;
+/* Form elements */
+input[type="radio"],
+input[type="checkbox"] {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-.bg-blue-700 {
+input[type="radio"]:checked,
+input[type="checkbox"]:checked {
+  background-color: #d4a017 !important;
+  border-color: #d4a017 !important;
+}
+
+/* Question groups */
+.question-group label.flex {
+  background-color: rgba(42, 53, 85, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.question-group label.flex:hover {
   background-color: #3e4e88 !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-.hover\:bg-blue-700:hover {
-  background-color: #3e4e88 !important;
+/* Progress bar */
+#progress-bar {
+  background-color: #d4a017 !important;
 }
 
-.bg-green-600 {
+/* Navigation buttons */
+#next-btn,
+#submit-btn {
   background-color: #d4a017 !important;
   color: #181818 !important;
 }
 
-.hover\:bg-green-700:hover {
+#next-btn:hover,
+#submit-btn:hover {
   background-color: #e5b42a !important;
 }
 
-/* Form elements */
-input,
-select,
-textarea {
+#prev-btn {
   background-color: rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
   color: #ffffff !important;
 }
 
-/* Card backgrounds for questionnaire */
+#prev-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Material and roof type cards */
 .material-card > div,
 .roof-type-card > div {
-  background-color: #2a3555 !important;
+  background-color: rgba(42, 53, 85, 0.5) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .material-card > div:hover,
 .roof-type-card > div:hover {
   background-color: #3e4e88 !important;
+  border-color: #d4a017 !important;
 }
 
 .material-card.selected > div,
@@ -95,51 +109,13 @@ textarea {
   box-shadow: 0 0 0 2px #d4a017 !important;
 }
 
-/* Progress bar */
-.bg-gray-200 {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-.bg-blue-600 {
-  background-color: #d4a017 !important;
-}
-
-/* Footer styling */
-footer {
-  background-color: #1f2a44 !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Links */
-a {
-  color: #d4a017 !important;
-}
-
-a:hover {
-  color: #e5b42a !important;
-}
-
-/* Add specific styles for the questionnaire form */
-.questionnaire-step .bg-white\/5 {
-  background-color: rgba(42, 53, 85, 0.5) !important;
-}
-
-.questionnaire-step label.flex {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-.questionnaire-step label.flex:hover {
-  background-color: #3e4e88 !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
-}
-
-/* Fix form elements */
+/* Form inputs */
 input[type="text"],
 input[type="email"],
 input[type="tel"],
 textarea,
 select {
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   color: #ffffff !important;
 }
@@ -153,31 +129,16 @@ select:focus {
   box-shadow: 0 0 0 2px rgba(212, 160, 23, 0.3) !important;
 }
 
-/* Fix checkbox and radio styles */
-.form-checkbox,
-.form-radio {
+/* Fix radio and checkbox colors */
+.form-radio,
+.form-checkbox {
   color: #d4a017 !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-/* Progress bar */
-#progress-bar {
+.form-radio:checked,
+.form-checkbox:checked {
   background-color: #d4a017 !important;
-}
-
-/* Button colors */
-button[type="button"],
-button[type="submit"] {
-  transition: all 0.2s ease-in-out;
-}
-
-#next-btn,
-#submit-btn {
-  background-color: #d4a017 !important;
-  color: #181818 !important;
-}
-
-#next-btn:hover,
-#submit-btn:hover {
-  background-color: #e5b42a !important;
+  border-color: #d4a017 !important;
 }
 
