@@ -27,8 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const parsedData = JSON.parse(storedData)
       // Merge with default data
       formData = { ...formData, ...parsedData }
+      console.log("Retrieved form data from localStorage:", formData)
       // Clear localStorage after using it
       localStorage.removeItem("roofingFormData")
+    } else {
+      console.log("No form data found in localStorage")
     }
   } catch (error) {
     console.error("Error retrieving form data:", error)
@@ -119,9 +122,25 @@ document.addEventListener("DOMContentLoaded", () => {
       nameElement.textContent = formData.name
       nameElement.parentElement.classList.remove("hidden")
     }
+
+    console.log("Generated quote:", {
+      material: materialInfo.name,
+      area: area,
+      lowEstimate: lowEstimate,
+      highEstimate: highEstimate,
+      averageEstimate: averageEstimate,
+    })
   }
 
   // Generate the quote
   generateQuote()
+
+  // Track conversion with Facebook Pixel if available
+  if (typeof fbq === "function") {
+    fbq("track", "Lead", {
+      content_name: "Roofing Quote",
+      content_category: "Roofing",
+    })
+  }
 })
 
