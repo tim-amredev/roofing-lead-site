@@ -624,16 +624,10 @@ js: questionnaire leadperfection-integration
           </div>
           
           <!-- Navigation Buttons -->
-          <div class="flex justify-between pt-6 border-t border-white/10" style="display: flex !important; justify-content: space-between !important; margin-top: 2rem !important; padding-top: 1.5rem !important; border-top: 1px solid rgba(255, 255, 255, 0.1) !important;">
-            <button type="button" id="prev-btn" class="hidden bg-white/10 text-white py-3 px-8 rounded-xl font-bold text-xl" style="display: none !important; background-color: rgba(255, 255, 255, 0.1) !important; color: white !important; padding: 0.75rem 2rem !important; border-radius: 0.5rem !important; font-weight: bold !important;">
-              <span>Previous</span>
-            </button>
-            <button type="button" id="next-btn" class="bg-[#D4A017] text-[#181818] py-3 px-8 rounded-xl font-bold text-xl" style="display: flex !important; background-color: #D4A017 !important; color: #181818 !important; padding: 0.75rem 2rem !important; border-radius: 0.5rem !important; font-weight: bold !important;">
-              <span>Next</span>
-            </button>
-            <button type="submit" id="submit-btn" class="hidden bg-[#D4A017] text-[#181818] py-3 px-8 rounded-xl font-bold text-xl" style="display: none !important; background-color: #D4A017 !important; color: #181818 !important; padding: 0.75rem 2rem !important; border-radius: 0.5rem !important; font-weight: bold !important;">
-              <span>Submit</span>
-            </button>
+          <div class="mt-8 flex justify-between" style="margin-top: 2rem; display: flex !important; justify-content: space-between !important; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+            <button type="button" id="prev-btn" class="bg-gray-700 text-white py-3 px-8 rounded-lg font-bold text-lg" style="display: none; background-color: rgba(255, 255, 255, 0.1) !important; color: white !important; padding: 12px 24px !important; border-radius: 8px !important; font-weight: bold !important;">Previous</button>
+            <button type="button" id="next-btn" class="bg-yellow-500 text-gray-900 py-3 px-8 rounded-lg font-bold text-lg" style="display: block !important; background-color: #D4A017 !important; color: #181818 !important; padding: 12px 24px !important; border-radius: 8px !important; font-weight: bold !important;">Next</button>
+            <button type="submit" id="submit-btn" class="bg-yellow-500 text-gray-900 py-3 px-8 rounded-lg font-bold text-lg" style="display: none; background-color: #D4A017 !important; color: #181818 !important; padding: 12px 24px !important; border-radius: 8px !important; font-weight: bold !important;">Submit</button>
           </div>
         </form>
       </div>
@@ -641,90 +635,23 @@ js: questionnaire leadperfection-integration
   </div>
   
 <style>
-  /* Emergency inline styles to fix questionnaire */
+  /* Basic dark theme styles */
   body, html, main, section {
     background-color: #181818 !important;
     color: #FFFFFF !important;
   }
   
-  section.min-h-screen {
-    background-color: #181818 !important;
-  }
-  
-  .bg-[#2A3555], .bg-white\/5 {
-    background-color: #2A3555 !important;
-  }
-  
-  /* Fix for the navigation buttons */
+  /* Simple button styles to ensure visibility */
   #next-btn, #submit-btn {
     background-color: #D4A017 !important;
     color: #181818 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 0.75rem 2rem !important;
-    border-radius: 0.5rem !important;
-    font-weight: bold !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    position: relative !important;
-    z-index: 50 !important;
-    min-width: 120px !important;
-    min-height: 48px !important;
   }
   
   #prev-btn {
     background-color: rgba(255, 255, 255, 0.1) !important;
     color: #FFFFFF !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 0.75rem 2rem !important;
-    border-radius: 0.5rem !important;
-    font-weight: bold !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    position: relative !important;
-    z-index: 50 !important;
-    min-width: 120px !important;
-    min-height: 48px !important;
-  }
-  
-  /* Fix for radio and checkbox elements */
-  .form-radio, .form-checkbox {
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    width: 1.2em !important;
-    height: 1.2em !important;
-    border-radius: 0.25rem !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    background-color: rgba(255, 255, 255, 0.05) !important;
-  }
-  
-  .form-radio:checked, .form-checkbox:checked {
-    background-color: #D4A017 !important;
-    border-color: #D4A017 !important;
-  }
-  
-  /* Emergency button container fix */
-  .flex.justify-between.pt-6.border-t.border-white\/10 {
-    display: flex !important;
-    justify-content: space-between !important;
-    margin-top: 2rem !important;
-    padding-top: 1.5rem !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-    width: 100% !important;
-    position: relative !important;
-    z-index: 100 !important;
   }
 </style>
-
-<!-- Emergency Fallback Buttons -->
-<div id="emergency-buttons" style="position: fixed; bottom: 20px; left: 0; right: 0; display: flex; justify-content: center; gap: 20px; z-index: 9999;">
-  <button id="emergency-prev" style="background-color: rgba(255, 255, 255, 0.1); color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; display: none;">Previous</button>
-  <button id="emergency-next" style="background-color: #D4A017; color: #181818; padding: 10px 20px; border-radius: 8px; font-weight: bold;">Next</button>
-  <button id="emergency-submit" style="background-color: #D4A017; color: #181818; padding: 10px 20px; border-radius: 8px; font-weight: bold; display: none;">Submit</button>
-</div>
 
 <script>
   // Emergency JavaScript fix for navigation buttons
