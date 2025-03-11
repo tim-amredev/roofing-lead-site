@@ -134,6 +134,56 @@ src="https://www.facebook.com/tr?id=1602317540415044&ev=PageView&noscript=1"
     font-weight: bold !important;
   }
 </style>
+
+<!-- Emergency CSS fix for questionnaire buttons -->
+<style>
+  /* Fix for the navigation buttons */
+  #next-btn, #submit-btn {
+    background-color: #D4A017 !important;
+    color: #181818 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.75rem 2rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: bold !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 50 !important;
+    min-width: 120px !important;
+    min-height: 48px !important;
+  }
+  
+  #prev-btn {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #FFFFFF !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.75rem 2rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: bold !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 50 !important;
+    min-width: 120px !important;
+    min-height: 48px !important;
+  }
+  
+  /* Fix for button container */
+  .flex.justify-between.pt-6.border-t.border-white\/10 {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 2rem !important;
+    padding-top: 1.5rem !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    width: 100% !important;
+    position: relative !important;
+    z-index: 100 !important;
+  }
+</style>
 </head>
 <body class="min-h-screen flex flex-col bg-secondary-900 text-gray-100">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4">Skip to main content</a>
