@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("Thank you quote script loaded")
+
   const quoteSection = document.getElementById("quote-section")
-  if (!quoteSection) return
+  if (!quoteSection) {
+    console.warn("Quote section not found")
+    return
+  }
 
   // Default form data
   let formData = {
@@ -38,6 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to create a manual submission button
   function createManualSubmissionButton(data) {
     try {
+      console.log("Creating LeadPerfection submission button")
+
       // Create a container for the manual submission
       const manualContainer = document.createElement("div")
       manualContainer.className = "mt-8 p-4 bg-blue-900 bg-opacity-30 rounded-lg max-w-3xl mx-auto text-center"
@@ -82,6 +89,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Add click event to the button
       button.addEventListener("click", function () {
+        console.log("LeadPerfection submit button clicked")
+
         // Show debug info
         const debugInfo = document.getElementById("debug-info")
         if (debugInfo) {
@@ -194,6 +203,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Use XMLHttpRequest for the submission (as shown in the Postman example)
         const xhr = new XMLHttpRequest()
+
+        // Log the URL we're sending to
+        console.log("Sending to LeadPerfection URL:", "https://th97.leadperfection.com/batch/addleads.asp")
+
         xhr.open("POST", "https://th97.leadperfection.com/batch/addleads.asp", true)
 
         // Set the proper content type header (per documentation)
