@@ -38,17 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         })
 
-        // Add validation to ensure we're capturing required fields
-        // Add this right before storing in localStorage:
-
-        // Validate required fields for LeadPerfection
-        if (!formDataObj.zip || !formDataObj.phone) {
-          console.warn("Missing required fields for LeadPerfection:", {
-            hasZip: !!formDataObj.zip,
-            hasPhone: !!formDataObj.phone,
-          })
-        }
-
         // Store in localStorage
         localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
         console.log("Form data saved to localStorage")
