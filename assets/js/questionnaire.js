@@ -167,45 +167,49 @@ document.addEventListener("DOMContentLoaded", () => {
   // Handle form submission
   if (form) {
     form.addEventListener("submit", (e) => {
-      // Store form data in localStorage before submission
-      const formData = new FormData(form)
-      const formDataObj = {}
+      try {
+        // Store form data in localStorage before submission
+        const formData = new FormData(form)
+        const formDataObj = {}
 
-      // Special handling for checkbox arrays
-      const checkboxArrays = {
-        "issues[]": [],
-        "features[]": [],
-      }
-
-      formData.forEach((value, key) => {
-        // Skip FormSubmit's internal fields
-        if (key.startsWith("_")) return
-
-        // Handle checkbox arrays
-        if (key === "issues[]" || key === "features[]") {
-          checkboxArrays[key].push(value)
-        } else {
-          formDataObj[key] = value
+        // Special handling for checkbox arrays
+        const checkboxArrays = {
+          "issues[]": [],
+          "features[]": [],
         }
-      })
 
-      // Add the checkbox arrays to the form data object
-      for (const [key, values] of Object.entries(checkboxArrays)) {
-        if (values.length > 0) {
-          // Store without the [] suffix
-          const cleanKey = key.replace("[]", "")
-          formDataObj[cleanKey] = values
+        formData.forEach((value, key) => {
+          // Skip FormSubmit's internal fields
+          if (key.startsWith("_")) return
+
+          // Handle checkbox arrays
+          if (key === "issues[]" || key === "features[]") {
+            checkboxArrays[key].push(value)
+          } else {
+            formDataObj[key] = value
+          }
+        })
+
+        // Add the checkbox arrays to the form data object
+        for (const [key, values] of Object.entries(checkboxArrays)) {
+          if (values.length > 0) {
+            // Store without the [] suffix
+            const cleanKey = key.replace("[]", "")
+            formDataObj[cleanKey] = values
+          }
         }
-      }
 
-      // Add name for personalization on thank you page
-      if (formDataObj.firstname) {
-        formDataObj.name = formDataObj.firstname + (formDataObj.lastname ? " " + formDataObj.lastname : "")
-      }
+        // Add name for personalization on thank you page
+        if (formDataObj.firstname) {
+          formDataObj.name = formDataObj.firstname + (formDataObj.lastname ? " " + formDataObj.lastname : "")
+        }
 
-      // Save to localStorage
-      console.log("Saving form data to localStorage:", formDataObj)
-      localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
+        // Save to localStorage
+        console.log("Saving form data to localStorage:", formDataObj)
+        localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
+      } catch (error) {
+        console.error("Error saving form data on submit:", error)
+      }
     })
   }
 })
