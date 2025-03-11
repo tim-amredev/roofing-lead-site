@@ -184,6 +184,24 @@ src="https://www.facebook.com/tr?id=1602317540415044&ev=PageView&noscript=1"
     z-index: 100 !important;
   }
 </style>
+
+<!-- LeadPerfection CORS Fix -->
+<script>
+  // Add CORS headers for LeadPerfection
+  if (window.XMLHttpRequest) {
+    var originalXHROpen = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function() {
+      var result = originalXHROpen.apply(this, arguments);
+      if (arguments[1] && arguments[1].includes('leadperfection.com')) {
+        console.log('Detected LeadPerfection request, adding CORS headers');
+        this.setRequestHeader('Access-Control-Allow-Origin', '*');
+        this.setRequestHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        this.setRequestHeader('Access-Control-Allow-Headers', 'Content-Type');
+      }
+      return result;
+    };
+  }
+</script>
 </head>
 <body class="min-h-screen flex flex-col bg-secondary-900 text-gray-100">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4">Skip to main content</a>
