@@ -6,8 +6,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressBar = document.getElementById("progress-bar")
   const progressText = document.getElementById("progress-text")
   const currentStepText = document.getElementById("current-step")
-  const prevBtn = document.getElementById("prev-btn")
-  const nextBtn = document.getElementById("next-btn")
+
+  // Get all prev and next buttons by their step-specific IDs
+  const prevButtons = [
+    document.getElementById("prev-btn-1"),
+    document.getElementById("prev-btn-2"),
+    document.getElementById("prev-btn-3"),
+    document.getElementById("prev-btn-4"),
+    document.getElementById("prev-btn-5"),
+  ]
+
+  const nextButtons = [
+    document.getElementById("next-btn-1"),
+    document.getElementById("next-btn-2"),
+    document.getElementById("next-btn-3"),
+    document.getElementById("next-btn-4"),
+  ]
+
   const submitBtn = document.getElementById("submit-btn")
 
   let currentStep = 0
@@ -23,6 +38,20 @@ document.addEventListener("DOMContentLoaded", () => {
       this.classList.add("selected")
       // Update hidden input
       document.getElementById("desired_material").value = this.dataset.value
+      console.log("Material selected:", this.dataset.value)
+
+      // Add visual feedback
+      const allCardDivs = document.querySelectorAll(".material-card > div")
+      allCardDivs.forEach((div) => {
+        div.style.borderColor = "rgba(255, 255, 255, 0.1)"
+        div.style.boxShadow = "none"
+      })
+
+      const selectedDiv = this.querySelector("div")
+      if (selectedDiv) {
+        selectedDiv.style.borderColor = "#D4A017"
+        selectedDiv.style.boxShadow = "0 0 0 2px #D4A017"
+      }
     })
   })
 
@@ -36,6 +65,20 @@ document.addEventListener("DOMContentLoaded", () => {
       this.classList.add("selected")
       // Update hidden input
       document.getElementById("roof_type").value = this.dataset.value
+      console.log("Roof type selected:", this.dataset.value)
+
+      // Add visual feedback
+      const allCardDivs = document.querySelectorAll(".roof-type-card > div")
+      allCardDivs.forEach((div) => {
+        div.style.borderColor = "rgba(255, 255, 255, 0.1)"
+        div.style.boxShadow = "none"
+      })
+
+      const selectedDiv = this.querySelector("div")
+      if (selectedDiv) {
+        selectedDiv.style.borderColor = "#D4A017"
+        selectedDiv.style.boxShadow = "0 0 0 2px #D4A017"
+      }
     })
   })
 
@@ -62,45 +105,53 @@ document.addEventListener("DOMContentLoaded", () => {
       currentStepText.textContent = (stepIndex + 1).toString()
     }
 
-    // Show/hide buttons based on step
-    const currentStepElement = steps[stepIndex]
-    const prevButton = currentStepElement.querySelector("#prev-btn")
-    const nextButton = currentStepElement.querySelector("#next-btn")
-    const submitButton = currentStepElement.querySelector("#submit-btn")
-
-    if (prevButton) {
-      prevButton.style.display = stepIndex === 0 ? "none" : "flex"
-    }
-
-    if (nextButton && submitButton) {
-      nextButton.style.display = stepIndex === totalSteps - 1 ? "none" : "flex"
-      submitButton.style.display = stepIndex === totalSteps - 1 ? "flex" : "none"
-    }
-  }
-
-  // Handle next button click
-  if (nextBtn) {
-    nextBtn.addEventListener("click", (e) => {
-      e.preventDefault()
-      if (currentStep < totalSteps - 1) {
-        currentStep++
-        showStep(currentStep)
-        window.scrollTo(0, 0)
+    // Show/hide previous buttons based on current step
+    prevButtons.forEach((btn, index) => {
+      if (btn) {
+        btn.style.display = index === stepIndex && stepIndex > 0 ? "flex" : "none"
       }
     })
-  }
 
-  // Handle previous button click
-  if (prevBtn) {
-    prevBtn.addEventListener("click", (e) => {
-      e.preventDefault()
-      if (currentStep > 0) {
-        currentStep--
-        showStep(currentStep)
-        window.scrollTo(0, 0)
+    // Show/hide next buttons based on current step
+    nextButtons.forEach((btn, index) => {
+      if (btn) {
+        btn.style.display = index === stepIndex ? "flex" : "none"
       }
     })
+
+    // Show/hide submit button on last step
+    if (submitBtn) {
+      submitBtn.style.display = stepIndex === totalSteps - 1 ? "flex" : "none"
+    }
   }
+
+  // Handle next button clicks
+  nextButtons.forEach((btn, index) => {
+    if (btn) {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault()
+        if (currentStep < totalSteps - 1) {
+          currentStep++
+          showStep(currentStep)
+          window.scrollTo(0, 0)
+        }
+      })
+    }
+  })
+
+  // Handle previous button clicks
+  prevButtons.forEach((btn, index) => {
+    if (btn) {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault()
+        if (currentStep > 0) {
+          currentStep--
+          showStep(currentStep)
+          window.scrollTo(0, 0)
+        }
+      })
+    }
+  })
 
   // Initialize the first step
   showStep(currentStep)
