@@ -897,12 +897,93 @@ js: questionnaire leadperfection-integration
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    console.log("Direct navigation script loaded");
+    
+    // Get all steps
+    const steps = document.querySelectorAll('.questionnaire-step');
+    const progressBar = document.getElementById('progress-bar');
+    const currentStepText = document.getElementById('current-step');
+    let currentStep = 0;
+    const totalSteps = steps.length;
+    
+    // Get all navigation buttons
+    const nextButtons = [
+      document.getElementById('next-btn-1'),
+      document.getElementById('next-btn-2'),
+      document.getElementById('next-btn-3'),
+      document.getElementById('next-btn-4')
+    ];
+    
+    const prevButtons = [
+      document.getElementById('prev-btn-1'),
+      document.getElementById('prev-btn-2'),
+      document.getElementById('prev-btn-3'),
+      document.getElementById('prev-btn-4'),
+      document.getElementById('prev-btn-5')
+    ];
+    
+    const submitBtn = document.getElementById('submit-btn');
+    
+    // Function to show a specific step
+    function showStep(stepIndex) {
+      console.log("Direct navigation: Showing step", stepIndex);
+      
+      // Hide all steps
+      steps.forEach((step, index) => {
+        if (index === stepIndex) {
+          step.classList.remove('hidden');
+        } else {
+          step.classList.add('hidden');
+        }
+      });
+      
+      // Update progress
+      if (progressBar) {
+        const progress = ((stepIndex + 1) / totalSteps) * 100;
+        progressBar.style.width = `${progress}%`;
+      }
+      
+      if (currentStepText) {
+        currentStepText.textContent = (stepIndex + 1).toString();
+      }
+    }
+    
+    // Add click handlers to next buttons
+    nextButtons.forEach((btn, index) => {
+      if (btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          console.log(`Direct navigation: Next button ${index + 1} clicked`);
+          currentStep++;
+          showStep(currentStep);
+          window.scrollTo(0, 0);
+        });
+      }
+    });
+    
+    // Add click handlers to previous buttons
+    prevButtons.forEach((btn, index) => {
+      if (btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          console.log(`Direct navigation: Previous button ${index + 1} clicked`);
+          currentStep--;
+          showStep(currentStep);
+          window.scrollTo(0, 0);
+        });
+      }
+    });
+    
+    // Initialize first step
+    showStep(currentStep);
+    
     // Material selection logic
     const materialCards = document.querySelectorAll('.material-card');
     const desiredMaterialInput = document.getElementById('desired_material');
 
     materialCards.forEach(card => {
       card.addEventListener('click', function() {
+        console.log("Material card clicked:", this.dataset.value);
         // Remove 'selected' class from all cards
         materialCards.forEach(c => c.classList.remove('selected'));
 
@@ -911,6 +992,19 @@ js: questionnaire leadperfection-integration
 
         // Set the value of the hidden input
         desiredMaterialInput.value = this.dataset.value;
+        
+        // Add visual feedback
+        const allCardDivs = document.querySelectorAll(".material-card > div");
+        allCardDivs.forEach(div => {
+          div.style.borderColor = "rgba(255, 255, 255, 0.1)";
+          div.style.boxShadow = "none";
+        });
+        
+        const selectedDiv = this.querySelector("div");
+        if (selectedDiv) {
+          selectedDiv.style.borderColor = "#D4A017";
+          selectedDiv.style.boxShadow = "0 0 0 2px #D4A017";
+        }
       });
     });
 
@@ -920,6 +1014,7 @@ js: questionnaire leadperfection-integration
 
     roofTypeCards.forEach(card => {
       card.addEventListener('click', function() {
+        console.log("Roof type card clicked:", this.dataset.value);
         // Remove 'selected' class from all cards
         roofTypeCards.forEach(c => c.classList.remove('selected'));
 
@@ -928,6 +1023,19 @@ js: questionnaire leadperfection-integration
 
         // Set the value of the hidden input
         roofTypeInput.value = this.dataset.value;
+        
+        // Add visual feedback
+        const allCardDivs = document.querySelectorAll(".roof-type-card > div");
+        allCardDivs.forEach(div => {
+          div.style.borderColor = "rgba(255, 255, 255, 0.1)";
+          div.style.boxShadow = "none";
+        });
+        
+        const selectedDiv = this.querySelector("div");
+        if (selectedDiv) {
+          selectedDiv.style.borderColor = "#D4A017";
+          selectedDiv.style.boxShadow = "0 0 0 2px #D4A017";
+        }
       });
     });
   });
