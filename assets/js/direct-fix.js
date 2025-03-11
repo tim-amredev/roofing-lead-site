@@ -218,7 +218,38 @@ document.addEventListener("DOMContentLoaded", () => {
               "click",
               () => {
                 // Submit the form
-                if (form) form.submit()
+                if (form) {
+                  console.log("Emergency submit button clicked, submitting form")
+
+                  // Store form data for LeadPerfection before submitting
+                  try {
+                    const formData = new FormData(form)
+                    const formDataObj = {}
+
+                    formData.forEach((value, key) => {
+                      // Skip FormSubmit's internal fields
+                      if (key.startsWith("_")) return
+
+                      // Handle checkbox arrays
+                      if (key.endsWith("[]")) {
+                        const cleanKey = key.replace("[]", "")
+                        if (!formDataObj[cleanKey]) {
+                          formDataObj[cleanKey] = []
+                        }
+                        formDataObj[cleanKey].push(value)
+                      } else {
+                        formDataObj[key] = value
+                      }
+                    })
+
+                    localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
+                    console.log("Form data saved to localStorage from emergency button")
+                  } catch (error) {
+                    console.error("Error saving form data from emergency button:", error)
+                  }
+
+                  form.submit()
+                }
               },
               { once: true },
             )
