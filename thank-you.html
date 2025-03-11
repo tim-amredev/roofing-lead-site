@@ -89,19 +89,33 @@ js: thank-you-quote
       </div>
     </div>
   </div>
-<script>
-// Debug script to check localStorage
-document.addEventListener('DOMContentLoaded', function() {
-  console.log("Thank you page loaded");
-
-  // Check if we have form data in localStorage
-  try {
-    const storedData = localStorage.getItem("roofingFormData");
-    console.log("Form data in localStorage:", storedData ? JSON.parse(storedData) : "None");
-  } catch (e) {
-    console.error("Error checking localStorage:", e);
-  }
-});
-</script>
+  
+  <!-- Hidden div for debugging -->
+  <div id="debug-info" style="display: none;"></div>
+  
+  <script>
+  // Debug script to check localStorage
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log("Thank you page loaded");
+    
+    // Check if we have form data in localStorage
+    try {
+      const storedData = localStorage.getItem("roofingFormData");
+      const debugInfo = document.getElementById("debug-info");
+      
+      if (debugInfo) {
+        debugInfo.innerHTML = "Form data in localStorage: " + (storedData ? "Yes" : "No");
+        if (storedData) {
+          const parsedData = JSON.parse(storedData);
+          debugInfo.innerHTML += "<br>Data: " + JSON.stringify(parsedData);
+        }
+      }
+      
+      console.log("Form data in localStorage:", storedData ? JSON.parse(storedData) : "None");
+    } catch (e) {
+      console.error("Error checking localStorage:", e);
+    }
+  });
+  </script>
 </section>
 
