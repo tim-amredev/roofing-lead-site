@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Store in localStorage
         localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
-        console.log("Form data saved to localStorage")
+        console.log("Form data saved to localStorage for LeadPerfection integration")
       } catch (error) {
         console.error("Error saving form data:", error)
       }
