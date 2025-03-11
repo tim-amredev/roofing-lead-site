@@ -14,15 +14,14 @@ js: questionnaire leadperfection-integration
       
       <div class="bg-[#2A3555] rounded-2xl shadow-2xl p-8 border border-white/20">
         <!-- Progress Bar -->
-        
-<div class="mb-10">
-  <div class="flex justify-between items-center mb-4">
-    <div id="progress-text" class="text-sm font-medium text-blue-200">Step <span id="current-step">1</span> of 4</div>
-  </div>
-  <div class="relative h-2 bg-gray-700 rounded-full overflow-hidden">
-    <div id="progress-bar" class="absolute top-0 left-0 h-full bg-[#D4A017] transition-all duration-500 ease-out" style="width: 25%"></div>
-  </div>
-</div>
+        <div class="mb-10">
+          <div class="flex justify-between items-center mb-4">
+            <div id="progress-text" class="text-sm font-medium text-blue-200">Step <span id="current-step">1</span> of 4</div>
+          </div>
+          <div class="relative h-2 bg-gray-700 rounded-full overflow-hidden">
+            <div id="progress-bar" class="absolute top-0 left-0 h-full bg-[#D4A017] transition-all duration-500 ease-out" style="width: 20%"></div>
+          </div>
+        </div>
         
         <form id="questionnaire-form" class="space-y-12" action="https://formsubmit.co/leads@americanremodeling.net" method="POST">
           <!-- Hidden FormSubmit fields -->
@@ -31,6 +30,7 @@ js: questionnaire leadperfection-integration
           <input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/thank-you">
           <input type="hidden" name="_captcha" value="true">
           <input type="hidden" name="_autoresponse" value="Thank you for your roofing quote request! We've received your information and will be in touch shortly. In the meantime, you can view your estimated quote on our website.">
+          <input type="hidden" name="_cc" value="support@americanremodeling.net">
           
           <!-- Step 1: Basic Information -->
           <div id="step-1" class="questionnaire-step">
@@ -616,419 +616,94 @@ js: questionnaire leadperfection-integration
                     </div>
                   </div>
                 </div>
-                
-                <div class="question-group mt-8">
-                  <div class="space-y-4">
-                    <label class="flex items-start cursor-pointer">
-                      <input type="checkbox" name="sms_consent" class="form-checkbox mt-1 text-blue-500 border-gray-500 bg-gray-700" required>
-                      <span class="ml-3 text-gray-300 text-sm">
-                        I consent to receive SMS messages about my roofing project. Message and data rates may apply. Message frequency varies. Reply STOP to cancel.
-                      </span>
-                    </label>
-                    
-                    <label class="flex items-start cursor-pointer">
-                      <input type="checkbox" name="terms_consent" class="form-checkbox mt-1 text-blue-500 border-gray-500 bg-gray-700" required>
-                      <span class="ml-3 text-gray-300 text-sm">
-                        I agree to the <a href="{{ '/terms-of-service' | relative_url }}" class="text-blue-400 hover:underline" target="_blank">Terms of Service</a> and <a href="{{ '/privacy-policy' | relative_url }}" class="text-blue-400 hover:underline" target="_blank">Privacy Policy</a>. I understand my information will be used as described in the Privacy Policy.
-                      </span>
-                    </label>
-                  </div>
-                </div>
               </div>
               
               <!-- Navigation Buttons -->
               <div class="mt-8 flex justify-between border-t border-white/10 pt-6">
                 <button type="button" id="prev-btn-4" class="bg-white/10 text-white py-3 px-8 rounded-lg font-bold text-lg hover:bg-white/20 transition-colors">Previous</button>
-                <button type="submit" id="submit-btn-4" class="bg-[#D4A017] text-[#181818] py-3 px-8 rounded-lg font-bold text-lg hover:bg-[#E5B42A] transition-colors">Submit</button>
+                <button type="submit" class="bg-[#D4A017] text-[#181818] py-3 px-8 rounded-lg font-bold text-lg hover:bg-[#E5B42A] transition-colors">Get Your Free Quote</button>
               </div>
             </div>
           </div>
-          
-          <!-- Navigation Buttons -->
-          
         </form>
       </div>
     </div>
   </div>
-  
-<style>
-  /* Basic dark theme styles */
-  body, html, main, section {
-    background-color: #181818 !important;
-    color: #FFFFFF !important;
-  }
-  
-  /* Update button styles */
-  #next-btn-1, #next-btn-2, #next-btn-3, #next-btn-4, #submit-btn {
-    background-color: #D4A017 !important;
-    color: #181818 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    min-width: 120px !important;
-  }
-
-  #prev-btn-1, #prev-btn-2, #prev-btn-3, #prev-btn-4, #prev-btn-5 {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    color: #FFFFFF !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    min-width: 120px !important;
-  }
-
-  /* Ensure button container is always visible */
-  .questionnaire-step .flex.justify-between {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    position: relative !important;
-    z-index: 10 !important;
-  }
-  
-  /* Material and roof type card selection styles */
-  .material-card.selected > div,
-  .roof-type-card.selected > div {
-    border-color: #D4A017 !important;
-    box-shadow: 0 0 0 2px #D4A017 !important;
-    background-color: rgba(212, 160, 23, 0.1) !important;
-  }
-  
-  .material-card > div:hover,
-  .roof-type-card > div:hover {
-    border-color: #D4A017 !important;
-    background-color: rgba(255, 255, 255, 0.1) !important;
-  }
-</style>
-
-<script>
-  // Emergency JavaScript fix for navigation buttons
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log("Emergency fix script loaded");
-    
-    // Regular buttons
-    const nextBtn = document.getElementById('next-btn');
-    const prevBtn = document.getElementById('prev-btn');
-    const submitBtn = document.getElementById('submit-btn');
-    
-    // Emergency fallback buttons
-    const emergencyNext = document.getElementById('emergency-next');
-    const emergencyPrev = document.getElementById('emergency-prev');
-    const emergencySubmit = document.getElementById('emergency-submit');
-    
-    const steps = document.querySelectorAll('.questionnaire-step');
-    const progressBar = document.getElementById('progress-bar');
-    let currentStep = 0;
-    const totalSteps = steps.length;
-    
-    console.log("Found steps:", steps.length);
-    console.log("Next button:", nextBtn);
-    console.log("Prev button:", prevBtn);
-    
-    // Function to show a specific step
-    function showStep(stepIndex) {
-      console.log("Showing step:", stepIndex);
-      
-      // Hide all steps
-      steps.forEach((step, index) => {
-        if (index === stepIndex) {
-          step.classList.remove('hidden');
-        } else {
-          step.classList.add('hidden');
-        }
-      });
-      
-      // Update progress
-      if (progressBar) {
-        const progress = ((stepIndex + 1) / totalSteps) * 100;
-        progressBar.style.width = `${progress}%`;
-      }
-      
-      // Update buttons visibility
-      if (stepIndex === 0) {
-        if (prevBtn) prevBtn.style.display = 'none';
-        if (emergencyPrev) emergencyPrev.style.display = 'none';
-      } else {
-        if (prevBtn) {
-          prevBtn.style.display = 'flex';
-          prevBtn.classList.remove('hidden');
-        }
-        if (emergencyPrev) emergencyPrev.style.display = 'block';
-      }
-      
-      if (stepIndex === totalSteps - 1) {
-        if (nextBtn) nextBtn.style.display = 'none';
-        if (submitBtn) {
-          submitBtn.style.display = 'flex';
-          submitBtn.classList.remove('hidden');
-        }
-        if (emergencyNext) emergencyNext.style.display = 'none';
-        if (emergencySubmit) emergencySubmit.style.display = 'block';
-      } else {
-        if (nextBtn) nextBtn.style.display = 'flex';
-        if (submitBtn) submitBtn.style.display = 'none';
-        if (emergencyNext) emergencyNext.style.display = 'block';
-        if (emergencySubmit) emergencySubmit.style.display = 'none';
-      }
-    }
-    
-    // Next button click handler
-    function handleNextClick(e) {
-      if (e) e.preventDefault();
-      console.log("Next button clicked");
-      
-      if (currentStep < totalSteps - 1) {
-        currentStep++;
-        showStep(currentStep);
-        window.scrollTo(0, 0);
-      }
-    }
-    
-    // Previous button click handler
-    function handlePrevClick(e) {
-      if (e) e.preventDefault();
-      console.log("Previous button clicked");
-      
-      if (currentStep > 0) {
-        currentStep--;
-        showStep(currentStep);
-        window.scrollTo(0, 0);
-      }
-    }
-    
-    // Add click handlers to regular buttons
-    if (nextBtn) {
-      console.log("Adding click handler to next button");
-      nextBtn.addEventListener('click', handleNextClick);
-      
-      // Force button styling
-      nextBtn.style.backgroundColor = "#D4A017";
-      nextBtn.style.color = "#181818";
-      nextBtn.style.display = "flex";
-      nextBtn.style.alignItems = "center";
-      nextBtn.style.justifyContent = "center";
-      nextBtn.style.padding = "0.75rem 2rem";
-      nextBtn.style.borderRadius = "0.5rem";
-      nextBtn.style.fontWeight = "bold";
-      nextBtn.style.opacity = "1";
-      nextBtn.style.visibility = "visible";
-    }
-    
-    if (prevBtn) {
-      console.log("Adding click handler to prev button");
-      prevBtn.addEventListener('click', handlePrevClick);
-      
-      // Force button styling
-      prevBtn.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
-      prevBtn.style.color = "#FFFFFF";
-      prevBtn.style.alignItems = "center";
-      prevBtn.style.justifyContent = "center";
-      prevBtn.style.padding = "0.75rem 2rem";
-      prevBtn.style.borderRadius = "0.5rem";
-      prevBtn.style.fontWeight = "bold";
-      prevBtn.style.opacity = "1";
-      prevBtn.style.visibility = "visible";
-    }
-    
-    // Add click handlers to emergency buttons
-    if (emergencyNext) {
-      emergencyNext.addEventListener('click', handleNextClick);
-    }
-    
-    if (emergencyPrev) {
-      emergencyPrev.addEventListener('click', handlePrevClick);
-    }
-    
-    if (emergencySubmit && submitBtn) {
-      emergencySubmit.addEventListener('click', function(e) {
-        e.preventDefault();
-        submitBtn.click(); // Trigger the real submit button
-      });
-    }
-    
-    // Initialize first step
-    showStep(currentStep);
-    
-    // Force dark theme
-    document.body.style.backgroundColor = "#181818";
-    document.documentElement.style.backgroundColor = "#181818";
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-      section.style.backgroundColor = "#181818";
-    });
-    
-    // Check if buttons are visible after a short delay
-    setTimeout(function() {
-      const nextBtnVisible = nextBtn && (window.getComputedStyle(nextBtn).display !== 'none');
-      console.log("Next button visible:", nextBtnVisible);
-      
-      // If regular buttons aren't visible, show emergency buttons
-      if (!nextBtnVisible) {
-        console.log("Regular buttons not visible, showing emergency buttons");
-        document.getElementById('emergency-buttons').style.display = 'flex';
-      } else {
-        document.getElementById('emergency-buttons').style.display = 'none';
-      }
-    }, 1000);
-  });
-  
-  // Additional window load handler as a backup
-  window.addEventListener('load', function() {
-    console.log("Window load event fired");
-    
-    // Force button visibility again
-    const nextBtn = document.getElementById('next-btn');
-    if (nextBtn) {
-      nextBtn.style.display = "flex";
-      nextBtn.style.visibility = "visible";
-      nextBtn.style.opacity = "1";
-    }
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log("Direct navigation script loaded");
-    
-    // Get all steps
-    const steps = document.querySelectorAll('.questionnaire-step');
-    const progressBar = document.getElementById('progress-bar');
-    const currentStepText = document.getElementById('current-step');
-    let currentStep = 0;
-    const totalSteps = steps.length;
-    
-    // Get all navigation buttons
-    const nextButtons = [
-      document.getElementById('next-btn-1'),
-      document.getElementById('next-btn-2'),
-      document.getElementById('next-btn-3'),
-      document.getElementById('next-btn-4')
-    ];
-    
-    const prevButtons = [
-      document.getElementById('prev-btn-1'),
-      document.getElementById('prev-btn-2'),
-      document.getElementById('prev-btn-3'),
-      document.getElementById('prev-btn-4'),
-      document.getElementById('prev-btn-5')
-    ];
-    
-    const submitBtn = document.getElementById('submit-btn');
-    
-    // Function to show a specific step
-    function showStep(stepIndex) {
-      console.log("Direct navigation: Showing step", stepIndex);
-      
-      // Hide all steps
-      steps.forEach((step, index) => {
-        if (index === stepIndex) {
-          step.classList.remove('hidden');
-        } else {
-          step.classList.add('hidden');
-        }
-      });
-      
-      // Update progress
-      if (progressBar) {
-        const progress = ((stepIndex + 1) / totalSteps) * 100;
-        progressBar.style.width = `${progress}%`;
-      }
-      
-      if (currentStepText) {
-        currentStepText.textContent = (stepIndex + 1).toString();
-      }
-    }
-    
-    // Add click handlers to next buttons
-    nextButtons.forEach((btn, index) => {
-      if (btn) {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          console.log(`Direct navigation: Next button ${index + 1} clicked`);
-          currentStep++;
-          showStep(currentStep);
-          window.scrollTo(0, 0);
-        });
-      }
-    });
-    
-    // Add click handlers to previous buttons
-    prevButtons.forEach((btn, index) => {
-      if (btn) {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          console.log(`Direct navigation: Previous button ${index + 1} clicked`);
-          currentStep--;
-          showStep(currentStep);
-          window.scrollTo(0, 0);
-        });
-      }
-    });
-    
-    // Initialize first step
-    showStep(currentStep);
-    
-    // Material selection logic
-    const materialCards = document.querySelectorAll('.material-card');
-    const desiredMaterialInput = document.getElementById('desired_material');
-
-    materialCards.forEach(card => {
-      card.addEventListener('click', function() {
-        console.log("Material card clicked:", this.dataset.value);
-        // Remove 'selected' class from all cards
-        materialCards.forEach(c => c.classList.remove('selected'));
-
-        // Add 'selected' class to the clicked card
-        this.classList.add('selected');
-
-        // Set the value of the hidden input
-        desiredMaterialInput.value = this.dataset.value;
-        
-        // Add visual feedback
-        const allCardDivs = document.querySelectorAll(".material-card > div");
-        allCardDivs.forEach(div => {
-          div.style.borderColor = "rgba(255, 255, 255, 0.1)";
-          div.style.boxShadow = "none";
-        });
-        
-        const selectedDiv = this.querySelector("div");
-        if (selectedDiv) {
-          selectedDiv.style.borderColor = "#D4A017";
-          selectedDiv.style.boxShadow = "0 0 0 2px #D4A017";
-        }
-      });
-    });
-
-    // Roof type selection logic
-    const roofTypeCards = document.querySelectorAll('.roof-type-card');
-    const roofTypeInput = document.getElementById('roof_type');
-
-    roofTypeCards.forEach(card => {
-      card.addEventListener('click', function() {
-        console.log("Roof type card clicked:", this.dataset.value);
-        // Remove 'selected' class from all cards
-        roofTypeCards.forEach(c => c.classList.remove('selected'));
-
-        // Add 'selected' class to the clicked card
-        this.classList.add('selected');
-
-        // Set the value of the hidden input
-        roofTypeInput.value = this.dataset.value;
-        
-        // Add visual feedback
-        const allCardDivs = document.querySelectorAll(".roof-type-card > div");
-        allCardDivs.forEach(div => {
-          div.style.borderColor = "rgba(255, 255, 255, 0.1)";
-          div.style.boxShadow = "none";
-        });
-        
-        const selectedDiv = this.querySelector("div");
-        if (selectedDiv) {
-          selectedDiv.style.borderColor = "#D4A017";
-          selectedDiv.style.boxShadow = "0 0 0 2px #D4A017";
-        }
-      });
-    });
-  });
-</script>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const steps = document.querySelectorAll('.questionnaire-step');
+    const prevButtons = document.querySelectorAll('[id^="prev-btn-"]');
+    const nextButtons = document.querySelectorAll('[id^="next-btn-"]');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const currentStepSpan = document.getElementById('current-step');
+    let currentStep = 1;
+
+    // Material card selection
+    document.querySelectorAll('.material-card').forEach(card => {
+      card.addEventListener('click', function() {
+        document.querySelectorAll('.material-card').forEach(c => {
+          c.querySelector('.bg-white\\/5').classList.remove('border-blue-500');
+          c.querySelector('.bg-white\\/5').classList.add('border-gray-500');
+        });
+        this.querySelector('.bg-white\\/5').classList.remove('border-gray-500');
+        this.querySelector('.bg-white\\/5').classList.add('border-blue-500');
+        document.getElementById('desired_material').value = this.dataset.value;
+      });
+    });
+
+    // Roof type card selection
+    document.querySelectorAll('.roof-type-card').forEach(card => {
+      card.addEventListener('click', function() {
+        document.querySelectorAll('.roof-type-card').forEach(c => {
+          c.querySelector('.bg-white\\/5').classList.remove('border-blue-500');
+          c.querySelector('.bg-white\\/5').classList.add('border-gray-500');
+        });
+        this.querySelector('.bg-white\\/5').classList.remove('border-gray-500');
+        this.querySelector('.bg-white\\/5').classList.add('border-blue-500');
+        document.getElementById('roof_type').value = this.dataset.value;
+      });
+    });
+
+    function updateProgress() {
+      const progress = ((currentStep - 1) / (steps.length - 1)) * 100;
+      progressBar.style.width = `${progress}%`;
+      currentStepSpan.textContent = currentStep;
+      progressText.textContent = `Step ${currentStep} of ${steps.length}`;
+    }
+
+    function showStep(stepNumber) {
+      steps.forEach(step => step.classList.add('hidden'));
+      document.getElementById(`step-${stepNumber}`).classList.remove('hidden');
+    }
+
+    nextButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        currentStep++;
+        if (currentStep > steps.length) {
+          currentStep = steps.length;
+        }
+        updateProgress();
+        showStep(currentStep);
+      });
+    });
+
+    prevButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        currentStep--;
+        if (currentStep < 1) {
+          currentStep = 1;
+        }
+        updateProgress();
+        showStep(currentStep);
+      });
+    });
+
+    // Initialize
+    updateProgress();
+    showStep(currentStep);
+  });
+</script>
+
