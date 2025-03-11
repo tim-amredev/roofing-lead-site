@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   })
 
-  // Show the current step
+  // Fix the step navigation functionality
   function showStep(stepIndex) {
     steps.forEach((step, index) => {
       if (index === stepIndex) {
@@ -75,13 +75,57 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Go to next step
+  // Fix the next step validation
   function nextStep() {
-    if (currentStep < totalSteps - 1) {
-      currentStep++
-      showStep(currentStep)
-      window.scrollTo(0, 0)
+    // Validate current step before proceeding
+    if (validateCurrentStep(currentStep)) {
+      if (currentStep < totalSteps - 1) {
+        currentStep++
+        showStep(currentStep)
+        window.scrollTo(0, 0)
+      }
     }
+  }
+
+  // Add validation function for each step
+  function validateCurrentStep(step) {
+    // Step 1 validation
+    if (step === 0) {
+      const reason = document.querySelector('input[name="reason"]:checked')
+      const roofAge = document.querySelector('input[name="roof_age"]:checked')
+      const squareFootage = document.querySelector('input[name="square_footage"]:checked')
+
+      if (!reason || !roofAge || !squareFootage) {
+        alert("Please answer all questions before proceeding.")
+        return false
+      }
+    }
+
+    // Step 2 validation
+    else if (step === 1) {
+      const currentMaterial = document.querySelector('input[name="current_material"]:checked')
+      const desiredMaterial = document.getElementById("desired_material").value
+      const roofType = document.getElementById("roof_type").value
+
+      if (!currentMaterial || !desiredMaterial || !roofType) {
+        alert("Please select your current material, desired material, and roof type.")
+        return false
+      }
+    }
+
+    // Step 3 validation
+    else if (step === 2) {
+      // At least one issue should be selected
+      const issues = document.querySelectorAll('input[name="issues[]"]:checked')
+      const timeframe = document.querySelector('input[name="timeframe"]:checked')
+
+      if (issues.length === 0 || !timeframe) {
+        alert("Please select at least one issue and your project timeframe.")
+        return false
+      }
+    }
+
+    return true
   }
 
   // Go to previous step
