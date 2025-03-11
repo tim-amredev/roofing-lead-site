@@ -185,22 +185,76 @@ src="https://www.facebook.com/tr?id=1602317540415044&ev=PageView&noscript=1"
   }
 </style>
 
-<!-- LeadPerfection CORS Fix -->
+<!-- Improved CORS fix for LeadPerfection -->
 <script>
-  // Add CORS headers for LeadPerfection
-  if (window.XMLHttpRequest) {
-    var originalXHROpen = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function() {
-      var result = originalXHROpen.apply(this, arguments);
-      if (arguments[1] && arguments[1].includes('leadperfection.com')) {
-        console.log('Detected LeadPerfection request, adding CORS headers');
-        this.setRequestHeader('Access-Control-Allow-Origin', '*');
-        this.setRequestHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-        this.setRequestHeader('Access-Control-Allow-Headers', 'Content-Type');
+// Improved CORS fix for LeadPerfection
+(function() {
+  console.log('Setting up LeadPerfection CORS and request interceptor');
+  
+  // Create a proxy for XMLHttpRequest
+  const originalXHR = window.XMLHttpRequest;
+  
+  function newXHR() {
+    const xhr = new originalXHR();
+    const originalOpen = xhr.open;
+    const originalSend = xhr.send;
+    
+    // Override the open method
+    xhr.open = function() {
+      const method = arguments[0];
+      const url = arguments[1];
+      
+      // Log all outgoing requests for debugging
+      console.log(`XHR Request: ${method} ${url}`);
+      
+      // Check if this is a LeadPerfection request
+      if (url && typeof url === 'string' && url.includes('leadperfection.com')) {
+        console.log('LeadPerfection request detected, applying special handling');
+        
+        // Add event listeners for better debugging
+        xhr.addEventListener('load', function() {
+          console.log(`LeadPerfection response received: ${xhr.status} ${xhr.statusText}`);
+          console.log('Response:', xhr.responseText);
+        });
+        
+        xhr.addEventListener('error', function() {
+          console.error('LeadPerfection request failed');
+        });
+        
+        // Set longer timeout for LeadPerfection requests
+        xhr.timeout = 60000; // 60 seconds
+        
+        xhr.addEventListener('timeout', function() {
+          console.error('LeadPerfection request timed out');
+        });
       }
-      return result;
+      
+      return originalOpen.apply(this, arguments);
     };
+    
+    // Override the send method
+    xhr.send = function() {
+      // Log the data being sent
+      if (arguments[0] && typeof arguments[0] === 'string') {
+        console.log('Sending data:', arguments[0]);
+      }
+      
+      return originalSend.apply(this, arguments);
+    };
+    
+    return xhr;
   }
+  
+  // Replace the global XMLHttpRequest with our proxy
+  window.XMLHttpRequest = newXHR;
+  
+  // Also add a global error handler to catch any unhandled errors
+  window.addEventListener('error', function(event) {
+    console.error('Global error caught:', event.error);
+  });
+  
+  console.log('LeadPerfection request interceptor setup complete');
+})();
 </script>
 </head>
 <body class="min-h-screen flex flex-col bg-secondary-900 text-gray-100">
