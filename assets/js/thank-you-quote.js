@@ -26,8 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
       formData = { ...formData, ...parsedData }
       console.log("Retrieved form data from localStorage:", formData)
 
-      // Create a hidden iframe for the LeadPerfection submission
-      createLeadPerfectionSubmission(formData)
+      // Send data to LeadPerfection using URL-encoded form submission
+      sendToLeadPerfection(formData)
     } else {
       console.log("No form data found in localStorage")
     }
@@ -35,33 +35,38 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Error retrieving form data:", error)
   }
 
-  // Function to create a hidden iframe and form for LeadPerfection submission
-  function createLeadPerfectionSubmission(data) {
+  // Function to send data to LeadPerfection using URL-encoded form submission
+  function sendToLeadPerfection(data) {
     try {
-      // Create a hidden iframe
-      const iframe = document.createElement("iframe")
-      iframe.style.display = "none"
-      document.body.appendChild(iframe)
+      console.log("Preparing to send data to LeadPerfection...")
 
-      // Create a form inside the iframe
-      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document
-      const form = iframeDoc.createElement("form")
+      // Create a form element
+      const form = document.createElement("form")
       form.method = "POST"
       form.action = "https://th97.leadperfection.com/batch/addleads.asp"
+      form.style.display = "none"
+      form.enctype = "application/x-www-form-urlencoded" // Explicitly set encoding type
 
-      // Add form fields
-      addFormField(form, "firstname", data.firstname || "")
-      addFormField(form, "lastname", data.lastname || "")
-      addFormField(form, "address1", data.street_address || "")
-      addFormField(form, "city", data.city || "")
-      addFormField(form, "state", data.state || "")
+      // Add required fields first (according to documentation)
+      // Required: zip, phone1, sender, srs_id
       addFormField(form, "zip", data.zip || "")
-      addFormField(form, "phone1", data.phone || "")
-      addFormField(form, "email", data.email || "")
+      addFormField(form, "phone1", formatPhoneNumber(data.phone || ""))
+      addFormField(form, "sender", "Instantroofingprices.com")
+      addFormField(form, "srs_id", "1669")
+
+      // Add optional contact fields (with size limits per documentation)
+      addFormField(form, "firstname", truncate(data.firstname || "", 25))
+      addFormField(form, "lastname", truncate(data.lastname || "", 25))
+      addFormField(form, "address1", truncate(data.street_address || "", 35))
+      addFormField(form, "city", truncate(data.city || "", 35))
+      addFormField(form, "state", truncate(data.state || "", 2))
+      addFormField(form, "email", truncate(data.email || "", 100))
+
+      // Add product information
       addFormField(form, "productid", "Roof")
       addFormField(form, "proddescr", "Roofing")
 
-      // Build notes from form data
+      // Build notes from form data (max 2000 chars per documentation)
       let notes = "Project Details:\n"
       notes += `Reason: ${data.reason || "N/A"}\n`
       notes += `Roof Age: ${data.roof_age || "N/A"}\n`
@@ -85,27 +90,97 @@ document.addEventListener("DOMContentLoaded", () => {
       notes += `Timeframe: ${data.timeframe || "N/A"}\n`
       notes += `Budget: ${data.budget || "N/A"}\n`
 
-      addFormField(form, "notes", notes)
+      addFormField(form, "notes", truncate(notes, 2000))
 
-      // Add the required fields with exact values provided by LeadPerfection
-      addFormField(form, "sender", "Instantroofingprices.com")
-      addFormField(form, "srs_id", "1669")
+      // Add the form to the document
+      document.body.appendChild(form)
 
-      // Append the form to the iframe document
-      iframeDoc.body.appendChild(form)
+      // Log the form data for debugging
+      console.log("Form data being sent to LeadPerfection:", {
+        zip: data.zip || "",
+        phone1: formatPhoneNumber(data.phone || ""),
+        sender: "Instantroofingprices.com",
+        srs_id: "1669",
+        firstname: truncate(data.firstname || "", 25),
+        lastname: truncate(data.lastname || "", 25),
+        address1: truncate(data.street_address || "", 35),
+        city: truncate(data.city || "", 35),
+        state: truncate(data.state || "", 2),
+        email: truncate(data.email || "", 100),
+        productid: "Roof",
+        proddescr: "Roofing",
+        notes: truncate(notes, 2000),
+      })
+
+      // Create a hidden iframe to capture the response
+      const responseFrame = document.createElement("iframe")
+      responseFrame.name = "lp_response_frame"
+      responseFrame.style.display = "none"
+      document.body.appendChild(responseFrame)
+
+      // Set the form target to the iframe
+      form.target = "lp_response_frame"
+
+      // Add event listener to capture the response
+      responseFrame.onload = () => {
+        try {
+          const frameContent = responseFrame.contentDocument || responseFrame.contentWindow.document
+          const responseText = frameContent.body.textContent || frameContent.body.innerText
+
+          console.log("LeadPerfection Response:", responseText)
+
+          // Show response in debug div
+          const debugInfo = document.getElementById("debug-info")
+          if (debugInfo) {
+            debugInfo.style.display = "block"
+            debugInfo.innerHTML += `<br><strong>LeadPerfection Response:</strong> ${responseText}`
+
+            // Check if response is [OK]
+            if (responseText.trim() === "[OK]") {
+              debugInfo.innerHTML += `<br><span style="color: green;">✓ Success! Lead sent to LeadPerfection.</span>`
+            } else {
+              debugInfo.innerHTML += `<br><span style="color: red;">✗ Error: Unexpected response from LeadPerfection.</span>`
+            }
+          }
+
+          // Clear localStorage after successful submission
+          if (responseText.trim() === "[OK]") {
+            setTimeout(() => {
+              localStorage.removeItem("roofingFormData")
+              console.log("Form data cleared from localStorage")
+            }, 2000)
+          }
+        } catch (error) {
+          console.error("Error reading response:", error)
+
+          // Show error in debug div
+          const debugInfo = document.getElementById("debug-info")
+          if (debugInfo) {
+            debugInfo.style.display = "block"
+            debugInfo.innerHTML += `<br><strong>Error Reading Response:</strong> ${error.message}`
+          }
+        }
+      }
 
       // Submit the form
+      console.log("Submitting form to LeadPerfection...")
       form.submit()
 
-      console.log("LeadPerfection form submitted via iframe")
-
-      // Clear localStorage after submission
-      setTimeout(() => {
-        localStorage.removeItem("roofingFormData")
-        console.log("Form data cleared from localStorage")
-      }, 2000)
+      // Show submission status in debug div
+      const debugInfo = document.getElementById("debug-info")
+      if (debugInfo) {
+        debugInfo.style.display = "block"
+        debugInfo.innerHTML += "<br><strong>LeadPerfection Submission:</strong> Form submitted"
+      }
     } catch (error) {
-      console.error("Error creating LeadPerfection submission:", error)
+      console.error("Error sending data to LeadPerfection:", error)
+
+      // Show error in debug div
+      const debugInfo = document.getElementById("debug-info")
+      if (debugInfo) {
+        debugInfo.style.display = "block"
+        debugInfo.innerHTML += `<br><strong>LeadPerfection Error:</strong> ${error.message}`
+      }
     }
   }
 
@@ -116,6 +191,16 @@ document.addEventListener("DOMContentLoaded", () => {
     input.name = name
     input.value = value
     form.appendChild(input)
+  }
+
+  // Helper function to truncate strings to specified length
+  function truncate(str, maxLength) {
+    return str.length > maxLength ? str.substring(0, maxLength) : str
+  }
+
+  // Helper function to format phone number (remove all non-numeric characters)
+  function formatPhoneNumber(phone) {
+    return phone.replace(/[^\d]/g, "")
   }
 
   // Pricing data (simplified version of the calculator pricing)
@@ -217,6 +302,17 @@ document.addEventListener("DOMContentLoaded", () => {
   generateQuote()
 
   // Track conversion with Facebook Pixel if available
+  let fbq = window.fbq // Assign window.fbq to the local variable
+
+  if (typeof fbq === "undefined") {
+    // Check if fbq is not already defined
+    window.fbq = () => {
+      // Define a dummy fbq function to prevent errors
+      console.warn("Facebook Pixel is not initialized.")
+    }
+    fbq = window.fbq // Assign the dummy function to the local variable
+  }
+
   if (typeof fbq === "function") {
     fbq("track", "Lead", {
       content_name: "Roofing Quote",
