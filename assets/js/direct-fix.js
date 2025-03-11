@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressBar = document.getElementById("progress-bar")
   const progressText = document.getElementById("progress-text")
   const currentStepText = document.getElementById("current-step")
+  const form = document.querySelector("form") // Declare the form variable
 
   console.log({ nextBtn, prevBtn, submitBtn, stepsCount: steps.length, progressBar })
 
@@ -45,7 +46,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Show/hide buttons based on step
     if (prevBtn) {
-      prevBtn.style.display = stepIndex === 0 ? "none" : "flex"
+      if (stepIndex === 0) {
+        prevBtn.style.display = "none"
+      } else {
+        prevBtn.style.display = "flex"
+      }
     }
 
     if (nextBtn && submitBtn) {
@@ -81,6 +86,12 @@ document.addEventListener("DOMContentLoaded", () => {
     nextBtn.style.padding = "0.75rem 2rem"
     nextBtn.style.borderRadius = "0.5rem"
     nextBtn.style.fontWeight = "bold"
+    nextBtn.style.opacity = "1"
+    nextBtn.style.visibility = "visible"
+    nextBtn.style.position = "relative"
+    nextBtn.style.zIndex = "50"
+    nextBtn.style.minWidth = "120px"
+    nextBtn.style.minHeight = "48px"
   }
 
   if (prevBtn) {
@@ -104,6 +115,12 @@ document.addEventListener("DOMContentLoaded", () => {
     prevBtn.style.padding = "0.75rem 2rem"
     prevBtn.style.borderRadius = "0.5rem"
     prevBtn.style.fontWeight = "bold"
+    prevBtn.style.opacity = "1"
+    prevBtn.style.visibility = "visible"
+    prevBtn.style.position = "relative"
+    prevBtn.style.zIndex = "50"
+    prevBtn.style.minWidth = "120px"
+    prevBtn.style.minHeight = "48px"
   }
 
   // Initialize the first step
@@ -137,6 +154,103 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("roof_type").value = this.dataset.value
     })
   })
+
+  // Create emergency buttons if the regular ones aren't working
+  setTimeout(() => {
+    const nextBtnVisible = nextBtn && window.getComputedStyle(nextBtn).display !== "none"
+    console.log("Next button visible:", nextBtnVisible)
+
+    if (!nextBtnVisible && steps.length > 0) {
+      console.log("Creating emergency buttons")
+
+      // Create container for emergency buttons
+      const emergencyContainer = document.createElement("div")
+      emergencyContainer.id = "emergency-nav-buttons"
+      emergencyContainer.style.position = "fixed"
+      emergencyContainer.style.bottom = "20px"
+      emergencyContainer.style.left = "0"
+      emergencyContainer.style.right = "0"
+      emergencyContainer.style.display = "flex"
+      emergencyContainer.style.justifyContent = "center"
+      emergencyContainer.style.gap = "20px"
+      emergencyContainer.style.zIndex = "9999"
+      emergencyContainer.style.padding = "10px"
+      emergencyContainer.style.backgroundColor = "rgba(0,0,0,0.7)"
+
+      // Create emergency next button
+      const emergencyNext = document.createElement("button")
+      emergencyNext.textContent = "Next"
+      emergencyNext.style.backgroundColor = "#D4A017"
+      emergencyNext.style.color = "#181818"
+      emergencyNext.style.padding = "10px 20px"
+      emergencyNext.style.borderRadius = "8px"
+      emergencyNext.style.fontWeight = "bold"
+      emergencyNext.style.cursor = "pointer"
+      emergencyNext.style.border = "none"
+
+      // Create emergency prev button
+      const emergencyPrev = document.createElement("button")
+      emergencyPrev.textContent = "Previous"
+      emergencyPrev.style.backgroundColor = "rgba(255, 255, 255, 0.1)"
+      emergencyPrev.style.color = "white"
+      emergencyPrev.style.padding = "10px 20px"
+      emergencyPrev.style.borderRadius = "8px"
+      emergencyPrev.style.fontWeight = "bold"
+      emergencyPrev.style.cursor = "pointer"
+      emergencyPrev.style.border = "none"
+      emergencyPrev.style.display = "none" // Initially hidden
+
+      // Add click handlers
+      emergencyNext.addEventListener("click", () => {
+        if (currentStep < totalSteps - 1) {
+          currentStep++
+          showStep(currentStep)
+          window.scrollTo(0, 0)
+
+          // Show/hide emergency buttons
+          if (currentStep > 0) {
+            emergencyPrev.style.display = "block"
+          }
+
+          if (currentStep === totalSteps - 1) {
+            emergencyNext.textContent = "Submit"
+            emergencyNext.addEventListener(
+              "click",
+              () => {
+                // Submit the form
+                if (form) form.submit()
+              },
+              { once: true },
+            )
+          }
+        }
+      })
+
+      emergencyPrev.addEventListener("click", () => {
+        if (currentStep > 0) {
+          currentStep--
+          showStep(currentStep)
+          window.scrollTo(0, 0)
+
+          // Show/hide emergency buttons
+          if (currentStep === 0) {
+            emergencyPrev.style.display = "none"
+          }
+
+          if (currentStep < totalSteps - 1) {
+            emergencyNext.textContent = "Next"
+          }
+        }
+      })
+
+      // Add buttons to container
+      emergencyContainer.appendChild(emergencyPrev)
+      emergencyContainer.appendChild(emergencyNext)
+
+      // Add container to body
+      document.body.appendChild(emergencyContainer)
+    }
+  }, 2000)
 
   console.log("Direct fix script initialization complete")
 })
