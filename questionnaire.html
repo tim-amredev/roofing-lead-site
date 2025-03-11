@@ -4,7 +4,7 @@ title: Get a Quote
 js: questionnaire leadperfection-integration
 ---
 
-<section class="min-h-screen bg-gradient-to-b from-[#1B2337] to-[#2A3447]">
+<section class="min-h-screen bg-[#181818]">
   <div class="container mx-auto px-4 py-12">
     <div class="max-w-4xl mx-auto">
       <div class="text-center mb-12">
@@ -12,7 +12,7 @@ js: questionnaire leadperfection-integration
         <p class="text-lg text-blue-100">Answer a few questions to get an instant estimate for your roofing project.</p>
       </div>
       
-      <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-8 border border-white/20">
+      <div class="bg-[#2A3555] rounded-2xl shadow-2xl p-8 border border-white/20">
         <!-- Progress Bar -->
         <div class="mb-10">
           <div class="flex justify-between items-center mb-4">
@@ -20,7 +20,7 @@ js: questionnaire leadperfection-integration
             <div class="text-sm font-medium text-blue-200">Progress: <span class="text-blue-400">20%</span></div>
           </div>
           <div class="relative h-2 bg-gray-700 rounded-full overflow-hidden">
-            <div id="progress-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 to-blue-400 transition-all duration-500 ease-out" style="width: 20%"></div>
+            <div id="progress-bar" class="absolute top-0 left-0 h-full bg-[#D4A017] transition-all duration-500 ease-out" style="width: 20%"></div>
           </div>
         </div>
         
@@ -357,7 +357,7 @@ js: questionnaire leadperfection-integration
                     </label>
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
                       <input type="checkbox" name="features[]" value="gutters" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
-                      <span class="ml-3 text-gray-300                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">New gutter system</span>
+                      <span class="ml-3 text-gray-300 group-hover:text-white transition-colors text-lg">New gutter system</span>
                     </label>
                     <label class="flex items-center p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
                       <input type="checkbox" name="features[]" value="ventilation" class="form-checkbox text-blue-500 border-gray-500 bg-gray-700">
@@ -521,7 +521,6 @@ js: questionnaire leadperfection-integration
                       <input type="tel" id="phone" name="phone" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200" required>
                     </div>
                   </div>
-                </div>
 
                 <div class="question-group">
                   <label class="block text-xl font-medium text-blue-100 mb-4">Property Address</label>
@@ -639,14 +638,14 @@ js: questionnaire leadperfection-integration
               Previous
             </button>
             
-            <button type="button" id="next-btn" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center">
+            <button type="button" id="next-btn" class="px-8 py-3 bg-[#D4A017] hover:bg-[#E5B42A] text-gray-900 rounded-lg transition-colors flex items-center">
               Next
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>
             </button>
             
-            <button type="submit" id="submit-btn" class="hidden px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center">
+            <button type="submit" id="submit-btn" class="hidden px-8 py-3 bg-[#D4A017] hover:bg-[#E5B42A] text-gray-900 rounded-lg transition-colors flex items-center">
               Submit
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -670,4 +669,25 @@ js: questionnaire leadperfection-integration
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("questionnaire-form");
+    const thankYouModal = document.getElementById("thank-you-modal");
+    const closeModalBtn = document.getElementById("close-modal");
+    
+    if (form) {
+      form.addEventListener("submit", function() {
+        // Store that the form was submitted in localStorage
+        localStorage.setItem("formSubmitted", "true");
+      });
+    }
+    
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener("click", function() {
+        thankYouModal.classList.add("hidden");
+      });
+    }
+  });
+</script>
 
