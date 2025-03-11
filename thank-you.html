@@ -7,7 +7,7 @@ js: thank-you-quote
 <section class="py-24 bg-secondary-900">
   <div class="container mx-auto px-4">
     <div class="max-w-3xl mx-auto text-center">
-      <div class="bg-secondary-800 rounded-xl p-12 shadow-xl">
+      <div class="bg-secondary-800 rounded-xl p-12 shadow-xl" style="background-color: #2A3555;">
         <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-8">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -27,11 +27,11 @@ js: thank-you-quote
         </p>
         
         <!-- Quote Section -->
-        <div id="quote-section" class="mt-8 mb-8 bg-blue-900 bg-opacity-30 rounded-lg p-6 text-left">
+        <div id="quote-section" class="mt-8 mb-8 bg-blue-900 bg-opacity-30 rounded-lg p-6 text-left" style="background-color: rgba(30, 58, 138, 0.3);">
           <h2 class="text-2xl font-bold text-white mb-4 text-center">Your Estimated Roofing Quote</h2>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div class="bg-blue-900 bg-opacity-20 p-4 rounded-lg">
+            <div class="bg-blue-900 bg-opacity-20 p-4 rounded-lg" style="background-color: rgba(30, 58, 138, 0.2);">
               <h3 class="text-lg font-semibold text-white mb-2">Project Details</h3>
               <div class="space-y-2">
                 <div class="flex justify-between">
@@ -45,7 +45,7 @@ js: thank-you-quote
               </div>
             </div>
             
-            <div class="bg-blue-900 bg-opacity-20 p-4 rounded-lg">
+            <div class="bg-blue-900 bg-opacity-20 p-4 rounded-lg" style="background-color: rgba(30, 58, 138, 0.2);">
               <h3 class="text-lg font-semibold text-white mb-2">Price Range</h3>
               <div class="space-y-2">
                 <div class="flex justify-between">
@@ -58,15 +58,15 @@ js: thank-you-quote
                 </div>
                 <div class="flex justify-between pt-2 border-t border-blue-800">
                   <span class="text-gray-300">Average:</span>
-                  <span id="quote-average" class="text-yellow-400 font-bold">$10,000</span>
+                  <span id="quote-average" class="text-yellow-400 font-bold" style="color: #D4A017;">$10,000</span>
                 </div>
               </div>
             </div>
           </div>
           
-          <div class="bg-blue-900 bg-opacity-10 border-l-4 border-yellow-500 p-4 rounded">
+          <div class="bg-blue-900 bg-opacity-10 border-l-4 border-yellow-500 p-4 rounded" style="border-color: #D4A017; background-color: rgba(30, 58, 138, 0.1);">
             <p class="text-gray-300 text-sm">
-              <strong class="text-yellow-400">Note:</strong> This is a preliminary estimate based on the information you provided. For a more accurate quote, our roofing specialists will contact you soon to discuss your project in detail.
+              <strong class="text-yellow-400" style="color: #D4A017;">Note:</strong> This is a preliminary estimate based on the information you provided. For a more accurate quote, our roofing specialists will contact you soon to discuss your project in detail.
             </p>
           </div>
         </div>
@@ -79,7 +79,7 @@ js: thank-you-quote
             Return to Home
           </a>
           
-          <a href="{{ '/pricing-calculator' | relative_url }}" class="inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors">
+          <a href="{{ '/pricing-calculator' | relative_url }}" class="inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors" style="background-color: #D4A017; color: #181818;">
             Try Our Price Calculator
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -90,4 +90,19 @@ js: thank-you-quote
     </div>
   </div>
 </section>
+
+<script>
+  // Debug script to check localStorage
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log("Thank you page loaded");
+    
+    // Check if we have form data in localStorage
+    try {
+      const storedData = localStorage.getItem("roofingFormData");
+      console.log("Form data in localStorage:", storedData ? JSON.parse(storedData) : "None");
+    } catch (e) {
+      console.error("Error checking localStorage:", e);
+    }
+  });
+</script>
 
