@@ -90,32 +90,12 @@ js: thank-you-quote
     </div>
   </div>
   
-  <!-- Hidden div for debugging -->
-  <div id="debug-info" style="display: none;"></div>
-  
-  <script>
-  // Debug script to check localStorage
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log("Thank you page loaded");
-    
-    // Check if we have form data in localStorage
-    try {
-      const storedData = localStorage.getItem("roofingFormData");
-      const debugInfo = document.getElementById("debug-info");
-      
-      if (debugInfo) {
-        debugInfo.innerHTML = "Form data in localStorage: " + (storedData ? "Yes" : "No");
-        if (storedData) {
-          const parsedData = JSON.parse(storedData);
-          debugInfo.innerHTML += "<br>Data: " + JSON.stringify(parsedData);
-        }
-      }
-      
-      console.log("Form data in localStorage:", storedData ? JSON.parse(storedData) : "None");
-    } catch (e) {
-      console.error("Error checking localStorage:", e);
-    }
-  });
-  </script>
+  <!-- Debug info - now visible for troubleshooting -->
+  <div id="debug-info" class="mt-8 p-4 bg-gray-800 text-white rounded-lg max-w-3xl mx-auto text-left text-sm">
+    <h3 class="font-bold mb-2">Debug Information</h3>
+    <div id="debug-content">
+      Checking for form data...
+    </div>
+  </div>
 </section>
 
