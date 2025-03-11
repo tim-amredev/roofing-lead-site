@@ -191,39 +191,6 @@ src="https://www.facebook.com/tr?id=1602317540415044&ev=PageView&noscript=1"
 (function() {
   console.log('Setting up LeadPerfection CORS and request interceptor');
   
-  // Create a proxy for fetch
-  const originalFetch = window.fetch;
-  window.fetch = function(url, options) {
-    // Check if this is a LeadPerfection request
-    if (url && typeof url === 'string' && url.includes('leadperfection.com')) {
-      console.log('LeadPerfection fetch request detected, applying special handling');
-      
-      // Create a new URL for the proxy endpoint
-      const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-      console.log('Using proxy URL:', proxyUrl);
-      
-      // Add CORS headers to the request
-      const newOptions = options || {};
-      newOptions.headers = newOptions.headers || {};
-      newOptions.headers['Origin'] = window.location.origin;
-      newOptions.mode = 'cors';
-      
-      // Use the proxy URL instead
-      return originalFetch(proxyUrl, newOptions)
-        .then(response => {
-          console.log('LeadPerfection proxy response:', response);
-          return response;
-        })
-        .catch(error => {
-          console.error('LeadPerfection proxy error:', error);
-          throw error;
-        });
-    }
-    
-    // For non-LeadPerfection requests, use the original fetch
-    return originalFetch.apply(this, arguments);
-  };
-  
   // Create a proxy for XMLHttpRequest
   const originalXHR = window.XMLHttpRequest;
   
@@ -243,13 +210,6 @@ src="https://www.facebook.com/tr?id=1602317540415044&ev=PageView&noscript=1"
       // Check if this is a LeadPerfection request
       if (url && typeof url === 'string' && url.includes('leadperfection.com')) {
         console.log('LeadPerfection request detected, applying special handling');
-        
-        // Use a CORS proxy
-        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-        console.log('Using proxy URL:', proxyUrl);
-        
-        // Replace the URL with the proxy URL
-        arguments[1] = proxyUrl;
         
         // Add event listeners for better debugging
         xhr.addEventListener('load', function() {
@@ -292,25 +252,6 @@ src="https://www.facebook.com/tr?id=1602317540415044&ev=PageView&noscript=1"
   window.addEventListener('error', function(event) {
     console.error('Global error caught:', event.error);
   });
-  
-  // Add a helper function to test LeadPerfection connectivity
-  window.testLeadPerfectionConnection = function() {
-    console.log('Testing LeadPerfection connection...');
-    const xhr = new XMLHttpRequest();
-    xhr.open('HEAD', 'https://th97.leadperfection.com/batch/addleads.asp', true);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        console.log(`LeadPerfection test result: ${xhr.status} ${xhr.statusText}`);
-      }
-    };
-    xhr.onerror = function() {
-      console.error('LeadPerfection test failed');
-    };
-    xhr.send();
-  };
-  
-  // Run the test after a short delay
-  setTimeout(window.testLeadPerfectionConnection, 2000);
   
   console.log('LeadPerfection request interceptor setup complete');
 })();
