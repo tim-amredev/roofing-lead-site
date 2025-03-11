@@ -15,8 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const materialCards = document.querySelectorAll(".material-card")
   materialCards.forEach((card) => {
     card.addEventListener("click", function () {
+      // Remove selected class from all cards
       materialCards.forEach((c) => c.classList.remove("selected"))
+
+      // Add selected class to clicked card
       this.classList.add("selected")
+
+      // Update hidden input
       document.getElementById("desired_material").value = this.dataset.value
     })
   })
@@ -25,54 +30,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const roofTypeCards = document.querySelectorAll(".roof-type-card")
   roofTypeCards.forEach((card) => {
     card.addEventListener("click", function () {
+      // Remove selected class from all cards
       roofTypeCards.forEach((c) => c.classList.remove("selected"))
+
+      // Add selected class to clicked card
       this.classList.add("selected")
+
+      // Update hidden input
       document.getElementById("roof_type").value = this.dataset.value
     })
   })
 
-  function validateStep(stepIndex) {
-    const step = steps[stepIndex]
-    let isValid = true
-
-    // Step 1 validation
-    if (stepIndex === 0) {
-      const reason = step.querySelector('input[name="reason"]:checked')
-      const roofAge = step.querySelector('input[name="roof_age"]:checked')
-      const squareFootage = step.querySelector('input[name="square_footage"]:checked')
-
-      if (!reason || !roofAge || !squareFootage) {
-        alert("Please answer all questions before proceeding.")
-        isValid = false
-      }
-    }
-
-    // Step 2 validation
-    else if (stepIndex === 1) {
-      const currentMaterial = step.querySelector('input[name="current_material"]:checked')
-      const desiredMaterial = document.getElementById("desired_material").value
-      const roofType = document.getElementById("roof_type").value
-
-      if (!currentMaterial || !desiredMaterial || !roofType) {
-        alert("Please select your current material, desired material, and roof type.")
-        isValid = false
-      }
-    }
-
-    // Step 3 validation
-    else if (stepIndex === 2) {
-      const issues = step.querySelectorAll('input[name="issues[]"]:checked')
-      const timeframe = step.querySelector('input[name="timeframe"]:checked')
-
-      if (issues.length === 0 || !timeframe) {
-        alert("Please select at least one issue and your project timeframe.")
-        isValid = false
-      }
-    }
-
-    return isValid
-  }
-
+  // Fix the step navigation functionality
   function showStep(stepIndex) {
     steps.forEach((step, index) => {
       if (index === stepIndex) {
@@ -91,19 +60,68 @@ document.addEventListener("DOMContentLoaded", () => {
     currentStepText.textContent = stepIndex + 1
 
     // Show/hide buttons
-    prevBtn.style.display = stepIndex === 0 ? "none" : "flex"
-    nextBtn.style.display = stepIndex === totalSteps - 1 ? "none" : "flex"
-    submitBtn.style.display = stepIndex === totalSteps - 1 ? "flex" : "none"
+    if (stepIndex === 0) {
+      prevBtn.classList.add("hidden")
+    } else {
+      prevBtn.classList.remove("hidden")
+    }
 
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    if (stepIndex === totalSteps - 1) {
+      nextBtn.classList.add("hidden")
+      submitBtn.classList.remove("hidden")
+    } else {
+      nextBtn.classList.remove("hidden")
+      submitBtn.classList.add("hidden")
+    }
+  }
+
+  // Fix the next step validation
+  function validateCurrentStep(step) {
+    // Step 1 validation
+    if (step === 0) {
+      const reason = document.querySelector('input[name="reason"]:checked')
+      const roofAge = document.querySelector('input[name="roof_age"]:checked')
+      const squareFootage = document.querySelector('input[name="square_footage"]:checked')
+
+      if (!reason || !roofAge || !squareFootage) {
+        alert("Please answer all questions before proceeding.")
+        return false
+      }
+    }
+
+    // Step 2 validation
+    else if (step === 1) {
+      const currentMaterial = document.querySelector('input[name="current_material"]:checked')
+      const desiredMaterial = document.getElementById("desired_material").value
+      const roofType = document.getElementById("roof_type").value
+
+      if (!currentMaterial || !desiredMaterial || !roofType) {
+        alert("Please select your current material, desired material, and roof type.")
+        return false
+      }
+    }
+
+    // Step 3 validation
+    else if (step === 2) {
+      // At least one issue should be selected
+      const issues = document.querySelectorAll('input[name="issues[]"]:checked')
+      const timeframe = document.querySelector('input[name="timeframe"]:checked')
+
+      if (issues.length === 0 || !timeframe) {
+        alert("Please select at least one issue and your project timeframe.")
+        return false
+      }
+    }
+
+    return true
   }
 
   function nextStep() {
-    if (validateStep(currentStep)) {
+    if (validateCurrentStep(currentStep)) {
       if (currentStep < totalSteps - 1) {
         currentStep++
         showStep(currentStep)
+        window.scrollTo(0, 0)
       }
     }
   }
@@ -112,6 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (currentStep > 0) {
       currentStep--
       showStep(currentStep)
+      window.scrollTo(0, 0)
     }
   }
 
@@ -124,17 +143,19 @@ document.addEventListener("DOMContentLoaded", () => {
     prevBtn.addEventListener("click", prevStep)
   }
 
-  // Initialize form
-  if (form) {
-    showStep(0)
+  // Initialize the first step
+  showStep(currentStep)
 
+  // Handle form submission
+  if (form) {
     form.addEventListener("submit", (e) => {
-      if (!validateStep(currentStep)) {
+      // Validate the current step before submission
+      if (!validateCurrentStep(currentStep)) {
         e.preventDefault()
         return
       }
 
-      // Store form data in localStorage
+      // Store form data in localStorage before submission
       const formData = new FormData(form)
       const formDataObj = {}
 
@@ -145,8 +166,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       formData.forEach((value, key) => {
+        // Skip FormSubmit's internal fields
         if (key.startsWith("_")) return
 
+        // Handle checkbox arrays
         if (key === "issues[]" || key === "features[]") {
           checkboxArrays[key].push(value)
         } else {
@@ -154,16 +177,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       })
 
-      // Add checkbox arrays to form data
+      // Add the checkbox arrays to the form data object
       for (const [key, values] of Object.entries(checkboxArrays)) {
         if (values.length > 0) {
+          // Store without the [] suffix
           const cleanKey = key.replace("[]", "")
           formDataObj[cleanKey] = values
         }
       }
 
+      // Save to localStorage
       localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
     })
   }
+
+  // Apply dark theme to the page
+  document.body.style.backgroundColor = "#181818"
+  document.documentElement.style.backgroundColor = "#181818"
+
+  // Force dark theme on all sections
+  const sections = document.querySelectorAll("section")
+  sections.forEach((section) => {
+    section.style.backgroundColor = "#181818"
+  })
 })
 
