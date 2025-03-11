@@ -2,6 +2,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const quoteSection = document.getElementById("quote-section")
   if (!quoteSection) return
 
+  // Add a manual send button to the page
+  const sendSection = document.createElement("div")
+  sendSection.className = "mt-8 text-center"
+  sendSection.innerHTML = `
+    <div id="lead-status" class="mb-4 hidden">
+      <p class="text-green-500 font-medium">✓ Lead data sent successfully!</p>
+    </div>
+    <button id="send-to-lp-btn" class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
+      <span id="btn-text">Send Data to LeadPerfection</span>
+      <span id="btn-spinner" class="ml-2 hidden">
+        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </span>
+    </button>
+  `
+  quoteSection.after(sendSection)
+
   // Try to get URL parameters first (for direct access)
   const urlParams = new URLSearchParams(window.location.search)
 
@@ -28,7 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Merge with default data
       formData = { ...formData, ...parsedData }
       console.log("Retrieved form data from localStorage:", formData)
-      // Clear localStorage after using it
+
+      // Clear localStorage after retrieving data
       localStorage.removeItem("roofingFormData")
     } else {
       console.log("No form data found in localStorage")
@@ -37,48 +57,99 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Error retrieving form data:", error)
   }
 
-  // Send data to LeadPerfection if available
-  try {
-    const leadPerfectionData = localStorage.getItem("leadPerfectionData")
-    if (leadPerfectionData) {
-      const parsedData = JSON.parse(leadPerfectionData)
-      console.log("Retrieved LeadPerfection data from localStorage:", parsedData)
+  // Add click handler for the send button
+  const sendButton = document.getElementById("send-to-lp-btn")
+  const btnText = document.getElementById("btn-text")
+  const btnSpinner = document.getElementById("btn-spinner")
+  const leadStatus = document.getElementById("lead-status")
+
+  if (sendButton) {
+    sendButton.addEventListener("click", () => {
+      // Show spinner
+      btnText.textContent = "Sending..."
+      btnSpinner.classList.remove("hidden")
+
+      // Prepare data for LeadPerfection
+      const leadPerfectionData = new URLSearchParams()
+
+      // Map form fields to LeadPerfection parameters
+      leadPerfectionData.append("firstname", formData.firstname || "")
+      leadPerfectionData.append("lastname", formData.lastname || "")
+      leadPerfectionData.append("address1", formData.street_address || "")
+      leadPerfectionData.append("city", formData.city || "")
+      leadPerfectionData.append("state", formData.state || "")
+      leadPerfectionData.append("zip", formData.zip_code || formData.zip || "")
+      leadPerfectionData.append("phone1", formData.phone || "")
+      leadPerfectionData.append("email", formData.email || "")
+
+      // Add the specific product ID for roofing
+      leadPerfectionData.append("productid", "Roof")
+      leadPerfectionData.append("proddescr", "Roofing")
+
+      // Build notes from form data
+      let notes = "Project Details:\n"
+      notes += `Reason: ${formData.reason || "N/A"}\n`
+      notes += `Roof Age: ${formData.roof_age || "N/A"}\n`
+      notes += `Square Footage: ${formData.square_footage || "N/A"}\n`
+      notes += `Current Material: ${formData.current_material || "N/A"}\n`
+      notes += `Desired Material: ${formData.desired_material || "N/A"}\n`
+      notes += `Roof Type: ${formData.roof_type || "N/A"}\n`
+
+      // Handle issues array
+      if (formData.issues) {
+        const issues = Array.isArray(formData.issues) ? formData.issues : [formData.issues]
+        notes += `Issues: ${issues.join(", ")}\n`
+      }
+
+      // Handle features array
+      if (formData.features) {
+        const features = Array.isArray(formData.features) ? formData.features : [formData.features]
+        notes += `Desired Features: ${features.join(", ")}\n`
+      }
+
+      notes += `Timeframe: ${formData.timeframe || "N/A"}\n`
+      notes += `Budget: ${formData.budget || "N/A"}\n`
+      notes += `Comments: ${formData.comments || "N/A"}`
+
+      leadPerfectionData.append("notes", notes)
+
+      // Add the required fields with exact values provided by LeadPerfection
+      leadPerfectionData.append("sender", "Instantroofingprices.com")
+      leadPerfectionData.append("srs_id", "1669")
 
       // Send to LeadPerfection
-      sendToLeadPerfection(parsedData)
+      const leadPerfectionUrl = "https://th97.leadperfection.com/batch/addleads.asp"
 
-      // Clear localStorage after using it
-      localStorage.removeItem("leadPerfectionData")
-    }
-  } catch (error) {
-    console.error("Error sending data to LeadPerfection:", error)
-  }
-
-  // Function to send data to LeadPerfection
-  function sendToLeadPerfection(data) {
-    const leadPerfectionUrl = "https://th97.leadperfection.com/batch/addleads.asp"
-    const params = new URLSearchParams()
-
-    // Add all data to params
-    Object.keys(data).forEach((key) => {
-      params.append(key, data[key])
-    })
-
-    // Use fetch with no-cors mode
-    fetch(leadPerfectionUrl, {
-      method: "POST",
-      body: params,
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-      .then(() => {
-        console.log("Data sent to LeadPerfection successfully")
+      fetch(leadPerfectionUrl, {
+        method: "POST",
+        body: leadPerfectionData,
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       })
-      .catch((error) => {
-        console.error("Error sending to LeadPerfection:", error)
-      })
+        .then(() => {
+          console.log("Data sent to LeadPerfection successfully")
+          // Hide spinner, show success
+          btnText.textContent = "Data Sent Successfully!"
+          btnSpinner.classList.add("hidden")
+          sendButton.disabled = true
+          sendButton.classList.add("bg-green-600")
+          sendButton.classList.remove("bg-blue-600", "hover:bg-blue-700")
+
+          // Show status message
+          leadStatus.classList.remove("hidden")
+
+          // Clear localStorage after successful send
+          localStorage.removeItem("roofingFormData")
+        })
+        .catch((error) => {
+          console.error("Error sending to LeadPerfection:", error)
+          // Hide spinner, show error
+          btnText.textContent = "Error - Try Again"
+          btnSpinner.classList.add("hidden")
+        })
+    })
   }
 
   // Pricing data (simplified version of the calculator pricing)
@@ -162,8 +233,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Personalize greeting if name is available
     const nameElement = document.getElementById("customer-name")
-    if (nameElement && formData.name) {
-      nameElement.textContent = formData.name
+    if (nameElement && formData.firstname) {
+      nameElement.textContent = formData.firstname + (formData.lastname ? " " + formData.lastname : "")
       nameElement.parentElement.classList.remove("hidden")
     }
 
@@ -180,6 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
   generateQuote()
 
   // Track conversion with Facebook Pixel if available
+  const fbq = window.fbq // Assign the fbq function to a local variable.
   if (typeof fbq === "function") {
     fbq("track", "Lead", {
       content_name: "Roofing Quote",
