@@ -99,3 +99,44 @@ js: thank-you-quote
   </div>
 </section>
 
+<!-- Add this script to isolate Facebook Pixel and Google Analytics -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Isolate Facebook Pixel
+  try {
+    if (typeof window.fbq === 'function') {
+      console.log("Facebook Pixel found, isolating...");
+      const originalFbq = window.fbq;
+      window.fbq = function() {
+        try {
+          console.log("Facebook Pixel called with:", Array.from(arguments));
+          return originalFbq.apply(this, arguments);
+        } catch (e) {
+          console.error("Error in Facebook Pixel call:", e);
+        }
+      };
+    }
+  } catch (e) {
+    console.error("Error isolating Facebook Pixel:", e);
+  }
+  
+  // Isolate Google Analytics
+  try {
+    if (typeof window.gtag === 'function') {
+      console.log("Google Analytics found, isolating...");
+      const originalGtag = window.gtag;
+      window.gtag = function() {
+        try {
+          console.log("Google Analytics called with:", Array.from(arguments));
+          return originalGtag.apply(this, arguments);
+        } catch (e) {
+          console.error("Error in Google Analytics call:", e);
+        }
+      };
+    }
+  } catch (e) {
+    console.error("Error isolating Google Analytics:", e);
+  }
+});
+</script>
+
