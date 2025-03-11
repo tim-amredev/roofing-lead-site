@@ -3,40 +3,49 @@ document.addEventListener("DOMContentLoaded", () => {
   const questionnaireForm = document.getElementById("questionnaire-form")
 
   if (questionnaireForm) {
-    // Add a submit event listener that only stores data but doesn't interfere with submission
+    // Add a submit event listener that only stores data
     questionnaireForm.addEventListener("submit", function (e) {
-      // Don't prevent default - let the form submit normally to FormSubmit
-
       try {
-        // Store form data for LeadPerfection
-        const formData = new FormData(this)
-
-        // Create a simple object with the form data
+        // Create a simple object to store form data
         const formDataObj = {}
-        formData.forEach((value, key) => {
-          // Skip FormSubmit's internal fields
-          if (key.startsWith("_")) return
 
-          // Handle checkbox arrays
-          if (key.endsWith("[]")) {
-            const cleanKey = key.replace("[]", "")
-            if (!formDataObj[cleanKey]) {
-              formDataObj[cleanKey] = []
+        // Get all input, select, and textarea elements
+        const formElements = this.querySelectorAll("input, select, textarea")
+
+        // Process each element
+        formElements.forEach((element) => {
+          // Skip hidden FormSubmit fields
+          if (element.name && element.name.startsWith("_")) return
+
+          // Handle different input types
+          if (element.type === "checkbox" || element.type === "radio") {
+            // Only include checked checkboxes and radios
+            if (element.checked) {
+              // Handle checkbox arrays
+              if (element.name.endsWith("[]")) {
+                const cleanName = element.name.replace("[]", "")
+                if (!formDataObj[cleanName]) {
+                  formDataObj[cleanName] = []
+                }
+                formDataObj[cleanName].push(element.value)
+              } else {
+                formDataObj[element.name] = element.value
+              }
             }
-            formDataObj[cleanKey].push(value)
-          } else {
-            formDataObj[key] = value
+          } else if (element.name) {
+            // Handle regular inputs, selects, and textareas
+            formDataObj[element.name] = element.value
           }
         })
 
-        // Store in localStorage for retrieval on thank-you page
+        // Store in localStorage
         localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
         console.log("Form data saved to localStorage")
       } catch (error) {
         console.error("Error saving form data:", error)
       }
 
-      // Continue with normal form submission without any interference
+      // Don't interfere with the form submission
       return true
     })
   }
