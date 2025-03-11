@@ -68,15 +68,27 @@ document.addEventListener("DOMContentLoaded", () => {
         // Store in localStorage
         localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
         console.log("Form data saved to localStorage for LeadPerfection integration")
+
+        // Create a hidden iframe for the thank-you page
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.name = 'thank-you-frame';
+        document.body.appendChild(iframe);
+
+        // Set the form target to the iframe
+        // This allows FormSubmit to process the form while we handle the redirect
+        this.target = 'thank-you-frame';
+
+        // Let the form submission continue
+        setTimeout(() => {
+          // Redirect to thank-you page after a short delay
+          window.location.href = '/thank-you';
+        }, 1000);
       } catch (error) {
         console.error("Error saving form data:", error)
       }
-
-      // Don't interfere with the form submission
-      return true
     })
   } else {
     console.warn("Questionnaire form not found - LeadPerfection integration may not work")
   }
 })
-
