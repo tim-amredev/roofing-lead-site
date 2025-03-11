@@ -62,19 +62,19 @@ document.addEventListener("DOMContentLoaded", () => {
       currentStepText.textContent = (stepIndex + 1).toString()
     }
 
-    // Show/hide buttons
-    if (prevBtn) {
-      prevBtn.style.display = stepIndex === 0 ? "none" : "block"
+    // Show/hide buttons based on step
+    const currentStepElement = steps[stepIndex]
+    const prevButton = currentStepElement.querySelector("#prev-btn")
+    const nextButton = currentStepElement.querySelector("#next-btn")
+    const submitButton = currentStepElement.querySelector("#submit-btn")
+
+    if (prevButton) {
+      prevButton.style.display = stepIndex === 0 ? "none" : "flex"
     }
 
-    if (nextBtn && submitBtn) {
-      if (stepIndex === totalSteps - 1) {
-        nextBtn.style.display = "none"
-        submitBtn.style.display = "block"
-      } else {
-        nextBtn.style.display = "block"
-        submitBtn.style.display = "none"
-      }
+    if (nextButton && submitButton) {
+      nextButton.style.display = stepIndex === totalSteps - 1 ? "none" : "flex"
+      submitButton.style.display = stepIndex === totalSteps - 1 ? "flex" : "none"
     }
   }
 
