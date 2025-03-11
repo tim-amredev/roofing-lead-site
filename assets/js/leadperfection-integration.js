@@ -1,21 +1,32 @@
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("LeadPerfection integration script loaded")
+
   // Target the questionnaire form
   const questionnaireForm = document.getElementById("questionnaire-form")
 
   if (questionnaireForm) {
+    console.log("Questionnaire form found, setting up data storage")
+
     // Add a submit event listener that only stores data
     questionnaireForm.addEventListener("submit", function (e) {
       try {
+        console.log("Form submitted, processing data for LeadPerfection")
+
         // Create a simple object to store form data
         const formDataObj = {}
 
         // Get all input, select, and textarea elements
         const formElements = this.querySelectorAll("input, select, textarea")
 
+        console.log(`Processing ${formElements.length} form elements`)
+
         // Process each element
         formElements.forEach((element) => {
           // Skip hidden FormSubmit fields
-          if (element.name && element.name.startsWith("_")) return
+          if (element.name && element.name.startsWith("_")) {
+            console.log(`Skipping FormSubmit field: ${element.name}`)
+            return
+          }
 
           // Handle different input types
           if (element.type === "checkbox" || element.type === "radio") {
@@ -28,22 +39,35 @@ document.addEventListener("DOMContentLoaded", () => {
                   formDataObj[cleanName] = []
                 }
                 formDataObj[cleanName].push(element.value)
+                console.log(`Added array value: ${cleanName}[] = ${element.value}`)
               } else {
                 formDataObj[element.name] = element.value
+                console.log(`Added checked value: ${element.name} = ${element.value}`)
               }
             }
           } else if (element.name) {
             // Handle regular inputs, selects, and textareas
             formDataObj[element.name] = element.value
+
+            // Log important fields for debugging
+            if (["firstname", "lastname", "email", "phone", "zip"].includes(element.name)) {
+              console.log(`Added key field: ${element.name} = ${element.value}`)
+            }
           }
         })
+
+        // Validate required fields for LeadPerfection
+        if (!formDataObj.zip) {
+          console.warn("Warning: ZIP code is missing, which is required for LeadPerfection")
+        }
+
+        if (!formDataObj.phone) {
+          console.warn("Warning: Phone number is missing, which is required for LeadPerfection")
+        }
 
         // Store in localStorage
         localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
         console.log("Form data saved to localStorage for LeadPerfection integration")
-
-        // Log the data that was saved
-        console.log("Form data object:", formDataObj)
       } catch (error) {
         console.error("Error saving form data:", error)
       }
