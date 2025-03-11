@@ -26,7 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("submit-btn")
 
   let currentStep = 0
-  const totalSteps = steps.length
+  // Update the total steps count
+  const totalSteps = 4 // Changed from 5 to 4
 
   // Initialize material cards
   const materialCards = document.querySelectorAll(".material-card")
@@ -82,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   })
 
-  // Function to show a specific step
+  // Update button logic to make step 4 the final step
   function showStep(stepIndex) {
     console.log("Showing step:", stepIndex)
 
@@ -116,14 +117,15 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     // Show/hide next buttons based on current step
+    // Show next buttons for all steps except the last one (step 4)
     nextButtons.forEach((btn, index) => {
       if (btn) {
-        // Only show the next button for the current step
-        btn.style.display = index === stepIndex ? "flex" : "none"
+        // Only show the next button for the current step and not the last step
+        btn.style.display = index === stepIndex && stepIndex < totalSteps - 1 ? "flex" : "none"
       }
     })
 
-    // Show/hide submit button on last step
+    // Show submit button only on the last step (step 4)
     if (submitBtn) {
       submitBtn.style.display = stepIndex === totalSteps - 1 ? "flex" : "none"
     }
