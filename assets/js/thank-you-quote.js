@@ -62,11 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
       button.className =
         "inline-flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
       button.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-      </svg>
-      Complete Submission
-    `
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        Complete Submission
+      `
 
       // Create a status element now (before the click event)
       const statusElement = document.createElement("div")
@@ -92,75 +92,114 @@ document.addEventListener("DOMContentLoaded", () => {
         statusElement.classList.remove("hidden")
         statusElement.className = "mt-4 p-3 bg-blue-800 bg-opacity-50 text-white rounded"
         statusElement.innerHTML = `
-        <div class="flex items-center">
-          <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          <span>Processing submission...</span>
-        </div>
-      `
+          <div class="flex items-center">
+            <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Processing submission...</span>
+          </div>
+        `
 
         // Disable the button to prevent multiple clicks
         this.disabled = true
         this.innerHTML = `
-        <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        Sending...
-      `
+          <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Sending...
+        `
 
-        // Log the data we're about to send
-        console.log("Preparing to send data to LeadPerfection:", data)
+        // Prepare the URL-encoded data string exactly as shown in the Postman example
+        const urlEncodedDataPairs = []
 
-        // Create a simple object with just the required fields
-        const minimalData = {
-          zip: data.zip || "",
-          phone1: formatPhoneNumber(data.phone || ""),
-          sender: "Instantroofingprices.com",
-          srs_id: "1669",
-          productid: "Roof",
-          proddescr: "Roofing",
+        // Add required fields first (per documentation)
+        urlEncodedDataPairs.push(encodeURIComponent("zip") + "=" + encodeURIComponent(truncate(data.zip || "", 15)))
+        urlEncodedDataPairs.push(
+          encodeURIComponent("phone1") + "=" + encodeURIComponent(formatPhoneNumber(data.phone || "")),
+        )
+        urlEncodedDataPairs.push(encodeURIComponent("sender") + "=" + encodeURIComponent("Instantroofingprices.com"))
+        urlEncodedDataPairs.push(encodeURIComponent("srs_id") + "=" + encodeURIComponent("1669"))
+
+        // Add optional contact fields (respecting field length limits)
+        if (data.firstname) {
+          urlEncodedDataPairs.push(
+            encodeURIComponent("firstname") + "=" + encodeURIComponent(truncate(data.firstname, 25)),
+          )
+        }
+        if (data.lastname) {
+          urlEncodedDataPairs.push(
+            encodeURIComponent("lastname") + "=" + encodeURIComponent(truncate(data.lastname, 25)),
+          )
+        }
+        if (data.street_address) {
+          urlEncodedDataPairs.push(
+            encodeURIComponent("address1") + "=" + encodeURIComponent(truncate(data.street_address, 35)),
+          )
+        }
+        if (data.city) {
+          urlEncodedDataPairs.push(encodeURIComponent("city") + "=" + encodeURIComponent(truncate(data.city, 35)))
+        }
+        if (data.state) {
+          urlEncodedDataPairs.push(encodeURIComponent("state") + "=" + encodeURIComponent(truncate(data.state, 2)))
+        }
+        if (data.email) {
+          urlEncodedDataPairs.push(encodeURIComponent("email") + "=" + encodeURIComponent(truncate(data.email, 100)))
         }
 
-        // Add these fields only if they exist
-        if (data.firstname) minimalData.firstname = truncate(data.firstname, 25)
-        if (data.lastname) minimalData.lastname = truncate(data.lastname, 25)
-        if (data.street_address) minimalData.address1 = truncate(data.street_address, 35)
-        if (data.city) minimalData.city = truncate(data.city, 35)
-        if (data.state) minimalData.state = truncate(data.state, 2)
-        if (data.email) minimalData.email = truncate(data.email, 100)
+        // Add product information (per documentation)
+        urlEncodedDataPairs.push(encodeURIComponent("productid") + "=" + encodeURIComponent("Roof"))
+        urlEncodedDataPairs.push(encodeURIComponent("proddescr") + "=" + encodeURIComponent("Roofing"))
 
-        // Build a very simple notes field
-        const notes = "Roofing project inquiry from website"
-        minimalData.notes = notes
+        // Build notes field (respecting 2000 char limit)
+        let notes = "Project Details:\n"
+        notes += `Reason: ${data.reason || "N/A"}\n`
+        notes += `Roof Age: ${data.roof_age || "N/A"}\n`
+        notes += `Square Footage: ${data.square_footage || "N/A"}\n`
+        notes += `Current Material: ${data.current_material || "N/A"}\n`
+        notes += `Desired Material: ${data.desired_material || "N/A"}\n`
+        notes += `Roof Type: ${data.roof_type || "N/A"}\n`
 
-        // Convert to URL-encoded string
-        const params = new URLSearchParams()
-        for (const [key, value] of Object.entries(minimalData)) {
-          params.append(key, value)
+        // Handle issues array
+        if (data.issues) {
+          const issues = Array.isArray(data.issues) ? data.issues : [data.issues]
+          notes += `Issues: ${issues.join(", ")}\n`
         }
 
-        // Log the final payload
-        const payload = params.toString()
-        console.log("LeadPerfection payload:", payload)
+        // Handle features array
+        if (data.features) {
+          const features = Array.isArray(data.features) ? data.features : [data.features]
+          notes += `Desired Features: ${features.join(", ")}\n`
+        }
 
-        // Update debug element
-        debugElement.classList.remove("hidden")
-        debugElement.textContent = "Sending to LeadPerfection:\n" + JSON.stringify(minimalData, null, 2)
+        notes += `Timeframe: ${data.timeframe || "N/A"}\n`
+        notes += `Budget: ${data.budget || "N/A"}\n`
+
+        urlEncodedDataPairs.push(encodeURIComponent("notes") + "=" + encodeURIComponent(truncate(notes, 2000)))
+
+        // Combine the pairs into a single string
+        const urlEncodedData = urlEncodedDataPairs.join("&").replace(/%20/g, "+")
 
         // Update debug info
         const debugContent = document.getElementById("debug-content")
         if (debugContent) {
           debugContent.innerHTML = "<strong>Sending Data to LeadPerfection:</strong><br>"
-          debugContent.innerHTML += `<pre style="white-space: pre-wrap; word-break: break-all;">${JSON.stringify(minimalData, null, 2)}</pre>`
+          debugContent.innerHTML += `<pre style="white-space: pre-wrap; word-break: break-all;">${urlEncodedData}</pre>`
         }
 
-        // Create a new XMLHttpRequest
-        const xhr = new XMLHttpRequest()
+        // Show debug element
+        debugElement.classList.remove("hidden")
+        debugElement.textContent = "Sending to LeadPerfection:\n" + urlEncodedData
 
-        // Set up error timeout
+        // Use XMLHttpRequest for the submission (as shown in the Postman example)
+        const xhr = new XMLHttpRequest()
+        xhr.open("POST", "https://th97.leadperfection.com/batch/addleads.asp", true)
+
+        // Set the proper content type header (per documentation)
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+
+        // Set up timeout
         const timeoutId = setTimeout(() => {
           if (xhr.readyState !== 4) {
             xhr.abort()
@@ -168,13 +207,17 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }, 30000)
 
-        // Handle response
         xhr.onreadystatechange = () => {
           if (xhr.readyState === 4) {
             clearTimeout(timeoutId)
 
-            if (xhr.status >= 200 && xhr.status < 300) {
-              handleSuccess(xhr.responseText)
+            if (xhr.status === 200) {
+              // Check for the exact [OK] response as mentioned in the documentation
+              if (xhr.responseText.trim() === "[OK]") {
+                handleSuccess(xhr.responseText)
+              } else {
+                handleError("Unexpected response from LeadPerfection", xhr.responseText)
+              }
             } else {
               handleError(`HTTP error ${xhr.status}: ${xhr.statusText}`, xhr.responseText)
             }
@@ -187,10 +230,8 @@ document.addEventListener("DOMContentLoaded", () => {
           handleError("Network error occurred")
         }
 
-        // Open and send the request
-        xhr.open("POST", "https://th97.leadperfection.com/batch/addleads.asp", true)
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-        xhr.send(payload)
+        // Send the request
+        xhr.send(urlEncodedData)
 
         // Success handler
         function handleSuccess(response) {
@@ -199,24 +240,24 @@ document.addEventListener("DOMContentLoaded", () => {
           // Update status element
           statusElement.className = "mt-4 p-3 bg-green-800 bg-opacity-50 text-white rounded"
           statusElement.innerHTML = `
-          <div class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-            </svg>
-            <span>Submission successful! Our team will contact you soon.</span>
-          </div>
-        `
+            <div class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span>Submission successful! Our team will contact you soon.</span>
+            </div>
+          `
 
           // Update debug element
           debugElement.textContent += "\n\nResponse:\n" + response
 
           // Update button
           button.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-          </svg>
-          Submission Complete
-        `
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            Submission Complete
+          `
           button.disabled = true
           button.className =
             "inline-flex items-center justify-center px-6 py-3 bg-green-700 text-white font-medium rounded-lg cursor-not-allowed"
@@ -238,14 +279,14 @@ document.addEventListener("DOMContentLoaded", () => {
           // Update status element
           statusElement.className = "mt-4 p-3 bg-red-800 bg-opacity-50 text-white rounded"
           statusElement.innerHTML = `
-          <div class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-            </svg>
-            <span>There was an error with your submission. Please try again or contact us directly.</span>
-          </div>
-          <div class="mt-2 text-sm">Error: ${message}</div>
-        `
+            <div class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+              <span>There was an error with your submission. Please try again or contact us directly.</span>
+            </div>
+            <div class="mt-2 text-sm">Error: ${message}</div>
+          `
 
           // Update debug element
           debugElement.textContent += "\n\nError:\n" + message
@@ -255,11 +296,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Update button
           button.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
-          </svg>
-          Try Again
-        `
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+            </svg>
+            Try Again
+          `
           button.disabled = false
 
           // Update debug info
