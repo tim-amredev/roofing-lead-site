@@ -47,8 +47,6 @@ js: thank-you-quote
             
             <div class="bg-blue-900 bg-opacity-20 p-4 rounded-lg" style="background-color: rgba(30, 58, 138, 0.2);">
               <h3 class="text-lg font-semibold text-white mb-2">Price Range</h3>
-              <div class="space-y58,138,0.2);">
-              <h3 class="text-lg font-semibold text-white mb-2">Price Range</h3>
               <div class="space-y-2">
                 <div class="flex justify-between">
                   <span class="text-gray-300">Low Estimate:</span>
@@ -100,4 +98,70 @@ js: thank-you-quote
     </div>
   </div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  console.log("Setting up analytics isolation and LeadPerfection compatibility");
+  
+  // Isolate Facebook Pixel
+  try {
+    if (typeof window.fbq === 'function') {
+      console.log("Facebook Pixel found, isolating...");
+      const originalFbq = window.fbq;
+      window.fbq = function() {
+        try {
+          console.log("Facebook Pixel called with:", Array.from(arguments));
+          // Delay Facebook Pixel execution slightly to prioritize LeadPerfection
+          setTimeout(function() {
+            return originalFbq.apply(this, arguments);
+          }, 100);
+        } catch (e) {
+          console.error("Error in Facebook Pixel call:", e);
+        }
+      };
+    }
+  } catch (e) {
+    console.error("Error isolating Facebook Pixel:", e);
+  }
+
+  // Isolate Google Analytics
+  try {
+    if (typeof window.gtag === 'function') {
+      console.log("Google Analytics found, isolating...");
+      const originalGtag = window.gtag;
+      window.gtag = function() {
+        try {
+          console.log("Google Analytics called with:", Array.from(arguments));
+          // Delay Google Analytics execution slightly to prioritize LeadPerfection
+          setTimeout(function() {
+            return originalGtag.apply(this, arguments);
+          }, 100);
+        } catch (e) {
+          console.error("Error in Google Analytics call:", e);
+        }
+      };
+    }
+  } catch (e) {
+    console.error("Error isolating Google Analytics:", e);
+  }
+  
+  // Add a helper function to check if LeadPerfection is accessible
+  window.checkLeadPerfectionAccess = function() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('HEAD', 'https://th97.leadperfection.com/batch/addleads.asp', true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        console.log(`LeadPerfection access check: ${xhr.status} ${xhr.statusText}`);
+      }
+    };
+    xhr.onerror = function() {
+      console.error('LeadPerfection access check failed - possible CORS issue');
+    };
+    xhr.send();
+  };
+  
+  // Run the check after a short delay
+  setTimeout(window.checkLeadPerfectionAccess, 2000);
+});
+</script>
 
