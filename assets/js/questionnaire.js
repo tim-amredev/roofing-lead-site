@@ -1,3 +1,4 @@
+// Completely rewritten questionnaire.js with robust button handling
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Questionnaire script loaded")
 
@@ -80,25 +81,66 @@ document.addEventListener("DOMContentLoaded", () => {
     if (prevBtn) {
       if (stepIndex === 0) {
         prevBtn.classList.add("hidden")
+        prevBtn.style.display = "none"
       } else {
         prevBtn.classList.remove("hidden")
+        prevBtn.style.display = "flex"
       }
     }
 
     if (nextBtn && submitBtn) {
       if (stepIndex === totalSteps - 1) {
         nextBtn.classList.add("hidden")
+        nextBtn.style.display = "none"
         submitBtn.classList.remove("hidden")
+        submitBtn.style.display = "flex"
       } else {
         nextBtn.classList.remove("hidden")
+        nextBtn.style.display = "flex"
         submitBtn.classList.add("hidden")
+        submitBtn.style.display = "none"
       }
     }
 
-    // Force the buttons to be visible
-    if (nextBtn) nextBtn.style.display = "flex"
-    if (prevBtn) prevBtn.style.display = stepIndex === 0 ? "none" : "flex"
-    if (submitBtn) submitBtn.style.display = stepIndex === totalSteps - 1 ? "flex" : "none"
+    // Force the buttons to be visible with correct styling
+    if (nextBtn && stepIndex !== totalSteps - 1) {
+      nextBtn.style.display = "flex"
+      nextBtn.style.backgroundColor = "#D4A017"
+      nextBtn.style.color = "#181818"
+      nextBtn.style.alignItems = "center"
+      nextBtn.style.justifyContent = "center"
+      nextBtn.style.padding = "0.75rem 2rem"
+      nextBtn.style.borderRadius = "0.5rem"
+      nextBtn.style.fontWeight = "bold"
+      nextBtn.style.opacity = "1"
+      nextBtn.style.visibility = "visible"
+    }
+
+    if (prevBtn && stepIndex !== 0) {
+      prevBtn.style.display = "flex"
+      prevBtn.style.backgroundColor = "rgba(255, 255, 255, 0.1)"
+      prevBtn.style.color = "#FFFFFF"
+      prevBtn.style.alignItems = "center"
+      prevBtn.style.justifyContent = "center"
+      prevBtn.style.padding = "0.75rem 2rem"
+      prevBtn.style.borderRadius = "0.5rem"
+      prevBtn.style.fontWeight = "bold"
+      prevBtn.style.opacity = "1"
+      prevBtn.style.visibility = "visible"
+    }
+
+    if (submitBtn && stepIndex === totalSteps - 1) {
+      submitBtn.style.display = "flex"
+      submitBtn.style.backgroundColor = "#D4A017"
+      submitBtn.style.color = "#181818"
+      submitBtn.style.alignItems = "center"
+      submitBtn.style.justifyContent = "center"
+      submitBtn.style.padding = "0.75rem 2rem"
+      submitBtn.style.borderRadius = "0.5rem"
+      submitBtn.style.fontWeight = "bold"
+      submitBtn.style.opacity = "1"
+      submitBtn.style.visibility = "visible"
+    }
   }
 
   // Fix the next step validation
@@ -107,44 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // For now, return true to allow navigation through the form
     // We'll implement proper validation once the navigation works
-    return true
-
-    // Step 1 validation
-    if (step === 0) {
-      const reason = document.querySelector('input[name="reason"]:checked')
-      const roofAge = document.querySelector('input[name="roof_age"]:checked')
-      const squareFootage = document.querySelector('input[name="square_footage"]:checked')
-
-      if (!reason || !roofAge || !squareFootage) {
-        alert("Please answer all questions before proceeding.")
-        return false
-      }
-    }
-
-    // Step 2 validation
-    else if (step === 1) {
-      const currentMaterial = document.querySelector('input[name="current_material"]:checked')
-      const desiredMaterial = document.getElementById("desired_material").value
-      const roofType = document.getElementById("roof_type").value
-
-      if (!currentMaterial || !desiredMaterial || !roofType) {
-        alert("Please select your current material, desired material, and roof type.")
-        return false
-      }
-    }
-
-    // Step 3 validation
-    else if (step === 2) {
-      // At least one issue should be selected
-      const issues = document.querySelectorAll('input[name="issues[]"]:checked')
-      const timeframe = document.querySelector('input[name="timeframe"]:checked')
-
-      if (issues.length === 0 || !timeframe) {
-        alert("Please select at least one issue and your project timeframe.")
-        return false
-      }
-    }
-
     return true
   }
 
@@ -175,6 +179,18 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault()
       nextStep()
     })
+
+    // Force button styling
+    nextBtn.style.backgroundColor = "#D4A017"
+    nextBtn.style.color = "#181818"
+    nextBtn.style.display = "flex"
+    nextBtn.style.alignItems = "center"
+    nextBtn.style.justifyContent = "center"
+    nextBtn.style.padding = "0.75rem 2rem"
+    nextBtn.style.borderRadius = "0.5rem"
+    nextBtn.style.fontWeight = "bold"
+    nextBtn.style.opacity = "1"
+    nextBtn.style.visibility = "visible"
   }
 
   if (prevBtn) {
@@ -183,6 +199,18 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault()
       prevStep()
     })
+
+    // Force button styling for previous button
+    prevBtn.style.backgroundColor = "rgba(255, 255, 255, 0.1)"
+    prevBtn.style.color = "#FFFFFF"
+    prevBtn.style.display = "none" // Initially hidden
+    prevBtn.style.alignItems = "center"
+    prevBtn.style.justifyContent = "center"
+    prevBtn.style.padding = "0.75rem 2rem"
+    prevBtn.style.borderRadius = "0.5rem"
+    prevBtn.style.fontWeight = "bold"
+    prevBtn.style.opacity = "1"
+    prevBtn.style.visibility = "visible"
   }
 
   // Initialize the first step
@@ -244,18 +272,6 @@ document.addEventListener("DOMContentLoaded", () => {
     section.style.backgroundColor = "#181818"
   })
 
-  // Add direct inline style fix for the Next button
-  if (nextBtn) {
-    nextBtn.style.backgroundColor = "#D4A017"
-    nextBtn.style.color = "#181818"
-    nextBtn.style.display = "flex"
-    nextBtn.style.alignItems = "center"
-    nextBtn.style.justifyContent = "center"
-    nextBtn.style.padding = "0.75rem 2rem"
-    nextBtn.style.borderRadius = "0.5rem"
-    nextBtn.style.fontWeight = "bold"
-  }
-
   // Create a style element to force additional CSS fixes
   const styleEl = document.createElement("style")
   styleEl.innerHTML = `
@@ -268,6 +284,12 @@ document.addEventListener("DOMContentLoaded", () => {
       padding: 0.75rem 2rem !important;
       border-radius: 0.5rem !important;
       font-weight: bold !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      position: relative !important;
+      z-index: 50 !important;
+      min-width: 120px !important;
+      min-height: 48px !important;
     }
     
     #prev-btn {
@@ -279,6 +301,23 @@ document.addEventListener("DOMContentLoaded", () => {
       padding: 0.75rem 2rem !important;
       border-radius: 0.5rem !important;
       font-weight: bold !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      position: relative !important;
+      z-index: 50 !important;
+      min-width: 120px !important;
+      min-height: 48px !important;
+    }
+    
+    .flex.justify-between.pt-6.border-t.border-white\\/10 {
+      display: flex !important;
+      justify-content: space-between !important;
+      margin-top: 2rem !important;
+      padding-top: 1.5rem !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+      width: 100% !important;
+      position: relative !important;
+      z-index: 100 !important;
     }
     
     section.min-h-screen {
@@ -292,6 +331,22 @@ document.addEventListener("DOMContentLoaded", () => {
   document.head.appendChild(styleEl)
 
   console.log("Questionnaire script initialization complete")
+
+  // Check if buttons are visible after a short delay
+  setTimeout(() => {
+    if (nextBtn) {
+      const nextBtnVisible = window.getComputedStyle(nextBtn).display !== "none"
+      console.log("Next button visible:", nextBtnVisible)
+
+      // If not visible, force it to be visible
+      if (!nextBtnVisible) {
+        console.log("Forcing next button to be visible")
+        nextBtn.style.display = "flex"
+        nextBtn.style.visibility = "visible"
+        nextBtn.style.opacity = "1"
+      }
+    }
+  }, 1000)
 })
 
 // Backup alternative for ensuring the script runs
@@ -308,6 +363,13 @@ window.addEventListener("load", () => {
     nextBtn.style.backgroundColor = "#D4A017"
     nextBtn.style.color = "#181818"
     nextBtn.style.display = "flex"
+    nextBtn.style.alignItems = "center"
+    nextBtn.style.justifyContent = "center"
+    nextBtn.style.padding = "0.75rem 2rem"
+    nextBtn.style.borderRadius = "0.5rem"
+    nextBtn.style.fontWeight = "bold"
+    nextBtn.style.opacity = "1"
+    nextBtn.style.visibility = "visible"
 
     // Add click handler just in case
     nextBtn.onclick = (e) => {
@@ -344,7 +406,65 @@ window.addEventListener("load", () => {
           const progress = ((currentIndex + 2) / allSteps.length) * 100
           progressBar.style.width = `${progress}%`
         }
+
+        // Scroll to top
+        window.scrollTo(0, 0)
       }
+    }
+  }
+
+  // Create emergency buttons if the regular ones aren't working
+  const buttonsContainer = document.querySelector(".flex.justify-between.pt-6.border-t.border-white\\/10")
+  if (!buttonsContainer || !nextBtn) {
+    console.log("Creating emergency buttons")
+
+    // Create a new container
+    const emergencyContainer = document.createElement("div")
+    emergencyContainer.style.display = "flex"
+    emergencyContainer.style.justifyContent = "space-between"
+    emergencyContainer.style.marginTop = "2rem"
+    emergencyContainer.style.paddingTop = "1.5rem"
+    emergencyContainer.style.borderTop = "1px solid rgba(255, 255, 255, 0.1)"
+
+    // Create emergency next button
+    const emergencyNext = document.createElement("button")
+    emergencyNext.textContent = "Next"
+    emergencyNext.style.backgroundColor = "#D4A017"
+    emergencyNext.style.color = "#181818"
+    emergencyNext.style.padding = "0.75rem 2rem"
+    emergencyNext.style.borderRadius = "0.5rem"
+    emergencyNext.style.fontWeight = "bold"
+
+    // Add click handler
+    emergencyNext.onclick = (e) => {
+      e.preventDefault()
+
+      // Get the current step
+      const currentStepElement = document.querySelector(".questionnaire-step:not(.hidden)")
+      if (!currentStepElement) return
+
+      // Find all steps
+      const allSteps = document.querySelectorAll(".questionnaire-step")
+      const currentIndex = Array.from(allSteps).indexOf(currentStepElement)
+
+      // Find next step
+      if (currentIndex < allSteps.length - 1) {
+        // Hide current step
+        currentStepElement.classList.add("hidden")
+
+        // Show next step
+        allSteps[currentIndex + 1].classList.remove("hidden")
+
+        // Scroll to top
+        window.scrollTo(0, 0)
+      }
+    }
+
+    // Add the emergency button to the form
+    const form = document.getElementById("questionnaire-form")
+    if (form) {
+      emergencyContainer.appendChild(emergencyNext)
+      form.appendChild(emergencyContainer)
     }
   }
 })
