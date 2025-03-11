@@ -618,10 +618,29 @@ js: questionnaire leadperfection-integration
                 </div>
               </div>
               
+              <!-- Consent and Terms Section -->
+              <div class="mt-8 p-4 bg-blue-900 bg-opacity-20 rounded-lg" style="background-color: rgba(30, 58, 138, 0.2);">
+                <div class="space-y-4">
+                  <div class="flex items-start">
+                    <input type="checkbox" id="sms_consent" name="sms_consent" class="mt-1 form-checkbox text-blue-500 border-gray-500 bg-gray-700" required>
+                    <label for="sms_consent" class="ml-3 text-gray-300 text-sm">
+                      I consent to receive SMS messages about my roofing project. Message and data rates may apply. Message frequency varies. Reply STOP to cancel.
+                    </label>
+                  </div>
+                  
+                  <div class="flex items-start">
+                    <input type="checkbox" id="terms_consent" name="terms_consent" class="mt-1 form-checkbox text-blue-500 border-gray-500 bg-gray-700" required>
+                    <label for="terms_consent" class="ml-3 text-gray-300 text-sm">
+                      I agree to the <a href="{{ '/terms-of-service' | relative_url }}" class="text-blue-400 hover:underline" target="_blank">Terms of Service</a> and <a href="{{ '/privacy-policy' | relative_url }}" class="text-blue-400 hover:underline" target="_blank">Privacy Policy</a>. By submitting this form, I authorize American Remodeling to contact me regarding my roofing project.
+                    </label>
+                  </div>
+                </div>
+              </div>
+
               <!-- Navigation Buttons -->
               <div class="mt-8 flex justify-between border-t border-white/10 pt-6">
                 <button type="button" id="prev-btn-4" class="bg-white/10 text-white py-3 px-8 rounded-lg font-bold text-lg hover:bg-white/20 transition-colors">Previous</button>
-                <button type="submit" class="bg-[#D4A017] text-[#181818] py-3 px-8 rounded-lg font-bold text-lg hover:bg-[#E5B42A] transition-colors">Get Your Free Quote</button>
+                <button type="submit" id="submit-btn" class="bg-[#D4A017] text-[#181818] py-3 px-8 rounded-lg font-bold text-lg hover:bg-[#E5B42A] transition-colors">Get Your Free Quote</button>
               </div>
             </div>
           </div>
@@ -630,6 +649,45 @@ js: questionnaire leadperfection-integration
     </div>
   </div>
 </section>
+
+<style>
+/* Fix button styling */
+#submit-btn, #next-btn-1, #next-btn-2, #next-btn-3, #next-btn-4 {
+  background-color: #D4A017 !important;
+  color: #181818 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 120px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+#prev-btn-1, #prev-btn-2, #prev-btn-3, #prev-btn-4 {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 120px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Fix material and roof type card selection */
+.material-card.selected > div,
+.roof-type-card.selected > div {
+  border-color: #D4A017 !important;
+  box-shadow: 0 0 0 2px #D4A017 !important;
+  background-color: rgba(212, 160, 23, 0.1) !important;
+}
+
+.material-card > div:hover,
+.roof-type-card > div:hover {
+  border-color: #D4A017 !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+</style>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -647,9 +705,11 @@ js: questionnaire leadperfection-integration
         document.querySelectorAll('.material-card').forEach(c => {
           c.querySelector('.bg-white\\/5').classList.remove('border-blue-500');
           c.querySelector('.bg-white\\/5').classList.add('border-gray-500');
+          c.classList.remove('selected');
         });
         this.querySelector('.bg-white\\/5').classList.remove('border-gray-500');
         this.querySelector('.bg-white\\/5').classList.add('border-blue-500');
+        this.classList.add('selected');
         document.getElementById('desired_material').value = this.dataset.value;
       });
     });
@@ -660,9 +720,11 @@ js: questionnaire leadperfection-integration
         document.querySelectorAll('.roof-type-card').forEach(c => {
           c.querySelector('.bg-white\\/5').classList.remove('border-blue-500');
           c.querySelector('.bg-white\\/5').classList.add('border-gray-500');
+          c.classList.remove('selected');
         });
         this.querySelector('.bg-white\\/5').classList.remove('border-gray-500');
         this.querySelector('.bg-white\\/5').classList.add('border-blue-500');
+        this.classList.add('selected');
         document.getElementById('roof_type').value = this.dataset.value;
       });
     });
