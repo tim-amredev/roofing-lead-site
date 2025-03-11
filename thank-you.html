@@ -99,21 +99,58 @@ js: thank-you-quote
   </div>
 
 <script>
-// Ensure LeadPerfection submission happens automatically
-document.addEventListener("DOMContentLoaded", function() {
-  // Wait a short time to ensure form data is loaded
-  setTimeout(function() {
-    // Find and click the LeadPerfection submit button if it exists
-    const lpButton = document.getElementById("leadperfection-submit");
-    if (lpButton) {
-      console.log("Auto-triggering LeadPerfection submission");
-      lpButton.click();
-    } else {
-      console.warn("LeadPerfection submit button not found");
+// Test LeadPerfection connectivity on page load
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Thank you page loaded, testing LeadPerfection connectivity');
+  
+  // Add a test button to manually check connectivity
+  const debugInfo = document.getElementById('debug-info');
+  if (debugInfo) {
+    const testButton = document.createElement('button');
+    testButton.textContent = 'Test LeadPerfection Connection';
+    testButton.className = 'mt-4 px-4 py-2 bg-blue-600 text-white rounded';
+    testButton.onclick = function() {
+      const debugContent = document.getElementById('debug-content');
+      if (debugContent) {
+        debugContent.innerHTML += '<br><strong>Testing LeadPerfection connection...</strong>';
+      }
+      
+      // Use the test function defined in the CORS fix script
+      if (typeof window.testLeadPerfectionConnection === 'function') {
+        window.testLeadPerfectionConnection();
+        
+        // Update the debug content after a short delay
+        setTimeout(function() {
+          if (debugContent) {
+            debugContent.innerHTML += '<br>Check browser console for test results.';
+          }
+        }, 2000);
+      } else {
+        if (debugContent) {
+          debugContent.innerHTML += '<br>Test function not available. Check if the CORS fix script is loaded.';
+        }
+      }
+    };
+    
+    debugInfo.appendChild(testButton);
+  }
+  
+  // Try to load LeadPerfection data from localStorage
+  try {
+    const storedData = localStorage.getItem('roofingFormData');
+    if (storedData) {
+      const debugContent = document.getElementById('debug-content');
+      if (debugContent) {
+        debugContent.innerHTML += '<br><strong>Form data found in localStorage:</strong>';
+        debugContent.innerHTML += `<br><pre>${storedData}</pre>`;
+      }
     }
-  }, 1500);
+  } catch (error) {
+    console.error('Error accessing localStorage:', error);
+  }
 });
 </script>
+</section>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -180,25 +217,4 @@ document.addEventListener("DOMContentLoaded", function() {
   setTimeout(window.checkLeadPerfectionAccess, 2000);
 });
 </script>
-
-
-<!-- Add this script at the end of the thank-you.html file, just before the closing </section> tag -->
-<script>
-// Auto-trigger LeadPerfection submission after page loads
-document.addEventListener("DOMContentLoaded", function() {
-  console.log("Thank you page loaded, checking for LeadPerfection button");
-  
-  // Wait a short time to ensure the button is created
-  setTimeout(function() {
-    const lpButton = document.getElementById("leadperfection-submit");
-    if (lpButton) {
-      console.log("Auto-triggering LeadPerfection submission");
-      lpButton.click();
-    } else {
-      console.warn("LeadPerfection submit button not found");
-    }
-  }, 1500);
-});
-</script>
-</section>
 
