@@ -26,8 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
       formData = { ...formData, ...parsedData }
       console.log("Retrieved form data from localStorage:", formData)
 
-      // Send data to LeadPerfection automatically
-      sendToLeadPerfection(formData)
+      // Create a hidden iframe for the LeadPerfection submission
+      createLeadPerfectionSubmission(formData)
     } else {
       console.log("No form data found in localStorage")
     }
@@ -35,75 +35,87 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Error retrieving form data:", error)
   }
 
-  // Function to send data to LeadPerfection
-  function sendToLeadPerfection(data) {
-    // Prepare data for LeadPerfection
-    const leadPerfectionData = new URLSearchParams()
+  // Function to create a hidden iframe and form for LeadPerfection submission
+  function createLeadPerfectionSubmission(data) {
+    try {
+      // Create a hidden iframe
+      const iframe = document.createElement("iframe")
+      iframe.style.display = "none"
+      document.body.appendChild(iframe)
 
-    // Map form fields to LeadPerfection parameters
-    leadPerfectionData.append("firstname", data.firstname || "")
-    leadPerfectionData.append("lastname", data.lastname || "")
-    leadPerfectionData.append("address1", data.street_address || "")
-    leadPerfectionData.append("city", data.city || "")
-    leadPerfectionData.append("state", data.state || "")
-    leadPerfectionData.append("zip", data.zip || "")
-    leadPerfectionData.append("phone1", data.phone || "")
-    leadPerfectionData.append("email", data.email || "")
+      // Create a form inside the iframe
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document
+      const form = iframeDoc.createElement("form")
+      form.method = "POST"
+      form.action = "https://th97.leadperfection.com/batch/addleads.asp"
 
-    // Add the specific product ID for roofing
-    leadPerfectionData.append("productid", "Roof")
-    leadPerfectionData.append("proddescr", "Roofing")
+      // Add form fields
+      addFormField(form, "firstname", data.firstname || "")
+      addFormField(form, "lastname", data.lastname || "")
+      addFormField(form, "address1", data.street_address || "")
+      addFormField(form, "city", data.city || "")
+      addFormField(form, "state", data.state || "")
+      addFormField(form, "zip", data.zip || "")
+      addFormField(form, "phone1", data.phone || "")
+      addFormField(form, "email", data.email || "")
+      addFormField(form, "productid", "Roof")
+      addFormField(form, "proddescr", "Roofing")
 
-    // Build notes from form data
-    let notes = "Project Details:\n"
-    notes += `Reason: ${data.reason || "N/A"}\n`
-    notes += `Roof Age: ${data.roof_age || "N/A"}\n`
-    notes += `Square Footage: ${data.square_footage || "N/A"}\n`
-    notes += `Current Material: ${data.current_material || "N/A"}\n`
-    notes += `Desired Material: ${data.desired_material || "N/A"}\n`
-    notes += `Roof Type: ${data.roof_type || "N/A"}\n`
+      // Build notes from form data
+      let notes = "Project Details:\n"
+      notes += `Reason: ${data.reason || "N/A"}\n`
+      notes += `Roof Age: ${data.roof_age || "N/A"}\n`
+      notes += `Square Footage: ${data.square_footage || "N/A"}\n`
+      notes += `Current Material: ${data.current_material || "N/A"}\n`
+      notes += `Desired Material: ${data.desired_material || "N/A"}\n`
+      notes += `Roof Type: ${data.roof_type || "N/A"}\n`
 
-    // Handle issues array
-    if (data.issues) {
-      const issues = Array.isArray(data.issues) ? data.issues : [data.issues]
-      notes += `Issues: ${issues.join(", ")}\n`
-    }
+      // Handle issues array
+      if (data.issues) {
+        const issues = Array.isArray(data.issues) ? data.issues : [data.issues]
+        notes += `Issues: ${issues.join(", ")}\n`
+      }
 
-    // Handle features array
-    if (data.features) {
-      const features = Array.isArray(data.features) ? data.features : [data.features]
-      notes += `Desired Features: ${features.join(", ")}\n`
-    }
+      // Handle features array
+      if (data.features) {
+        const features = Array.isArray(data.features) ? data.features : [data.features]
+        notes += `Desired Features: ${features.join(", ")}\n`
+      }
 
-    notes += `Timeframe: ${data.timeframe || "N/A"}\n`
-    notes += `Budget: ${data.budget || "N/A"}\n`
-    notes += `Comments: ${data.comments || "N/A"}`
+      notes += `Timeframe: ${data.timeframe || "N/A"}\n`
+      notes += `Budget: ${data.budget || "N/A"}\n`
 
-    leadPerfectionData.append("notes", notes)
+      addFormField(form, "notes", notes)
 
-    // Add the required fields with exact values provided by LeadPerfection
-    leadPerfectionData.append("sender", "Instantroofingprices.com")
-    leadPerfectionData.append("srs_id", "1669")
+      // Add the required fields with exact values provided by LeadPerfection
+      addFormField(form, "sender", "Instantroofingprices.com")
+      addFormField(form, "srs_id", "1669")
 
-    // Send to LeadPerfection
-    const leadPerfectionUrl = "https://th97.leadperfection.com/batch/addleads.asp"
+      // Append the form to the iframe document
+      iframeDoc.body.appendChild(form)
 
-    fetch(leadPerfectionUrl, {
-      method: "POST",
-      body: leadPerfectionData,
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-      .then(() => {
-        console.log("Data sent to LeadPerfection successfully")
-        // Clear localStorage after successful send
+      // Submit the form
+      form.submit()
+
+      console.log("LeadPerfection form submitted via iframe")
+
+      // Clear localStorage after submission
+      setTimeout(() => {
         localStorage.removeItem("roofingFormData")
-      })
-      .catch((error) => {
-        console.error("Error sending to LeadPerfection:", error)
-      })
+        console.log("Form data cleared from localStorage")
+      }, 2000)
+    } catch (error) {
+      console.error("Error creating LeadPerfection submission:", error)
+    }
+  }
+
+  // Helper function to add a field to the form
+  function addFormField(form, name, value) {
+    const input = document.createElement("input")
+    input.type = "hidden"
+    input.name = name
+    input.value = value
+    form.appendChild(input)
   }
 
   // Pricing data (simplified version of the calculator pricing)
@@ -205,7 +217,6 @@ document.addEventListener("DOMContentLoaded", () => {
   generateQuote()
 
   // Track conversion with Facebook Pixel if available
-  const fbq = window.fbq // Assign the fbq function to a local variable.
   if (typeof fbq === "function") {
     fbq("track", "Lead", {
       content_name: "Roofing Quote",
