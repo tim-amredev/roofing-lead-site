@@ -62,183 +62,215 @@ document.addEventListener("DOMContentLoaded", () => {
       button.className =
         "inline-flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
       button.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-        </svg>
-        Complete Submission
-      `
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+      </svg>
+      Complete Submission
+    `
+
+      // Create a status element now (before the click event)
+      const statusElement = document.createElement("div")
+      statusElement.className = "mt-4 p-3 rounded hidden"
+      statusElement.id = "leadperfection-status"
+      manualContainer.appendChild(statusElement)
+
+      // Create a debug element for detailed logging
+      const debugElement = document.createElement("pre")
+      debugElement.className = "mt-4 p-3 bg-gray-800 text-xs text-white rounded overflow-auto max-h-40 hidden"
+      debugElement.id = "leadperfection-debug"
+      manualContainer.appendChild(debugElement)
 
       // Add click event to the button
       button.addEventListener("click", function () {
-        // Disable the button to prevent multiple clicks
-        this.disabled = true
-        this.innerHTML = `
+        // Show debug info
+        const debugInfo = document.getElementById("debug-info")
+        if (debugInfo) {
+          debugInfo.style.display = "block"
+        }
+
+        // Show status element
+        statusElement.classList.remove("hidden")
+        statusElement.className = "mt-4 p-3 bg-blue-800 bg-opacity-50 text-white rounded"
+        statusElement.innerHTML = `
+        <div class="flex items-center">
           <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          Sending...
-        `
+          <span>Processing submission...</span>
+        </div>
+      `
 
-        // Create a status element
-        const statusElement = document.createElement("div")
-        statusElement.className = "mt-4 p-3 rounded"
-        manualContainer.appendChild(statusElement)
+        // Disable the button to prevent multiple clicks
+        this.disabled = true
+        this.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Sending...
+      `
 
-        // Prepare the URL-encoded data string exactly as shown in the Postman example
-        let urlEncodedData = ""
-        const urlEncodedDataPairs = []
+        // Log the data we're about to send
+        console.log("Preparing to send data to LeadPerfection:", data)
 
-        // Add required fields first
-        urlEncodedDataPairs.push(encodeURIComponent("zip") + "=" + encodeURIComponent(data.zip || ""))
-        urlEncodedDataPairs.push(
-          encodeURIComponent("phone1") + "=" + encodeURIComponent(formatPhoneNumber(data.phone || "")),
-        )
-        urlEncodedDataPairs.push(encodeURIComponent("sender") + "=" + encodeURIComponent("Instantroofingprices.com"))
-        urlEncodedDataPairs.push(encodeURIComponent("srs_id") + "=" + encodeURIComponent("1669"))
-
-        // Add optional contact fields
-        urlEncodedDataPairs.push(
-          encodeURIComponent("firstname") + "=" + encodeURIComponent(truncate(data.firstname || "", 25)),
-        )
-        urlEncodedDataPairs.push(
-          encodeURIComponent("lastname") + "=" + encodeURIComponent(truncate(data.lastname || "", 25)),
-        )
-        urlEncodedDataPairs.push(
-          encodeURIComponent("address1") + "=" + encodeURIComponent(truncate(data.street_address || "", 35)),
-        )
-        urlEncodedDataPairs.push(encodeURIComponent("city") + "=" + encodeURIComponent(truncate(data.city || "", 35)))
-        urlEncodedDataPairs.push(encodeURIComponent("state") + "=" + encodeURIComponent(truncate(data.state || "", 2)))
-        urlEncodedDataPairs.push(
-          encodeURIComponent("email") + "=" + encodeURIComponent(truncate(data.email || "", 100)),
-        )
-
-        // Add product information
-        urlEncodedDataPairs.push(encodeURIComponent("productid") + "=" + encodeURIComponent("Roof"))
-        urlEncodedDataPairs.push(encodeURIComponent("proddescr") + "=" + encodeURIComponent("Roofing"))
-
-        // Build notes
-        let notes = "Project Details:\n"
-        notes += `Reason: ${data.reason || "N/A"}\n`
-        notes += `Roof Age: ${data.roof_age || "N/A"}\n`
-        notes += `Square Footage: ${data.square_footage || "N/A"}\n`
-        notes += `Current Material: ${data.current_material || "N/A"}\n`
-        notes += `Desired Material: ${data.desired_material || "N/A"}\n`
-        notes += `Roof Type: ${data.roof_type || "N/A"}\n`
-
-        // Handle issues array
-        if (data.issues) {
-          const issues = Array.isArray(data.issues) ? data.issues : [data.issues]
-          notes += `Issues: ${issues.join(", ")}\n`
+        // Create a simple object with just the required fields
+        const minimalData = {
+          zip: data.zip || "",
+          phone1: formatPhoneNumber(data.phone || ""),
+          sender: "Instantroofingprices.com",
+          srs_id: "1669",
+          productid: "Roof",
+          proddescr: "Roofing",
         }
 
-        // Handle features array
-        if (data.features) {
-          const features = Array.isArray(data.features) ? data.features : [data.features]
-          notes += `Desired Features: ${features.join(", ")}\n`
+        // Add these fields only if they exist
+        if (data.firstname) minimalData.firstname = truncate(data.firstname, 25)
+        if (data.lastname) minimalData.lastname = truncate(data.lastname, 25)
+        if (data.street_address) minimalData.address1 = truncate(data.street_address, 35)
+        if (data.city) minimalData.city = truncate(data.city, 35)
+        if (data.state) minimalData.state = truncate(data.state, 2)
+        if (data.email) minimalData.email = truncate(data.email, 100)
+
+        // Build a very simple notes field
+        const notes = "Roofing project inquiry from website"
+        minimalData.notes = notes
+
+        // Convert to URL-encoded string
+        const params = new URLSearchParams()
+        for (const [key, value] of Object.entries(minimalData)) {
+          params.append(key, value)
         }
 
-        notes += `Timeframe: ${data.timeframe || "N/A"}\n`
-        notes += `Budget: ${data.budget || "N/A"}\n`
+        // Log the final payload
+        const payload = params.toString()
+        console.log("LeadPerfection payload:", payload)
 
-        urlEncodedDataPairs.push(encodeURIComponent("notes") + "=" + encodeURIComponent(truncate(notes, 2000)))
-
-        // Combine the pairs into a single string
-        urlEncodedData = urlEncodedDataPairs.join("&").replace(/%20/g, "+")
+        // Update debug element
+        debugElement.classList.remove("hidden")
+        debugElement.textContent = "Sending to LeadPerfection:\n" + JSON.stringify(minimalData, null, 2)
 
         // Update debug info
-        const debugInfo = document.getElementById("debug-info")
-        if (debugInfo) {
-          debugInfo.style.display = "block"
-          const debugContent = document.getElementById("debug-content")
-          if (debugContent) {
-            debugContent.innerHTML = "<strong>Sending Data to LeadPerfection:</strong><br>"
-            debugContent.innerHTML += `<pre style="white-space: pre-wrap; word-break: break-all;">${urlEncodedData}</pre>`
-          }
+        const debugContent = document.getElementById("debug-content")
+        if (debugContent) {
+          debugContent.innerHTML = "<strong>Sending Data to LeadPerfection:</strong><br>"
+          debugContent.innerHTML += `<pre style="white-space: pre-wrap; word-break: break-all;">${JSON.stringify(minimalData, null, 2)}</pre>`
         }
 
-        // Use XMLHttpRequest for the submission
+        // Create a new XMLHttpRequest
         const xhr = new XMLHttpRequest()
-        xhr.open("POST", "https://th97.leadperfection.com/batch/addleads.asp")
 
-        // Set the proper content type header
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-        xhr.setRequestHeader("Content-Length", urlEncodedData.length.toString())
+        // Set up error timeout
+        const timeoutId = setTimeout(() => {
+          if (xhr.readyState !== 4) {
+            xhr.abort()
+            handleError("Request timed out after 30 seconds")
+          }
+        }, 30000)
 
+        // Handle response
         xhr.onreadystatechange = () => {
           if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-              // Success
-              statusElement.className = "mt-4 p-3 bg-green-800 bg-opacity-50 text-white rounded"
-              statusElement.innerHTML = `
-                <div class="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                  </svg>
-                  <span>Submission successful! Our team will contact you soon.</span>
-                </div>
-              `
+            clearTimeout(timeoutId)
 
-              // Clear localStorage
-              localStorage.removeItem("roofingFormData")
-
-              // Update button
-              button.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                </svg>
-                Submission Complete
-              `
-              button.disabled = true
-              button.className =
-                "inline-flex items-center justify-center px-6 py-3 bg-green-700 text-white font-medium rounded-lg cursor-not-allowed"
-
-              // Update debug info
-              if (debugInfo) {
-                const debugContent = document.getElementById("debug-content")
-                if (debugContent) {
-                  debugContent.innerHTML += "<br><br><strong>Response from LeadPerfection:</strong><br>"
-                  debugContent.innerHTML += `<pre style="white-space: pre-wrap; word-break: break-all;">${xhr.responseText}</pre>`
-                }
-              }
+            if (xhr.status >= 200 && xhr.status < 300) {
+              handleSuccess(xhr.responseText)
             } else {
-              // Error
-              statusElement.className = "mt-4 p-3 bg-red-800 bg-opacity-50 text-white rounded"
-              statusElement.innerHTML = `
-                <div class="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                  </svg>
-                  <span>There was an error with your submission. Please try again or contact us directly.</span>
-                </div>
-                <div class="mt-2 text-sm">Error: ${xhr.status} ${xhr.statusText}</div>
-                <div class="mt-2 text-sm">Response: ${xhr.responseText}</div>
-              `
-
-              // Update button
-              button.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
-                </svg>
-                Try Again
-              `
-              button.disabled = false
-
-              // Update debug info
-              if (debugInfo) {
-                const debugContent = document.getElementById("debug-content")
-                if (debugContent) {
-                  debugContent.innerHTML += "<br><br><strong>Error from LeadPerfection:</strong><br>"
-                  debugContent.innerHTML += `Status: ${xhr.status} ${xhr.statusText}<br>`
-                  debugContent.innerHTML += `Response: ${xhr.responseText}`
-                }
-              }
+              handleError(`HTTP error ${xhr.status}: ${xhr.statusText}`, xhr.responseText)
             }
           }
         }
 
-        // Send the request
-        xhr.send(urlEncodedData)
+        // Handle network errors
+        xhr.onerror = () => {
+          clearTimeout(timeoutId)
+          handleError("Network error occurred")
+        }
+
+        // Open and send the request
+        xhr.open("POST", "https://th97.leadperfection.com/batch/addleads.asp", true)
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+        xhr.send(payload)
+
+        // Success handler
+        function handleSuccess(response) {
+          console.log("LeadPerfection success response:", response)
+
+          // Update status element
+          statusElement.className = "mt-4 p-3 bg-green-800 bg-opacity-50 text-white rounded"
+          statusElement.innerHTML = `
+          <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            <span>Submission successful! Our team will contact you soon.</span>
+          </div>
+        `
+
+          // Update debug element
+          debugElement.textContent += "\n\nResponse:\n" + response
+
+          // Update button
+          button.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+          Submission Complete
+        `
+          button.disabled = true
+          button.className =
+            "inline-flex items-center justify-center px-6 py-3 bg-green-700 text-white font-medium rounded-lg cursor-not-allowed"
+
+          // Clear localStorage
+          localStorage.removeItem("roofingFormData")
+
+          // Update debug info
+          if (debugContent) {
+            debugContent.innerHTML += "<br><br><strong>Response from LeadPerfection:</strong><br>"
+            debugContent.innerHTML += `<pre style="white-space: pre-wrap; word-break: break-all;">${response}</pre>`
+          }
+        }
+
+        // Error handler
+        function handleError(message, response = "") {
+          console.error("LeadPerfection error:", message, response)
+
+          // Update status element
+          statusElement.className = "mt-4 p-3 bg-red-800 bg-opacity-50 text-white rounded"
+          statusElement.innerHTML = `
+          <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+            <span>There was an error with your submission. Please try again or contact us directly.</span>
+          </div>
+          <div class="mt-2 text-sm">Error: ${message}</div>
+        `
+
+          // Update debug element
+          debugElement.textContent += "\n\nError:\n" + message
+          if (response) {
+            debugElement.textContent += "\n\nResponse:\n" + response
+          }
+
+          // Update button
+          button.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+          </svg>
+          Try Again
+        `
+          button.disabled = false
+
+          // Update debug info
+          if (debugContent) {
+            debugContent.innerHTML += "<br><br><strong>Error from LeadPerfection:</strong><br>"
+            debugContent.innerHTML += `${message}<br>`
+            if (response) {
+              debugContent.innerHTML += `Response: ${response}`
+            }
+          }
+        }
       })
 
       manualContainer.appendChild(button)
