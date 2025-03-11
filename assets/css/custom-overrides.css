@@ -202,3 +202,73 @@ select option {
   color: white !important;
 }
 
+/* Fix for the navigation buttons specifically */
+.flex.justify-between.pt-6.border-t.border-white\/10 {
+  display: flex !important;
+  justify-content: space-between !important;
+}
+
+#next-btn,
+#prev-btn,
+#submit-btn {
+  display: flex !important;
+  align-items: center !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+  border-radius: 0.5rem !important;
+  transition-property: background-color, border-color, color, fill, stroke !important;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-duration: 150ms !important;
+}
+
+/* Override any conflicting styles */
+section[class*="min-h-screen"] {
+  background-color: #181818 !important;
+}
+
+/* Fix for any default Tailwind styles */
+.bg-\[\#181818\] {
+  background-color: #181818 !important;
+}
+
+.bg-\[\#2A3555\] {
+  background-color: #2a3555 !important;
+}
+
+.bg-\[\#D4A017\] {
+  background-color: #d4a017 !important;
+}
+
+/* Fix for the Next button to ensure it's visible and styled correctly */
+button[id="next-btn"] {
+  background-color: #d4a017 !important;
+  color: #181818 !important;
+  padding: 0.75rem 2rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 0.5rem !important;
+  font-weight: bold !important;
+}
+
+button[id="next-btn"]:hover {
+  background-color: #e5b42a !important;
+}
+
+/* Ensure button visibility */
+button[id="next-btn"],
+button[id="submit-btn"],
+button[id="prev-btn"] {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Force contrast on text over dark backgrounds */
+.text-blue-100,
+.text-blue-200,
+.text-gray-300 {
+  color: #ffffff !important;
+}
+
