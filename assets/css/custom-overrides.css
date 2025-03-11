@@ -14,6 +14,15 @@ header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
+header a,
+header span {
+  color: #ffffff !important;
+}
+
+header a:hover {
+  color: #d4a017 !important;
+}
+
 /* Card backgrounds */
 .bg-white,
 .card,
@@ -140,5 +149,56 @@ select:focus {
 .form-checkbox:checked {
   background-color: #d4a017 !important;
   border-color: #d4a017 !important;
+}
+
+/* Force dark theme on the entire page */
+body {
+  background-color: #181818 !important;
+}
+
+/* Ensure the questionnaire section has the dark background */
+section.min-h-screen {
+  background-color: #181818 !important;
+}
+
+/* Fix for form elements in dark theme */
+.form-radio,
+.form-checkbox {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 1.2em !important;
+  height: 1.2em !important;
+  border-radius: 0.25rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.form-radio:checked,
+.form-checkbox:checked {
+  background-color: #d4a017 !important;
+  border-color: #d4a017 !important;
+}
+
+.form-radio:checked::before,
+.form-checkbox:checked::before {
+  content: "" !important;
+  width: 0.65em !important;
+  height: 0.65em !important;
+  border-radius: 50% !important;
+  background-color: white !important;
+}
+
+/* Fix for select elements */
+select {
+  background-color: #2a3555 !important;
+  color: white !important;
+}
+
+select option {
+  background-color: #2a3555 !important;
+  color: white !important;
 }
 
