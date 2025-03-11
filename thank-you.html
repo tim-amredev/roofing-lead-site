@@ -97,6 +97,23 @@ js: thank-you-quote
       Checking for form data...
     </div>
   </div>
+
+<script>
+// Ensure LeadPerfection submission happens automatically
+document.addEventListener("DOMContentLoaded", function() {
+  // Wait a short time to ensure form data is loaded
+  setTimeout(function() {
+    // Find and click the LeadPerfection submit button if it exists
+    const lpButton = document.getElementById("leadperfection-submit");
+    if (lpButton) {
+      console.log("Auto-triggering LeadPerfection submission");
+      lpButton.click();
+    } else {
+      console.warn("LeadPerfection submit button not found");
+    }
+  }, 1500);
+});
+</script>
 </section>
 
 <script>
