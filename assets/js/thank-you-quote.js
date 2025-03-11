@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Create the button
       const button = document.createElement("button")
       button.type = "button"
+      button.id = "leadperfection-submit"
       button.className =
         "inline-flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
       button.innerHTML = `
@@ -145,6 +146,17 @@ document.addEventListener("DOMContentLoaded", () => {
         // Combine the pairs into a single string
         urlEncodedData = urlEncodedDataPairs.join("&").replace(/%20/g, "+")
 
+        // Update debug info
+        const debugInfo = document.getElementById("debug-info")
+        if (debugInfo) {
+          debugInfo.style.display = "block"
+          const debugContent = document.getElementById("debug-content")
+          if (debugContent) {
+            debugContent.innerHTML = "<strong>Sending Data to LeadPerfection:</strong><br>"
+            debugContent.innerHTML += `<pre style="white-space: pre-wrap; word-break: break-all;">${urlEncodedData}</pre>`
+          }
+        }
+
         // Use XMLHttpRequest for the submission
         const xhr = new XMLHttpRequest()
         xhr.open("POST", "https://th97.leadperfection.com/batch/addleads.asp")
@@ -180,6 +192,15 @@ document.addEventListener("DOMContentLoaded", () => {
               button.disabled = true
               button.className =
                 "inline-flex items-center justify-center px-6 py-3 bg-green-700 text-white font-medium rounded-lg cursor-not-allowed"
+
+              // Update debug info
+              if (debugInfo) {
+                const debugContent = document.getElementById("debug-content")
+                if (debugContent) {
+                  debugContent.innerHTML += "<br><br><strong>Response from LeadPerfection:</strong><br>"
+                  debugContent.innerHTML += `<pre style="white-space: pre-wrap; word-break: break-all;">${xhr.responseText}</pre>`
+                }
+              }
             } else {
               // Error
               statusElement.className = "mt-4 p-3 bg-red-800 bg-opacity-50 text-white rounded"
@@ -202,19 +223,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 Try Again
               `
               button.disabled = false
+
+              // Update debug info
+              if (debugInfo) {
+                const debugContent = document.getElementById("debug-content")
+                if (debugContent) {
+                  debugContent.innerHTML += "<br><br><strong>Error from LeadPerfection:</strong><br>"
+                  debugContent.innerHTML += `Status: ${xhr.status} ${xhr.statusText}<br>`
+                  debugContent.innerHTML += `Response: ${xhr.responseText}`
+                }
+              }
             }
           }
-        }
-
-        // Log the data being sent
-        console.log("Sending data to LeadPerfection:", urlEncodedData)
-
-        // Add debug info
-        const debugInfo = document.getElementById("debug-info")
-        if (debugInfo) {
-          debugInfo.style.display = "block"
-          debugInfo.innerHTML = "<strong>Sending Data to LeadPerfection:</strong><br>"
-          debugInfo.innerHTML += `<pre style="white-space: pre-wrap; word-break: break-all;">${urlEncodedData}</pre>`
         }
 
         // Send the request
@@ -223,21 +243,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
       manualContainer.appendChild(button)
 
-      // Add the container to the page
-      document.querySelector(".container").appendChild(manualContainer)
+      // Find the container to append to - try multiple selectors for robustness
+      let container = document.querySelector(".container")
+      if (!container) {
+        container = document.querySelector("section > div")
+      }
+      if (!container) {
+        container = document.querySelector("section")
+      }
+
+      if (container) {
+        container.appendChild(manualContainer)
+      } else {
+        // If no container found, append to the body
+        document.body.appendChild(manualContainer)
+      }
 
       // Add debug info
       const debugInfo = document.getElementById("debug-info")
       if (debugInfo) {
         debugInfo.style.display = "block"
-        debugInfo.innerHTML = "<strong>Form Data Ready for Submission:</strong><br>"
-        debugInfo.innerHTML += `Zip: ${data.zip || "Not provided"}<br>`
-        debugInfo.innerHTML += `Phone: ${data.phone || "Not provided"}<br>`
-        debugInfo.innerHTML += `Name: ${data.firstname || ""} ${data.lastname || ""}<br>`
-        debugInfo.innerHTML += `Email: ${data.email || "Not provided"}<br>`
+        const debugContent = document.getElementById("debug-content")
+        if (debugContent) {
+          debugContent.innerHTML = "<strong>Form Data Ready for Submission:</strong><br>"
+          debugContent.innerHTML += `Zip: ${data.zip || "Not provided"}<br>`
+          debugContent.innerHTML += `Phone: ${data.phone || "Not provided"}<br>`
+          debugContent.innerHTML += `Name: ${data.firstname || ""} ${data.lastname || ""}<br>`
+          debugContent.innerHTML += `Email: ${data.email || "Not provided"}<br>`
+        }
       }
     } catch (error) {
       console.error("Error creating manual submission button:", error)
+
+      // Add error to debug info
+      const debugInfo = document.getElementById("debug-info")
+      if (debugInfo) {
+        debugInfo.style.display = "block"
+        const debugContent = document.getElementById("debug-content")
+        if (debugContent) {
+          debugContent.innerHTML = "<strong>Error creating LeadPerfection button:</strong><br>"
+          debugContent.innerHTML += error.toString()
+        }
+      }
     }
   }
 
@@ -279,104 +326,119 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Generate a quote based on form data
   function generateQuote() {
-    // Determine material
-    const material = formData.desired_material || "asphalt"
-    const materialInfo = pricing.materials[material] || pricing.materials.asphalt
+    try {
+      // Determine material
+      const material = formData.desired_material || "asphalt"
+      const materialInfo = pricing.materials[material] || pricing.materials.asphalt
 
-    // Determine roof size
-    const sizeRange = pricing.roofSizes[formData.square_footage] || pricing.roofSizes["1501-2000"]
-    const area = Math.floor(Math.random() * (sizeRange.max - sizeRange.min + 1)) + sizeRange.min
+      // Determine roof size
+      const sizeRange = pricing.roofSizes[formData.square_footage] || pricing.roofSizes["1501-2000"]
+      const area = Math.floor(Math.random() * (sizeRange.max - sizeRange.min + 1)) + sizeRange.min
 
-    // Determine pitch multiplier
-    const pitchMultiplier = pricing.pitchMultipliers[formData.roof_type] || pricing.pitchMultipliers.gabled
+      // Determine pitch multiplier
+      const pitchMultiplier = pricing.pitchMultipliers[formData.roof_type] || pricing.pitchMultipliers.gabled
 
-    // Calculate base cost
-    let lowBase = area * materialInfo.low * pitchMultiplier
-    let highBase = area * materialInfo.high * pitchMultiplier
+      // Calculate base cost
+      let lowBase = area * materialInfo.low * pitchMultiplier
+      let highBase = area * materialInfo.high * pitchMultiplier
 
-    // Add complexity factor based on issues (now handling array)
-    const issues = Array.isArray(formData.issues) ? formData.issues : [formData.issues]
-    if (issues.includes("leaks") || issues.includes("sagging")) {
-      lowBase *= 1.15
-      highBase *= 1.15
+      // Add complexity factor based on issues (now handling array)
+      const issues = Array.isArray(formData.issues) ? formData.issues : [formData.issues]
+      if (issues.includes("leaks") || issues.includes("sagging")) {
+        lowBase *= 1.15
+        highBase *= 1.15
+      }
+
+      // Add features cost (now handling array)
+      const features = Array.isArray(formData.features) ? formData.features : [formData.features]
+      if (features.length > 0 && !features.includes("none")) {
+        // Add 5% per feature (up to 20%)
+        const featureMultiplier = 1 + Math.min(features.length, 4) * 0.05
+        lowBase *= featureMultiplier
+        highBase *= featureMultiplier
+      }
+
+      // Ensure minimum project cost
+      const minCost = 5000
+      lowBase = Math.max(lowBase, minCost)
+      highBase = Math.max(highBase, minCost * 1.2)
+
+      // Format costs
+      const lowEstimate = Math.round(lowBase).toLocaleString("en-US", { style: "currency", currency: "USD" })
+      const highEstimate = Math.round(highBase).toLocaleString("en-US", { style: "currency", currency: "USD" })
+      const averageEstimate = Math.round((lowBase + highBase) / 2).toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+      })
+
+      // Update the quote section
+      const quoteMaterial = document.getElementById("quote-material")
+      const quoteArea = document.getElementById("quote-area")
+      const quoteLow = document.getElementById("quote-low")
+      const quoteHigh = document.getElementById("quote-high")
+      const quoteAverage = document.getElementById("quote-average")
+
+      if (quoteMaterial) quoteMaterial.textContent = materialInfo.name
+      if (quoteArea) quoteArea.textContent = `${area.toLocaleString()} sq ft`
+      if (quoteLow) quoteLow.textContent = lowEstimate
+      if (quoteHigh) quoteHigh.textContent = highEstimate
+      if (quoteAverage) quoteAverage.textContent = averageEstimate
+
+      // Personalize greeting if name is available
+      const nameElement = document.getElementById("customer-name")
+      if (nameElement && formData.firstname) {
+        nameElement.textContent = formData.firstname + (formData.lastname ? " " + formData.lastname : "")
+        const parentElement = nameElement.parentElement
+        if (parentElement) parentElement.classList.remove("hidden")
+      }
+
+      console.log("Generated quote:", {
+        material: materialInfo.name,
+        area: area,
+        lowEstimate: lowEstimate,
+        highEstimate: highEstimate,
+        averageEstimate: averageEstimate,
+      })
+    } catch (error) {
+      console.error("Error generating quote:", error)
     }
-
-    // Add features cost (now handling array)
-    const features = Array.isArray(formData.features) ? formData.features : [formData.features]
-    if (features.length > 0 && !features.includes("none")) {
-      // Add 5% per feature (up to 20%)
-      const featureMultiplier = 1 + Math.min(features.length, 4) * 0.05
-      lowBase *= featureMultiplier
-      highBase *= featureMultiplier
-    }
-
-    // Ensure minimum project cost
-    const minCost = 5000
-    lowBase = Math.max(lowBase, minCost)
-    highBase = Math.max(highBase, minCost * 1.2)
-
-    // Format costs
-    const lowEstimate = Math.round(lowBase).toLocaleString("en-US", { style: "currency", currency: "USD" })
-    const highEstimate = Math.round(highBase).toLocaleString("en-US", { style: "currency", currency: "USD" })
-    const averageEstimate = Math.round((lowBase + highBase) / 2).toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-    })
-
-    // Update the quote section
-    document.getElementById("quote-material").textContent = materialInfo.name
-    document.getElementById("quote-area").textContent = `${area.toLocaleString()} sq ft`
-    document.getElementById("quote-low").textContent = lowEstimate
-    document.getElementById("quote-high").textContent = highEstimate
-    document.getElementById("quote-average").textContent = averageEstimate
-
-    // Personalize greeting if name is available
-    const nameElement = document.getElementById("customer-name")
-    if (nameElement && formData.firstname) {
-      nameElement.textContent = formData.firstname + (formData.lastname ? " " + formData.lastname : "")
-      nameElement.parentElement.classList.remove("hidden")
-    }
-
-    console.log("Generated quote:", {
-      material: materialInfo.name,
-      area: area,
-      lowEstimate: lowEstimate,
-      highEstimate: highEstimate,
-      averageEstimate: averageEstimate,
-    })
   }
 
   // Generate the quote
   generateQuote()
 
-  // Track conversion with Facebook Pixel if available
-  try {
-    if (typeof window.fbq === "function") {
-      console.log("Tracking conversion with Facebook Pixel")
-      window.fbq("track", "Lead", {
-        content_name: "Roofing Quote",
-        content_category: "Roofing",
-      })
-    } else {
-      console.log("Facebook Pixel not available")
+  // Safely track conversion with Facebook Pixel if available
+  setTimeout(() => {
+    try {
+      if (typeof window.fbq === "function") {
+        console.log("Tracking conversion with Facebook Pixel")
+        window.fbq("track", "Lead", {
+          content_name: "Roofing Quote",
+          content_category: "Roofing",
+        })
+      } else {
+        console.log("Facebook Pixel not available")
+      }
+    } catch (error) {
+      console.error("Error tracking Facebook Pixel conversion:", error)
     }
-  } catch (error) {
-    console.error("Error tracking Facebook Pixel conversion:", error)
-  }
+  }, 1000)
 
-  // Add Google Analytics event tracking if it exists
-  try {
-    if (typeof window.gtag === "function") {
-      console.log("Tracking conversion with Google Analytics")
-      window.gtag("event", "generate_lead", {
-        event_category: "conversion",
-        event_label: "roofing_quote",
-      })
-    } else {
-      console.log("Google Analytics not available")
+  // Safely add Google Analytics event tracking if it exists
+  setTimeout(() => {
+    try {
+      if (typeof window.gtag === "function") {
+        console.log("Tracking conversion with Google Analytics")
+        window.gtag("event", "generate_lead", {
+          event_category: "conversion",
+          event_label: "roofing_quote",
+        })
+      } else {
+        console.log("Google Analytics not available")
+      }
+    } catch (error) {
+      console.error("Error tracking Google Analytics conversion:", error)
     }
-  } catch (error) {
-    console.error("Error tracking Google Analytics conversion:", error)
-  }
+  }, 1500)
 })
 
