@@ -144,5 +144,42 @@ document.addEventListener("DOMContentLoaded", () => {
     resultsSection.classList.remove("hidden")
     resultsSection.scrollIntoView({ behavior: "smooth" })
   }
-})
 
+  // Declare fbq if it's not already defined (e.g., if the Facebook Pixel isn't loaded yet)
+  if (typeof fbq === 'undefined') {
+    fbq = function() {
+      console.warn('Facebook Pixel not loaded.  fbq called with arguments:', arguments);
+    };
+  }
+
+  // Wait for the results section to appear before firing the Lead event
+  let observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.addedNodes.length || mutation.attributeName === 'class') {
+        let resultsSection = document.getElementById('results-section');
+        if (resultsSection && !resultsSection.classList.contains('hidden')) {
+          let estimatedPrice = document.getElementById('average-estimate').innerText || '0';
+          // Remove currency symbol and commas for value
+          let priceValue = parseFloat(estimatedPrice.replace(/[$,]/g, ''));
+          
+          fbq('track', 'Lead', {
+            value: priceValue,
+            currency: 'USD',
+            content_name: 'Roofing Estimate',
+            content_category: 'Roofing'
+          });
+          
+          observer.disconnect(); // Stop observing after event fires once
+        }
+      }
+    });
+  });
+
+  // Start observing changes in the results section for visibility changes
+  observer.observe(document.body, { 
+    childList: true, 
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['class'] 
+  });
+})
