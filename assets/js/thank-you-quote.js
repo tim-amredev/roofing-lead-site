@@ -47,6 +47,19 @@ document.addEventListener("DOMContentLoaded", () => {
       form.style.display = "none"
       form.enctype = "application/x-www-form-urlencoded" // Explicitly set encoding type
 
+      // Check if we have the required fields
+      if (!data.zip || !data.phone) {
+        console.error("Missing required fields for LeadPerfection submission")
+        const debugInfo = document.getElementById("debug-info")
+        if (debugInfo) {
+          debugInfo.style.display = "block"
+          debugInfo.innerHTML += `<br><strong>Error:</strong> Missing required fields (zip and phone are required)`
+          if (!data.zip) debugInfo.innerHTML += `<br>- Missing zip code`
+          if (!data.phone) debugInfo.innerHTML += `<br>- Missing phone number`
+        }
+        return // Don't proceed with submission
+      }
+
       // Add required fields first (according to documentation)
       // Required: zip, phone1, sender, srs_id
       addFormField(form, "zip", data.zip || "")
@@ -301,23 +314,47 @@ document.addEventListener("DOMContentLoaded", () => {
   // Generate the quote
   generateQuote()
 
-  // Track conversion with Facebook Pixel if available
-  let fbq = window.fbq // Assign window.fbq to the local variable
+  // Declare fbq and gtag as functions to avoid errors if they are not defined
+  const fbq =
+    window.fbq ||
+    (() => {
+      console.warn("Facebook Pixel not available")
+    })
 
-  if (typeof fbq === "undefined") {
-    // Check if fbq is not already defined
-    window.fbq = () => {
-      // Define a dummy fbq function to prevent errors
-      console.warn("Facebook Pixel is not initialized.")
+  const gtag =
+    window.gtag ||
+    (() => {
+      console.warn("Google Analytics not available")
+    })
+
+  // Track conversion with Facebook Pixel if available
+  try {
+    if (typeof fbq === "function") {
+      console.log("Tracking conversion with Facebook Pixel")
+      fbq("track", "Lead", {
+        content_name: "Roofing Quote",
+        content_category: "Roofing",
+      })
+    } else {
+      console.log("Facebook Pixel not available")
     }
-    fbq = window.fbq // Assign the dummy function to the local variable
+  } catch (error) {
+    console.error("Error tracking Facebook Pixel conversion:", error)
   }
 
-  if (typeof fbq === "function") {
-    fbq("track", "Lead", {
-      content_name: "Roofing Quote",
-      content_category: "Roofing",
-    })
+  // Add Google Analytics event tracking if it exists
+  try {
+    if (typeof gtag === "function") {
+      console.log("Tracking conversion with Google Analytics")
+      gtag("event", "generate_lead", {
+        event_category: "conversion",
+        event_label: "roofing_quote",
+      })
+    } else {
+      console.log("Google Analytics not available")
+    }
+  } catch (error) {
+    console.error("Error tracking Google Analytics conversion:", error)
   }
 })
 
