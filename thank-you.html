@@ -115,21 +115,24 @@ document.addEventListener('DOMContentLoaded', function() {
         debugContent.innerHTML += '<br><strong>Testing LeadPerfection connection...</strong>';
       }
       
-      // Use the test function defined in the CORS fix script
-      if (typeof window.testLeadPerfectionConnection === 'function') {
-        window.testLeadPerfectionConnection();
-        
-        // Update the debug content after a short delay
-        setTimeout(function() {
+      // Create a test request to LeadPerfection
+      const xhr = new XMLHttpRequest();
+      xhr.open('HEAD', 'https://th97.leadperfection.com/batch/addleads.asp', true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
           if (debugContent) {
-            debugContent.innerHTML += '<br>Check browser console for test results.';
+            debugContent.innerHTML += `<br>Test result: ${xhr.status} ${xhr.statusText}`;
           }
-        }, 2000);
-      } else {
-        if (debugContent) {
-          debugContent.innerHTML += '<br>Test function not available. Check if the CORS fix script is loaded.';
+          console.log(`LeadPerfection test result: ${xhr.status} ${xhr.statusText}`);
         }
-      }
+      };
+      xhr.onerror = function() {
+        if (debugContent) {
+          debugContent.innerHTML += '<br>Test failed - possible CORS issue';
+        }
+        console.error('LeadPerfection test failed');
+      };
+      xhr.send();
     };
     
     debugInfo.appendChild(testButton);
