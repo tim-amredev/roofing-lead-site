@@ -146,40 +146,78 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Declare fbq if it's not already defined (e.g., if the Facebook Pixel isn't loaded yet)
-  if (typeof fbq === 'undefined') {
-    fbq = function() {
-      console.warn('Facebook Pixel not loaded.  fbq called with arguments:', arguments);
-    };
+  if (typeof fbq === "undefined") {
+    fbq = () => {
+      console.warn("Facebook Pixel not loaded.  fbq called with arguments:", arguments)
+    }
   }
 
   // Wait for the results section to appear before firing the Lead event
-  let observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      if (mutation.addedNodes.length || mutation.attributeName === 'class') {
-        let resultsSection = document.getElementById('results-section');
-        if (resultsSection && !resultsSection.classList.contains('hidden')) {
-          let estimatedPrice = document.getElementById('average-estimate').innerText || '0';
-          // Remove currency symbol and commas for value
-          let priceValue = parseFloat(estimatedPrice.replace(/[$,]/g, ''));
-          
-          fbq('track', 'Lead', {
-            value: priceValue,
-            currency: 'USD',
-            content_name: 'Roofing Estimate',
-            content_category: 'Roofing'
-          });
-          
-          observer.disconnect(); // Stop observing after event fires once
+  // const observer = new MutationObserver((mutations) => {
+  //   mutations.forEach((mutation) => {
+  //     if (mutation.addedNodes.length || mutation.attributeName === "class") {
+  //       const resultsSection = document.getElementById("results-section")
+  //       if (resultsSection && !resultsSection.classList.contains("hidden")) {
+  //         const estimatedPrice = document.getElementById("average-estimate").innerText || "0"
+  //         // Remove currency symbol and commas for value
+  //         const priceValue = Number.parseFloat(estimatedPrice.replace(/[$,]/g, ""))
+
+  //         fbq("track", "Lead", {
+  //           value: priceValue,
+  //           currency: "USD",
+  //           content_name: "Roofing Estimate",
+  //           content_category: "Roofing",
+  //         })
+
+  //         observer.disconnect() // Stop observing after event fires once
+  //       }
+  //     }
+  //   })
+  // })
+
+  // // Start observing changes in the results section for visibility changes
+  // observer.observe(document.body, {
+  //   childList: true,
+  //   subtree: true,
+  //   attributes: true,
+  //   attributeFilter: ["class"],
+  // })
+
+  // Add this code at the end of the document.addEventListener("DOMContentLoaded", () => { ... }) function
+
+  // Function to fire Facebook Pixel Lead event when the success popup appears
+  function trackLeadEvent() {
+    const estimatedPriceElement = document.querySelector("#average-estimate") // Element showing the average estimate
+    const estimatedPrice = estimatedPriceElement ? estimatedPriceElement.innerText.replace(/[^0-9.]/g, "") : 0
+
+    fbq("track", "Lead", {
+      value: estimatedPrice,
+      currency: "USD",
+      content_name: "Roofing Estimate",
+      content_category: "Roofing",
+    })
+  }
+
+  // Observe changes in the results section
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === "class") {
+        const resultsSection = document.querySelector("#results-section")
+        if (resultsSection && !resultsSection.classList.contains("hidden")) {
+          trackLeadEvent()
+          observer.disconnect() // Stop tracking after first event fires
         }
       }
-    });
-  });
+    })
+  })
 
-  // Start observing changes in the results section for visibility changes
-  observer.observe(document.body, { 
-    childList: true, 
-    subtree: true,
-    attributes: true,
-    attributeFilter: ['class'] 
-  });
+  // Start observing changes in the results section
+  const resultsSectionElement = document.getElementById("results-section")
+  if (resultsSectionElement) {
+    observer.observe(resultsSectionElement, { attributes: true })
+  }
+
+  // Note: The existing code already has Facebook Pixel tracking, but this adds an additional implementation
+  // that follows the requested pattern
 })
+
