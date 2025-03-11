@@ -58,22 +58,34 @@ document.addEventListener("DOMContentLoaded", () => {
       // Use the Navigator.sendBeacon API for more reliable delivery during page unload
       const leadPerfectionUrl = "https://th97.leadperfection.com/batch/addleads.asp"
 
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(leadPerfectionUrl, leadPerfectionData)
-        console.log("Lead data sent to LeadPerfection via sendBeacon")
-      } else {
-        // Fallback to fetch if sendBeacon is not available
-        fetch(leadPerfectionUrl, {
-          method: "POST",
-          body: leadPerfectionData,
-          keepalive: true, // This helps the request survive page navigation
-        })
-          .then((response) => {
-            console.log("Lead data sent to LeadPerfection via fetch")
+      try {
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(leadPerfectionUrl, leadPerfectionData)
+          console.log("Lead data sent to LeadPerfection via sendBeacon")
+        } else {
+          // Fallback to fetch if sendBeacon is not available
+          fetch(leadPerfectionUrl, {
+            method: "POST",
+            body: leadPerfectionData,
+            keepalive: true, // This helps the request survive page navigation
           })
-          .catch((error) => {
-            console.error("Error sending to LeadPerfection:", error)
+            .then((response) => {
+              console.log("Lead data sent to LeadPerfection via fetch")
+            })
+            .catch((error) => {
+              console.error("Error sending to LeadPerfection:", error)
+            })
+        }
+
+        // Track conversion with Facebook Pixel if available
+        if (typeof fbq === "function") {
+          fbq("track", "Lead", {
+            content_name: "Roofing Quote",
+            content_category: "Roofing",
           })
+        }
+      } catch (error) {
+        console.error("Error sending data to LeadPerfection:", error)
       }
 
       // Continue with normal form submission
