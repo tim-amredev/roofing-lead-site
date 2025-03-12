@@ -26,8 +26,7 @@ header a:hover {
 /* Card backgrounds */
 .bg-white,
 .card,
-.form-container,
-.questionnaire-step .bg-white\/5 {
+.form-container {
   background-color: #2a3555 !important;
   color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -37,9 +36,7 @@ header a:hover {
 .text-gray-900,
 .text-gray-800,
 .text-gray-700,
-.text-gray-600,
-.text-blue-100,
-.text-xl {
+.text-gray-600 {
   color: #ffffff !important;
 }
 
@@ -49,67 +46,47 @@ header a:hover {
   color: #d3d3d3 !important;
 }
 
-/* Form elements */
-input[type="radio"],
-input[type="checkbox"] {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+/* Button colors */
+.bg-blue-600 {
+  background-color: #2e4a7d !important;
 }
 
-input[type="radio"]:checked,
-input[type="checkbox"]:checked {
-  background-color: #d4a017 !important;
-  border-color: #d4a017 !important;
-}
-
-/* Question groups */
-.question-group label.flex {
-  background-color: rgba(42, 53, 85, 0.5) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-.question-group label.flex:hover {
+.bg-blue-700 {
   background-color: #3e4e88 !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-/* Progress bar */
-#progress-bar {
-  background-color: #d4a017 !important;
+.hover\:bg-blue-700:hover {
+  background-color: #3e4e88 !important;
 }
 
-/* Navigation buttons */
-#next-btn,
-#submit-btn {
+.bg-green-600 {
   background-color: #d4a017 !important;
   color: #181818 !important;
 }
 
-#next-btn:hover,
-#submit-btn:hover {
+.hover\:bg-green-700:hover {
   background-color: #e5b42a !important;
 }
 
-#prev-btn {
+/* Form elements */
+input,
+select,
+textarea {
   background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
   color: #ffffff !important;
 }
 
-#prev-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2) !important;
-}
-
-/* Material and roof type cards */
+/* Card backgrounds for questionnaire */
 .material-card > div,
 .roof-type-card > div {
-  background-color: rgba(42, 53, 85, 0.5) !important;
+  background-color: #2a3555 !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .material-card > div:hover,
 .roof-type-card > div:hover {
   background-color: #3e4e88 !important;
-  border-color: #d4a017 !important;
 }
 
 .material-card.selected > div,
@@ -118,157 +95,27 @@ input[type="checkbox"]:checked {
   box-shadow: 0 0 0 2px #d4a017 !important;
 }
 
-/* Form inputs */
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-textarea,
-select {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  color: #ffffff !important;
+/* Progress bar */
+.bg-gray-200 {
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="tel"]:focus,
-textarea:focus,
-select:focus {
-  border-color: #d4a017 !important;
-  box-shadow: 0 0 0 2px rgba(212, 160, 23, 0.3) !important;
+.bg-blue-600 {
+  background-color: #d4a017 !important;
 }
 
-/* Fix radio and checkbox colors */
-.form-radio,
-.form-checkbox {
+/* Footer styling */
+footer {
+  background-color: #1f2a44 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Links */
+a {
   color: #d4a017 !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-.form-radio:checked,
-.form-checkbox:checked {
-  background-color: #d4a017 !important;
-  border-color: #d4a017 !important;
-}
-
-/* Force dark theme on the entire page */
-body {
-  background-color: #181818 !important;
-}
-
-/* Ensure the questionnaire section has the dark background */
-section.min-h-screen {
-  background-color: #181818 !important;
-}
-
-/* Fix for form elements in dark theme */
-.form-radio,
-.form-checkbox {
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  width: 1.2em !important;
-  height: 1.2em !important;
-  border-radius: 0.25rem !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.form-radio:checked,
-.form-checkbox:checked {
-  background-color: #d4a017 !important;
-  border-color: #d4a017 !important;
-}
-
-.form-radio:checked::before,
-.form-checkbox:checked::before {
-  content: "" !important;
-  width: 0.65em !important;
-  height: 0.65em !important;
-  border-radius: 50% !important;
-  background-color: white !important;
-}
-
-/* Fix for select elements */
-select {
-  background-color: #2a3555 !important;
-  color: white !important;
-}
-
-select option {
-  background-color: #2a3555 !important;
-  color: white !important;
-}
-
-/* Fix for the navigation buttons specifically */
-.flex.justify-between.pt-6.border-t.border-white\/10 {
-  display: flex !important;
-  justify-content: space-between !important;
-}
-
-#next-btn,
-#prev-btn,
-#submit-btn {
-  display: flex !important;
-  align-items: center !important;
-  padding-left: 2rem !important;
-  padding-right: 2rem !important;
-  padding-top: 0.75rem !important;
-  padding-bottom: 0.75rem !important;
-  border-radius: 0.5rem !important;
-  transition-property: background-color, border-color, color, fill, stroke !important;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-  transition-duration: 150ms !important;
-}
-
-/* Override any conflicting styles */
-section[class*="min-h-screen"] {
-  background-color: #181818 !important;
-}
-
-/* Fix for any default Tailwind styles */
-.bg-\[\#181818\] {
-  background-color: #181818 !important;
-}
-
-.bg-\[\#2A3555\] {
-  background-color: #2a3555 !important;
-}
-
-.bg-\[\#D4A017\] {
-  background-color: #d4a017 !important;
-}
-
-/* Fix for the Next button to ensure it's visible and styled correctly */
-button[id="next-btn"] {
-  background-color: #d4a017 !important;
-  color: #181818 !important;
-  padding: 0.75rem 2rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 0.5rem !important;
-  font-weight: bold !important;
-}
-
-button[id="next-btn"]:hover {
-  background-color: #e5b42a !important;
-}
-
-/* Ensure button visibility */
-button[id="next-btn"],
-button[id="submit-btn"],
-button[id="prev-btn"] {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* Force contrast on text over dark backgrounds */
-.text-blue-100,
-.text-blue-200,
-.text-gray-300 {
-  color: #ffffff !important;
+a:hover {
+  color: #e5b42a !important;
 }
 
