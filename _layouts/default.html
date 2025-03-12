@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: 'en_US' }}" class="bg-secondary-900">
+<html lang="{{ site.lang | default: 'en_US' }}" style="background-color: #181818;">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,12 +30,6 @@
   <!-- Styles -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/css/custom-overrides.css' | relative_url }}">
-  
-  <!-- Add questionnaire-specific styling for the questionnaire page -->
-  {% if page.url contains 'questionnaire' %}
-  <link rel="stylesheet" href="{{ '/assets/css/questionnaire-fix.css' | relative_url }}">
-  {% endif %}
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="{{ '/assets/images/favicon.png' | relative_url }}">
@@ -85,37 +79,28 @@
     ]
   }
   </script>
-
-  <!-- Meta Pixel Code -->
-  <script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1602317540415044');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1602317540415044&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
-
-<!-- Add form fix script for questionnaire page -->
-{% if page.url contains 'questionnaire' %}
-<script src="{{ '/assets/js/form-fix.js' | relative_url }}"></script>
-{% endif %}
+  
+  <!-- Custom overrides - load last -->
+  <link rel="stylesheet" href="{{ '/assets/css/custom-overrides.css' | relative_url }}">
+  
+  <style>
+    body {
+      background-color: #181818 !important;
+      color: #FFFFFF !important;
+    }
+    main {
+      background-color: #181818 !important;
+      color: #FFFFFF !important;
+    }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col bg-secondary-900 text-gray-100">
+<body style="background-color: #181818 !important;" class="min-h-screen flex flex-col">
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4">Skip to main content</a>
   
   {% include header.html %}
   
-  <main id="main-content" class="flex-grow">
-      {{ content }}
+  <main id="main-content" style="background-color: #181818 !important;" class="flex-grow">
+    {{ content }}
   </main>
   
   {% include footer.html %}
@@ -129,12 +114,33 @@ src="https://www.facebook.com/tr?id=1602317540415044&ev=PageView&noscript=1"
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
   <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '{{ site.google_analytics }}');
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ site.google_analytics }}');
   </script>
   {% endif %}
+  
+  <script>
+    // Force dark theme
+    document.addEventListener("DOMContentLoaded", function() {
+      document.documentElement.style.backgroundColor = "#181818";
+      document.body.style.backgroundColor = "#181818";
+      document.body.style.color = "#FFFFFF";
+      
+      const main = document.querySelector('main');
+      if (main) {
+        main.style.backgroundColor = "#181818";
+        main.style.color = "#FFFFFF";
+      }
+      
+      const sections = document.querySelectorAll('section');
+      sections.forEach(section => {
+        section.style.backgroundColor = "#181818";
+        section.style.color = "#FFFFFF";
+      });
+    });
+  </script>
 </body>
 </html>
 
