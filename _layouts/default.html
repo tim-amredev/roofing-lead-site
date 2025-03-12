@@ -30,6 +30,12 @@
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/custom-overrides.css' | relative_url }}">
+    
+    <!-- Add questionnaire-specific styling for the questionnaire page -->
+    {% if page.url contains 'questionnaire' %}
+    <link rel="stylesheet" href="{{ '/assets/css/questionnaire-fix.css' | relative_url }}">
+    {% endif %}
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ '/assets/images/favicon.png' | relative_url }}">
