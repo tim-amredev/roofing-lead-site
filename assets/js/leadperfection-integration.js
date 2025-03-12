@@ -6,24 +6,24 @@ document.addEventListener("DOMContentLoaded", () => {
     questionnaireForm.addEventListener("submit", function (e) {
       // Don't prevent default - let the form submit normally to FormSubmit
 
-      // Create form data for LeadPerfection
+      // Store the form data in localStorage to process after redirect
       const formData = new FormData(this)
-      const leadPerfectionData = new URLSearchParams() // Use URLSearchParams for URL-encoded format
+      const leadPerfectionData = {}
 
       // Map form fields to LeadPerfection parameters
       // Personal information
-      leadPerfectionData.append("firstname", formData.get("firstname") || "")
-      leadPerfectionData.append("lastname", formData.get("lastname") || "")
-      leadPerfectionData.append("address1", formData.get("street_address") || "")
-      leadPerfectionData.append("city", formData.get("city") || "")
-      leadPerfectionData.append("state", formData.get("state") || "")
-      leadPerfectionData.append("zip", formData.get("zip_code") || "")
-      leadPerfectionData.append("phone1", formData.get("phone") || "")
-      leadPerfectionData.append("email", formData.get("email") || "")
+      leadPerfectionData.firstname = formData.get("firstname") || ""
+      leadPerfectionData.lastname = formData.get("lastname") || ""
+      leadPerfectionData.address1 = formData.get("street_address") || ""
+      leadPerfectionData.city = formData.get("city") || ""
+      leadPerfectionData.state = formData.get("state") || ""
+      leadPerfectionData.zip = formData.get("zip_code") || ""
+      leadPerfectionData.phone1 = formData.get("phone") || ""
+      leadPerfectionData.email = formData.get("email") || ""
 
       // Add the specific product ID for roofing
-      leadPerfectionData.append("productid", "Roof")
-      leadPerfectionData.append("proddescr", "Roofing")
+      leadPerfectionData.productid = "Roof"
+      leadPerfectionData.proddescr = "Roofing"
 
       // Combine various form fields into notes
       let notes = "Project Details:\n"
@@ -49,32 +49,14 @@ document.addEventListener("DOMContentLoaded", () => {
       notes += `Budget: ${formData.get("budget") || "N/A"}\n`
       notes += `Comments: ${formData.get("comments") || "N/A"}`
 
-      leadPerfectionData.append("notes", notes)
+      leadPerfectionData.notes = notes
 
       // Add the required fields with exact values provided by LeadPerfection
-      leadPerfectionData.append("sender", "Instantroofingprices.com")
-      leadPerfectionData.append("srs_id", "1669")
+      leadPerfectionData.sender = "Instantroofingprices.com"
+      leadPerfectionData.srs_id = "1669"
 
-      // Use the Navigator.sendBeacon API for more reliable delivery during page unload
-      const leadPerfectionUrl = "https://th97.leadperfection.com/batch/addleads.asp"
-
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(leadPerfectionUrl, leadPerfectionData)
-        console.log("Lead data sent to LeadPerfection via sendBeacon")
-      } else {
-        // Fallback to fetch if sendBeacon is not available
-        fetch(leadPerfectionUrl, {
-          method: "POST",
-          body: leadPerfectionData,
-          keepalive: true, // This helps the request survive page navigation
-        })
-          .then((response) => {
-            console.log("Lead data sent to LeadPerfection via fetch")
-          })
-          .catch((error) => {
-            console.error("Error sending to LeadPerfection:", error)
-          })
-      }
+      // Store the data in localStorage to be processed after redirect
+      localStorage.setItem("leadPerfectionData", JSON.stringify(leadPerfectionData))
 
       // Continue with normal form submission
       return true
@@ -90,43 +72,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Create form data for LeadPerfection
       const formData = new FormData(this)
-      const leadPerfectionData = new URLSearchParams()
+      const leadPerfectionData = {}
 
       // Map contact form fields to LeadPerfection parameters
-      leadPerfectionData.append("firstname", formData.get("firstname") || "")
-      leadPerfectionData.append("lastname", formData.get("lastname") || "")
-      leadPerfectionData.append("phone1", formData.get("phone") || "")
-      leadPerfectionData.append("email", formData.get("email") || "")
+      leadPerfectionData.firstname = formData.get("firstname") || ""
+      leadPerfectionData.lastname = formData.get("lastname") || ""
+      leadPerfectionData.phone1 = formData.get("phone") || ""
+      leadPerfectionData.email = formData.get("email") || ""
 
       // Add the specific product ID for roofing
-      leadPerfectionData.append("productid", "Roof")
-      leadPerfectionData.append("proddescr", "Roofing")
+      leadPerfectionData.productid = "Roof"
+      leadPerfectionData.proddescr = "Roofing"
 
       // Add message to notes
-      leadPerfectionData.append(
-        "notes",
-        `Subject: ${formData.get("subject") || "N/A"}\nMessage: ${formData.get("message") || "N/A"}`,
-      )
+      leadPerfectionData.notes = `Subject: ${formData.get("subject") || "N/A"}\nMessage: ${formData.get("message") || "N/A"}`
 
       // Add the required fields with exact values provided by LeadPerfection
-      leadPerfectionData.append("sender", "Instantroofingprices.com")
-      leadPerfectionData.append("srs_id", "1669")
+      leadPerfectionData.sender = "Instantroofingprices.com"
+      leadPerfectionData.srs_id = "1669"
 
-      // Use the Navigator.sendBeacon API for more reliable delivery during page unload
-      const leadPerfectionUrl = "https://th97.leadperfection.com/batch/addleads.asp"
-
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(leadPerfectionUrl, leadPerfectionData)
-      } else {
-        // Fallback to fetch if sendBeacon is not available
-        fetch(leadPerfectionUrl, {
-          method: "POST",
-          body: leadPerfectionData,
-          keepalive: true,
-        }).catch((error) => {
-          console.error("Error sending contact form to LeadPerfection:", error)
-        })
-      }
+      // Store the data in localStorage to be processed after redirect
+      localStorage.setItem("contactLeadPerfectionData", JSON.stringify(leadPerfectionData))
 
       // Continue with normal form submission
       return true
