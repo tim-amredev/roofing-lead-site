@@ -105,6 +105,23 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize the first step
   showStep(currentStep)
 
+  // Fix for checkboxes and radio buttons styling
+  const styleFormElements = () => {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]')
+    const radios = document.querySelectorAll('input[type="radio"]')
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.classList.add("form-checkbox")
+    })
+
+    radios.forEach((radio) => {
+      radio.classList.add("form-radio")
+    })
+  }
+
+  // Apply styling
+  styleFormElements()
+
   // Handle form submission
   if (form) {
     form.addEventListener("submit", (e) => {
