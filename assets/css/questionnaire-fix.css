@@ -87,18 +87,21 @@ input[type="checkbox"]:checked {
 .roof-type-card > div {
   background-color: rgba(42, 53, 85, 0.8) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.3s ease !important;
 }
 
 .material-card > div:hover,
 .roof-type-card > div:hover {
   background-color: #3e4e88 !important;
   border-color: rgba(255, 255, 255, 0.4) !important;
+  transform: translateY(-2px) !important;
 }
 
 .material-card.selected > div,
 .roof-type-card.selected > div {
   border-color: #d4a017 !important;
   box-shadow: 0 0 0 2px #d4a017 !important;
+  background-color: rgba(62, 78, 136, 0.8) !important;
 }
 
 /* Thank you modal */
@@ -160,5 +163,26 @@ a:hover {
   opacity: 1 !important;
   transform: translateX(0) !important;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Fix aspect ratio for card images */
+.aspect-w-4 {
+  position: relative !important;
+  padding-bottom: calc(3 / 4 * 100%) !important;
+}
+
+.aspect-w-4 > img,
+.aspect-w-4 > div {
+  position: absolute !important;
+  height: 100% !important;
+  width: 100% !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  object-fit: cover !important;
 }
 
