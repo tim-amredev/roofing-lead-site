@@ -1,82 +1,136 @@
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("LeadPerfection integration script loaded")
-
   // Target the questionnaire form
   const questionnaireForm = document.getElementById("questionnaire-form")
 
   if (questionnaireForm) {
-    console.log("Questionnaire form found, setting up data storage")
-
-    // Add a submit event listener that only stores data
     questionnaireForm.addEventListener("submit", function (e) {
-      try {
-        console.log("Form submitted, processing data for LeadPerfection")
+      // Don't prevent default - let the form submit normally to FormSubmit
 
-        // Create a simple object to store form data
-        const formDataObj = {}
+      // Create form data for LeadPerfection
+      const formData = new FormData(this)
+      const leadPerfectionData = new URLSearchParams() // Use URLSearchParams for URL-encoded format
 
-        // Get all input, select, and textarea elements
-        const formElements = this.querySelectorAll("input, select, textarea")
+      // Map form fields to LeadPerfection parameters
+      // Personal information
+      leadPerfectionData.append("firstname", formData.get("firstname") || "")
+      leadPerfectionData.append("lastname", formData.get("lastname") || "")
+      leadPerfectionData.append("address1", formData.get("street_address") || "")
+      leadPerfectionData.append("city", formData.get("city") || "")
+      leadPerfectionData.append("state", formData.get("state") || "")
+      leadPerfectionData.append("zip", formData.get("zip_code") || "")
+      leadPerfectionData.append("phone1", formData.get("phone") || "")
+      leadPerfectionData.append("email", formData.get("email") || "")
 
-        console.log(`Processing ${formElements.length} form elements`)
+      // Add the specific product ID for roofing
+      leadPerfectionData.append("productid", "Roof")
+      leadPerfectionData.append("proddescr", "Roofing")
 
-        // Process each element
-        formElements.forEach((element) => {
-          // Skip hidden FormSubmit fields
-          if (element.name && element.name.startsWith("_")) {
-            console.log(`Skipping FormSubmit field: ${element.name}`)
-            return
-          }
+      // Combine various form fields into notes
+      let notes = "Project Details:\n"
+      notes += `Reason: ${formData.get("reason") || "N/A"}\n`
+      notes += `Roof Age: ${formData.get("roof_age") || "N/A"}\n`
+      notes += `Square Footage: ${formData.get("square_footage") || "N/A"}\n`
+      notes += `Current Material: ${formData.get("current_material") || "N/A"}\n`
+      notes += `Desired Material: ${formData.get("desired_material") || "N/A"}\n`
+      notes += `Roof Type: ${formData.get("roof_type") || "N/A"}\n`
 
-          // Handle different input types
-          if (element.type === "checkbox" || element.type === "radio") {
-            // Only include checked checkboxes and radios
-            if (element.checked) {
-              // Handle checkbox arrays
-              if (element.name.endsWith("[]")) {
-                const cleanName = element.name.replace("[]", "")
-                if (!formDataObj[cleanName]) {
-                  formDataObj[cleanName] = []
-                }
-                formDataObj[cleanName].push(element.value)
-                console.log(`Added array value: ${cleanName}[] = ${element.value}`)
-              } else {
-                formDataObj[element.name] = element.value
-                console.log(`Added checked value: ${element.name} = ${element.value}`)
-              }
-            }
-          } else if (element.name) {
-            // Handle regular inputs, selects, and textareas
-            formDataObj[element.name] = element.value
-
-            // Log important fields for debugging
-            if (["firstname", "lastname", "email", "phone", "zip"].includes(element.name)) {
-              console.log(`Added key field: ${element.name} = ${element.value}`)
-            }
-          }
-        })
-
-        // Validate required fields for LeadPerfection
-        if (!formDataObj.zip) {
-          console.warn("Warning: ZIP code is missing, which is required for LeadPerfection")
-        }
-
-        if (!formDataObj.phone) {
-          console.warn("Warning: Phone number is missing, which is required for LeadPerfection")
-        }
-
-        // Store in localStorage
-        localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
-        console.log("Form data saved to localStorage for LeadPerfection integration")
-      } catch (error) {
-        console.error("Error saving form data:", error)
+      // Handle checkbox arrays
+      const issues = formData.getAll("issues[]")
+      if (issues.length > 0) {
+        notes += `Issues: ${issues.join(", ")}\n`
       }
 
-      // Let the form submission continue normally
+      const features = formData.getAll("features[]")
+      if (features.length > 0) {
+        notes += `Desired Features: ${features.join(", ")}\n`
+      }
+
+      notes += `Timeframe: ${formData.get("timeframe") || "N/A"}\n`
+      notes += `Budget: ${formData.get("budget") || "N/A"}\n`
+      notes += `Comments: ${formData.get("comments") || "N/A"}`
+
+      leadPerfectionData.append("notes", notes)
+
+      // Add the required fields with exact values provided by LeadPerfection
+      leadPerfectionData.append("sender", "Instantroofingprices.com")
+      leadPerfectionData.append("srs_id", "1669")
+
+      // Use the Navigator.sendBeacon API for more reliable delivery during page unload
+      const leadPerfectionUrl = "https://th97.leadperfection.com/batch/addleads.asp"
+
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(leadPerfectionUrl, leadPerfectionData)
+        console.log("Lead data sent to LeadPerfection via sendBeacon")
+      } else {
+        // Fallback to fetch if sendBeacon is not available
+        fetch(leadPerfectionUrl, {
+          method: "POST",
+          body: leadPerfectionData,
+          keepalive: true, // This helps the request survive page navigation
+        })
+          .then((response) => {
+            console.log("Lead data sent to LeadPerfection via fetch")
+          })
+          .catch((error) => {
+            console.error("Error sending to LeadPerfection:", error)
+          })
+      }
+
+      // Continue with normal form submission
       return true
     })
-  } else {
-    console.warn("Questionnaire form not found - LeadPerfection integration may not work")
+  }
+
+  // Also handle the contact form if needed
+  const contactForm = document.getElementById("contact-form")
+
+  if (contactForm) {
+    contactForm.addEventListener("submit", function (e) {
+      // Don't prevent default - let the form submit normally to FormSubmit
+
+      // Create form data for LeadPerfection
+      const formData = new FormData(this)
+      const leadPerfectionData = new URLSearchParams()
+
+      // Map contact form fields to LeadPerfection parameters
+      leadPerfectionData.append("firstname", formData.get("firstname") || "")
+      leadPerfectionData.append("lastname", formData.get("lastname") || "")
+      leadPerfectionData.append("phone1", formData.get("phone") || "")
+      leadPerfectionData.append("email", formData.get("email") || "")
+
+      // Add the specific product ID for roofing
+      leadPerfectionData.append("productid", "Roof")
+      leadPerfectionData.append("proddescr", "Roofing")
+
+      // Add message to notes
+      leadPerfectionData.append(
+        "notes",
+        `Subject: ${formData.get("subject") || "N/A"}\nMessage: ${formData.get("message") || "N/A"}`,
+      )
+
+      // Add the required fields with exact values provided by LeadPerfection
+      leadPerfectionData.append("sender", "Instantroofingprices.com")
+      leadPerfectionData.append("srs_id", "1669")
+
+      // Use the Navigator.sendBeacon API for more reliable delivery during page unload
+      const leadPerfectionUrl = "https://th97.leadperfection.com/batch/addleads.asp"
+
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(leadPerfectionUrl, leadPerfectionData)
+      } else {
+        // Fallback to fetch if sendBeacon is not available
+        fetch(leadPerfectionUrl, {
+          method: "POST",
+          body: leadPerfectionData,
+          keepalive: true,
+        }).catch((error) => {
+          console.error("Error sending contact form to LeadPerfection:", error)
+        })
+      }
+
+      // Continue with normal form submission
+      return true
+    })
   }
 })
 
