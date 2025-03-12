@@ -4,24 +4,6 @@ title: Get a Quote
 js: questionnaire leadperfection-integration
 ---
 
-<script>
-// Debug script to check if steps are properly loaded
-document.addEventListener("DOMContentLoaded", function() {
-  console.log("Document loaded");
-  const steps = document.querySelectorAll(".questionnaire-step");
-  console.log("Found " + steps.length + " steps");
-  
-  // Ensure next button works
-  const nextBtn = document.getElementById("next-btn");
-  if (nextBtn) {
-    console.log("Next button found");
-    nextBtn.onclick = function() {
-      console.log("Next button clicked directly");
-    };
-  }
-});
-</script>
-
 <section class="min-h-screen bg-gradient-to-b from-[#1B2337] to-[#2A3447]">
   <div class="container mx-auto px-4 py-12">
     <div class="max-w-4xl mx-auto">
@@ -42,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
           </div>
         </div>
         
-        <form id="questionnaire-form" class="space-y-12" action="https://formsubmit.co/34621b6167978998b0c76f8366420183" method="POST">
+        <form id="questionnaire-form" class="space-y-12" action="https://formsubmit.co/34621b6167978998b0c76f8366420183" method="POST" onsubmit="return true;">
           <!-- Hidden FormSubmit fields -->
           <input type="hidden" name="_subject" value="New Roofing Quote Request">
           <input type="hidden" name="_template" value="table">
@@ -248,4 +230,30 @@ select option {
   background-color: #D4A017 !important;
 }
 </style>
+
+<script>
+// Immediate fix for the form submission issue
+document.addEventListener("DOMContentLoaded", function() {
+  const form = document.getElementById("questionnaire-form");
+  const nextBtn = document.getElementById("next-btn");
+  
+  // Prevent form submission when pressing Enter
+  if (form) {
+    form.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        return false;
+      }
+    });
+  }
+  
+  // Ensure next button doesn't submit the form
+  if (nextBtn) {
+    nextBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      return false;
+    });
+  }
+});
+</script>
 
