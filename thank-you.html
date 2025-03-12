@@ -7,7 +7,7 @@ js: thank-you-quote
 <section class="py-24 bg-secondary-900">
   <div class="container mx-auto px-4">
     <div class="max-w-3xl mx-auto text-center">
-      <div class="bg-secondary-800 rounded-xl p-12 shadow-xl" style="background-color: #2A3555;">
+      <div class="bg-secondary-800 rounded-xl p-12 shadow-xl">
         <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-8">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -23,15 +23,15 @@ js: thank-you-quote
         </div>
         
         <p class="text-xl text-gray-300 mb-8">
-          Your roofing quote request has been received. We'll be in touch with you shortly to discuss your project in detail.
+          Your submission has been received. We'll be in touch with you shortly.
         </p>
         
         <!-- Quote Section -->
-        <div id="quote-section" class="mt-8 mb-8 bg-blue-900 bg-opacity-30 rounded-lg p-6 text-left" style="background-color: rgba(30, 58, 138, 0.3);">
+        <div id="quote-section" class="mt-8 mb-8 bg-blue-900 bg-opacity-30 rounded-lg p-6 text-left">
           <h2 class="text-2xl font-bold text-white mb-4 text-center">Your Estimated Roofing Quote</h2>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div class="bg-blue-900 bg-opacity-20 p-4 rounded-lg" style="background-color: rgba(30, 58, 138, 0.2);">
+            <div class="bg-blue-900 bg-opacity-20 p-4 rounded-lg">
               <h3 class="text-lg font-semibold text-white mb-2">Project Details</h3>
               <div class="space-y-2">
                 <div class="flex justify-between">
@@ -45,7 +45,7 @@ js: thank-you-quote
               </div>
             </div>
             
-            <div class="bg-blue-900 bg-opacity-20 p-4 rounded-lg" style="background-color: rgba(30, 58, 138, 0.2);">
+            <div class="bg-blue-900 bg-opacity-20 p-4 rounded-lg">
               <h3 class="text-lg font-semibold text-white mb-2">Price Range</h3>
               <div class="space-y-2">
                 <div class="flex justify-between">
@@ -58,15 +58,15 @@ js: thank-you-quote
                 </div>
                 <div class="flex justify-between pt-2 border-t border-blue-800">
                   <span class="text-gray-300">Average:</span>
-                  <span id="quote-average" class="text-yellow-400 font-bold" style="color: #D4A017;">$10,000</span>
+                  <span id="quote-average" class="text-yellow-400 font-bold">$10,000</span>
                 </div>
               </div>
             </div>
           </div>
           
-          <div class="bg-blue-900 bg-opacity-10 border-l-4 border-yellow-500 p-4 rounded" style="border-color: #D4A017; background-color: rgba(30, 58, 138, 0.1);">
+          <div class="bg-blue-900 bg-opacity-10 border-l-4 border-yellow-500 p-4 rounded">
             <p class="text-gray-300 text-sm">
-              <strong class="text-yellow-400" style="color: #D4A017;">Note:</strong> This is a preliminary estimate based on the information you provided. For a more accurate quote, our roofing specialists will contact you soon to discuss your project in detail.
+              <strong class="text-yellow-400">Note:</strong> This is a preliminary estimate based on the information you provided. For a more accurate quote, our roofing specialists will contact you soon to discuss your project in detail.
             </p>
           </div>
         </div>
@@ -79,7 +79,7 @@ js: thank-you-quote
             Return to Home
           </a>
           
-          <a href="{{ '/pricing-calculator' | relative_url }}" class="inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors" style="background-color: #D4A017; color: #181818;">
+          <a href="{{ '/pricing-calculator' | relative_url }}" class="inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors">
             Try Our Price Calculator
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -89,135 +89,5 @@ js: thank-you-quote
       </div>
     </div>
   </div>
-  
-  <!-- Debug info - now visible for troubleshooting -->
-  <div id="debug-info" class="mt-8 p-4 bg-gray-800 text-white rounded-lg max-w-3xl mx-auto text-left text-sm">
-    <h3 class="font-bold mb-2">Debug Information</h3>
-    <div id="debug-content">
-      Checking for form data...
-    </div>
-  </div>
-
-<script>
-// Test LeadPerfection connectivity on page load
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('Thank you page loaded, testing LeadPerfection connectivity');
-  
-  // Add a test button to manually check connectivity
-  const debugInfo = document.getElementById('debug-info');
-  if (debugInfo) {
-    const testButton = document.createElement('button');
-    testButton.textContent = 'Test LeadPerfection Connection';
-    testButton.className = 'mt-4 px-4 py-2 bg-blue-600 text-white rounded';
-    testButton.onclick = function() {
-      const debugContent = document.getElementById('debug-content');
-      if (debugContent) {
-        debugContent.innerHTML += '<br><strong>Testing LeadPerfection connection...</strong>';
-      }
-      
-      // Create a test request to LeadPerfection
-      const xhr = new XMLHttpRequest();
-      xhr.open('HEAD', 'https://th97.leadperfection.com/batch/addleads.asp', true);
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-          if (debugContent) {
-            debugContent.innerHTML += `<br>Test result: ${xhr.status} ${xhr.statusText}`;
-          }
-          console.log(`LeadPerfection test result: ${xhr.status} ${xhr.statusText}`);
-        }
-      };
-      xhr.onerror = function() {
-        if (debugContent) {
-          debugContent.innerHTML += '<br>Test failed - possible CORS issue';
-        }
-        console.error('LeadPerfection test failed');
-      };
-      xhr.send();
-    };
-    
-    debugInfo.appendChild(testButton);
-  }
-  
-  // Try to load LeadPerfection data from localStorage
-  try {
-    const storedData = localStorage.getItem('roofingFormData');
-    if (storedData) {
-      const debugContent = document.getElementById('debug-content');
-      if (debugContent) {
-        debugContent.innerHTML += '<br><strong>Form data found in localStorage:</strong>';
-        debugContent.innerHTML += `<br><pre>${storedData}</pre>`;
-      }
-    }
-  } catch (error) {
-    console.error('Error accessing localStorage:', error);
-  }
-});
-</script>
 </section>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  console.log("Setting up analytics isolation and LeadPerfection compatibility");
-  
-  // Isolate Facebook Pixel
-  try {
-    if (typeof window.fbq === 'function') {
-      console.log("Facebook Pixel found, isolating...");
-      const originalFbq = window.fbq;
-      window.fbq = function() {
-        try {
-          console.log("Facebook Pixel called with:", Array.from(arguments));
-          // Delay Facebook Pixel execution slightly to prioritize LeadPerfection
-          setTimeout(function() {
-            return originalFbq.apply(this, arguments);
-          }, 100);
-        } catch (e) {
-          console.error("Error in Facebook Pixel call:", e);
-        }
-      };
-    }
-  } catch (e) {
-    console.error("Error isolating Facebook Pixel:", e);
-  }
-
-  // Isolate Google Analytics
-  try {
-    if (typeof window.gtag === 'function') {
-      console.log("Google Analytics found, isolating...");
-      const originalGtag = window.gtag;
-      window.gtag = function() {
-        try {
-          console.log("Google Analytics called with:", Array.from(arguments));
-          // Delay Google Analytics execution slightly to prioritize LeadPerfection
-          setTimeout(function() {
-            return originalGtag.apply(this, arguments);
-          }, 100);
-        } catch (e) {
-          console.error("Error in Google Analytics call:", e);
-        }
-      };
-    }
-  } catch (e) {
-    console.error("Error isolating Google Analytics:", e);
-  }
-  
-  // Add a helper function to check if LeadPerfection is accessible
-  window.checkLeadPerfectionAccess = function() {
-    const xhr = new XMLHttpRequest();
-    xhr.open('HEAD', 'https://th97.leadperfection.com/batch/addleads.asp', true);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        console.log(`LeadPerfection access check: ${xhr.status} ${xhr.statusText}`);
-      }
-    };
-    xhr.onerror = function() {
-      console.error('LeadPerfection access check failed - possible CORS issue');
-    };
-    xhr.send();
-  };
-  
-  // Run the check after a short delay
-  setTimeout(window.checkLeadPerfectionAccess, 2000);
-});
-</script>
 
