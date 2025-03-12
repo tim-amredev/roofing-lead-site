@@ -34,6 +34,54 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Error retrieving form data:", error)
   }
 
+  // Send data to LeadPerfection if available
+  try {
+    const leadPerfectionData = localStorage.getItem("leadPerfectionData")
+    if (leadPerfectionData) {
+      sendToLeadPerfection(JSON.parse(leadPerfectionData))
+      localStorage.removeItem("leadPerfectionData")
+    }
+
+    const contactLeadPerfectionData = localStorage.getItem("contactLeadPerfectionData")
+    if (contactLeadPerfectionData) {
+      sendToLeadPerfection(JSON.parse(contactLeadPerfectionData))
+      localStorage.removeItem("contactLeadPerfectionData")
+    }
+  } catch (error) {
+    console.error("Error sending data to LeadPerfection:", error)
+  }
+
+  // Function to send data to LeadPerfection
+  function sendToLeadPerfection(data) {
+    // Convert the data object to URLSearchParams
+    const params = new URLSearchParams()
+    for (const [key, value] of Object.entries(data)) {
+      params.append(key, value)
+    }
+
+    // Use fetch with keepalive to ensure the request completes
+    fetch("https://th97.leadperfection.com/batch/addleads.asp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: params.toString(),
+      keepalive: true,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`)
+        }
+        return response.text()
+      })
+      .then((data) => {
+        console.log("LeadPerfection response:", data)
+      })
+      .catch((error) => {
+        console.error("Error sending to LeadPerfection:", error)
+      })
+  }
+
   // Pricing data (simplified version of the calculator pricing)
   const pricing = {
     materials: {
