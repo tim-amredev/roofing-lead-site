@@ -8,10 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextBtn = document.getElementById("next-btn")
   const submitBtn = document.getElementById("submit-btn")
 
-  const currentStep = 0
+  let currentStep = 0
   const totalSteps = steps.length
-
-  console.log("Questionnaire JS loaded, found " + steps.length + " steps")
 
   // Initialize material cards
   const materialCards = document.querySelectorAll(".material-card")
@@ -43,22 +41,69 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   })
 
-  // Fix for checkboxes and radio buttons styling
-  const styleFormElements = () => {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]')
-    const radios = document.querySelectorAll('input[type="radio"]')
-
-    checkboxes.forEach((checkbox) => {
-      checkbox.classList.add("form-checkbox")
+  // Show the current step
+  function showStep(stepIndex) {
+    steps.forEach((step, index) => {
+      if (index === stepIndex) {
+        step.classList.remove("hidden")
+        step.classList.add("fade-in")
+      } else {
+        step.classList.add("hidden")
+        step.classList.remove("fade-in")
+      }
     })
 
-    radios.forEach((radio) => {
-      radio.classList.add("form-radio")
-    })
+    // Update progress
+    const progress = ((stepIndex + 1) / totalSteps) * 100
+    progressBar.style.width = `${progress}%`
+    progressText.textContent = `Step ${stepIndex + 1} of ${totalSteps}`
+    currentStepText.textContent = stepIndex + 1
+
+    // Show/hide buttons
+    if (stepIndex === 0) {
+      prevBtn.classList.add("hidden")
+    } else {
+      prevBtn.classList.remove("hidden")
+    }
+
+    if (stepIndex === totalSteps - 1) {
+      nextBtn.classList.add("hidden")
+      submitBtn.classList.remove("hidden")
+    } else {
+      nextBtn.classList.remove("hidden")
+      submitBtn.classList.add("hidden")
+    }
   }
 
-  // Apply styling
-  styleFormElements()
+  // Go to next step
+  function nextStep() {
+    if (currentStep < totalSteps - 1) {
+      currentStep++
+      showStep(currentStep)
+      window.scrollTo(0, 0)
+    }
+  }
+
+  // Go to previous step
+  function prevStep() {
+    if (currentStep > 0) {
+      currentStep--
+      showStep(currentStep)
+      window.scrollTo(0, 0)
+    }
+  }
+
+  // Event listeners
+  if (nextBtn) {
+    nextBtn.addEventListener("click", nextStep)
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", prevStep)
+  }
+
+  // Initialize the first step
+  showStep(currentStep)
 
   // Handle form submission
   if (form) {
