@@ -103,6 +103,11 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1602317540415044&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+
+<!-- Add direct fix script for questionnaire page -->
+{% if page.url contains 'questionnaire' %}
+<script src="{{ '/assets/js/direct-fix.js' | relative_url }}"></script>
+{% endif %}
 </head>
 <body class="min-h-screen flex flex-col bg-secondary-900 text-gray-100">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4">Skip to main content</a>
