@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentStep = 0
   const totalSteps = steps.length
 
+  console.log("Questionnaire JS loaded, found " + steps.length + " steps")
+
   // Initialize material cards
   const materialCards = document.querySelectorAll(".material-card")
   materialCards.forEach((card) => {
@@ -43,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Show the current step
   function showStep(stepIndex) {
+    console.log("Showing step", stepIndex)
     steps.forEach((step, index) => {
       if (index === stepIndex) {
         step.classList.remove("hidden")
@@ -56,7 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update progress
     const progress = ((stepIndex + 1) / totalSteps) * 100
     progressBar.style.width = `${progress}%`
-    progressText.textContent = `Step ${stepIndex + 1} of ${totalSteps}`
     currentStepText.textContent = stepIndex + 1
 
     // Show/hide buttons
@@ -77,6 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Go to next step
   function nextStep() {
+    console.log("Next button clicked, current step:", currentStep)
     if (currentStep < totalSteps - 1) {
       currentStep++
       showStep(currentStep)
@@ -86,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Go to previous step
   function prevStep() {
+    console.log("Previous button clicked, current step:", currentStep)
     if (currentStep > 0) {
       currentStep--
       showStep(currentStep)
@@ -95,10 +99,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Event listeners
   if (nextBtn) {
+    console.log("Adding event listener to next button")
     nextBtn.addEventListener("click", nextStep)
   }
 
   if (prevBtn) {
+    console.log("Adding event listener to previous button")
     prevBtn.addEventListener("click", prevStep)
   }
 
