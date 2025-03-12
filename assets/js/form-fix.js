@@ -140,5 +140,54 @@ document.addEventListener("DOMContentLoaded", () => {
   showStep(0)
 
   console.log("Form progression initialized")
+
+  // Initialize material cards
+  function initializeCards() {
+    console.log("Initializing material and roof type cards")
+
+    // Material cards
+    const materialCards = document.querySelectorAll(".material-card")
+    materialCards.forEach((card) => {
+      card.addEventListener("click", function () {
+        console.log("Material card clicked:", this.dataset.value)
+        materialCards.forEach((c) => c.classList.remove("selected"))
+        this.classList.add("selected")
+
+        // Update hidden input
+        const hiddenInput = document.getElementById("desired_material")
+        if (hiddenInput) {
+          hiddenInput.value = this.dataset.value
+        }
+      })
+    })
+
+    // Roof type cards
+    const roofTypeCards = document.querySelectorAll(".roof-type-card")
+    roofTypeCards.forEach((card) => {
+      card.addEventListener("click", function () {
+        console.log("Roof type card clicked:", this.dataset.value)
+        roofTypeCards.forEach((c) => c.classList.remove("selected"))
+        this.classList.add("selected")
+
+        // Update hidden input
+        const hiddenInput = document.getElementById("roof_type")
+        if (hiddenInput) {
+          hiddenInput.value = this.dataset.value
+        }
+      })
+    })
+
+    // Select the first card of each type by default
+    if (materialCards.length > 0) {
+      materialCards[0].classList.add("selected")
+    }
+
+    if (roofTypeCards.length > 0) {
+      roofTypeCards[0].classList.add("selected")
+    }
+  }
+
+  // Initialize cards after showing the first step
+  initializeCards()
 })
 
