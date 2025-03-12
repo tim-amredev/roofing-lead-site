@@ -4,6 +4,24 @@ title: Get a Quote
 js: questionnaire leadperfection-integration
 ---
 
+<script>
+// Debug script to check if steps are properly loaded
+document.addEventListener("DOMContentLoaded", function() {
+  console.log("Document loaded");
+  const steps = document.querySelectorAll(".questionnaire-step");
+  console.log("Found " + steps.length + " steps");
+  
+  // Ensure next button works
+  const nextBtn = document.getElementById("next-btn");
+  if (nextBtn) {
+    console.log("Next button found");
+    nextBtn.onclick = function() {
+      console.log("Next button clicked directly");
+    };
+  }
+});
+</script>
+
 <section class="min-h-screen bg-gradient-to-b from-[#1B2337] to-[#2A3447]">
   <div class="container mx-auto px-4 py-12">
     <div class="max-w-4xl mx-auto">
@@ -134,8 +152,6 @@ js: questionnaire leadperfection-integration
               </div>
             </div>
           </div>
-          
-          <!-- Rest of the form remains unchanged -->
           
           <!-- Navigation buttons -->
           <div class="flex justify-between pt-6 border-t border-white/10">
