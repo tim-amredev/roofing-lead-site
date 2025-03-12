@@ -7,6 +7,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const prevBtn = document.getElementById("prev-btn")
   const submitBtn = document.getElementById("submit-btn")
   const steps = document.querySelectorAll(".questionnaire-step")
+  const form = document.getElementById("questionnaire-form")
+
+  // Prevent form submission when pressing Enter
+  if (form) {
+    form.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault()
+        return false
+      }
+    })
+  }
 
   if (!steps || steps.length === 0) {
     console.error("No steps found!")
@@ -60,25 +71,29 @@ document.addEventListener("DOMContentLoaded", () => {
   // Direct event handlers
   if (nextBtn) {
     console.log("Attaching direct event handler to next button")
-    nextBtn.onclick = () => {
+    nextBtn.onclick = (e) => {
+      e.preventDefault() // Prevent form submission
       console.log("Next button clicked")
       if (currentStep < totalSteps - 1) {
         currentStep++
         showStep(currentStep)
         window.scrollTo(0, 0)
       }
+      return false
     }
   }
 
   if (prevBtn) {
     console.log("Attaching direct event handler to previous button")
-    prevBtn.onclick = () => {
+    prevBtn.onclick = (e) => {
+      e.preventDefault() // Prevent form submission
       console.log("Previous button clicked")
       if (currentStep > 0) {
         currentStep--
         showStep(currentStep)
         window.scrollTo(0, 0)
       }
+      return false
     }
   }
 
