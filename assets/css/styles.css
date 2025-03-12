@@ -117,59 +117,6 @@ select:focus {
   @apply bg-white/10;
 }
 
-/* Checkbox and radio styling */
-input[type="checkbox"],
-input[type="radio"] {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 1.25rem;
-  height: 1.25rem;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  background-color: rgba(255, 255, 255, 0.1);
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-  margin-right: 0.5rem;
-  vertical-align: text-bottom;
-}
-
-input[type="checkbox"] {
-  border-radius: 0.25rem;
-}
-
-input[type="radio"] {
-  border-radius: 50%;
-}
-
-input[type="checkbox"]:checked,
-input[type="radio"]:checked {
-  background-color: #d4a017;
-  border-color: #d4a017;
-}
-
-input[type="checkbox"]:checked::after {
-  content: "";
-  position: absolute;
-  left: 0.3rem;
-  top: 0.1rem;
-  width: 0.4rem;
-  height: 0.7rem;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-input[type="radio"]:checked::after {
-  content: "";
-  position: absolute;
-  left: 0.25rem;
-  top: 0.25rem;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background-color: white;
-}
-
 /* Button hover effects */
 button {
   transition: all 0.2s ease-in-out;
