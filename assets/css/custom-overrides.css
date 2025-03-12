@@ -77,6 +77,25 @@ textarea {
   color: #ffffff !important;
 }
 
+/* Fix for form checkboxes and radio buttons */
+input[type="checkbox"],
+input[type="radio"] {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background-color: #d4a017 !important;
+  border-color: #d4a017 !important;
+}
+
+/* Fix for select dropdown options */
+select option {
+  background-color: #2a3555 !important;
+  color: #ffffff !important;
+}
+
 /* Card backgrounds for questionnaire */
 .material-card > div,
 .roof-type-card > div {
@@ -117,5 +136,33 @@ a {
 
 a:hover {
   color: #e5b42a !important;
+}
+
+/* Fix for questionnaire specific elements */
+.bg-white\/5,
+.bg-white\/10 {
+  background-color: rgba(42, 53, 85, 0.8) !important;
+}
+
+.bg-blue-500,
+.bg-blue-600 {
+  background-color: #2e4a7d !important;
+}
+
+.text-blue-100,
+.text-blue-200,
+.text-blue-300,
+.text-blue-400 {
+  color: #d3d3d3 !important;
+}
+
+/* Fix for the thank you modal */
+#thank-you-modal .bg-white {
+  background-color: #2a3555 !important;
+}
+
+#thank-you-modal h2,
+#thank-you-modal p {
+  color: #ffffff !important;
 }
 
