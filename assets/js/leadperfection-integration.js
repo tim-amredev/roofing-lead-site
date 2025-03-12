@@ -6,24 +6,24 @@ document.addEventListener("DOMContentLoaded", () => {
     questionnaireForm.addEventListener("submit", function (e) {
       // Don't prevent default - let the form submit normally to FormSubmit
 
-      // Store the form data in localStorage to process after redirect
+      // Create form data for LeadPerfection
       const formData = new FormData(this)
-      const leadPerfectionData = {}
+      const leadPerfectionData = new URLSearchParams() // Use URLSearchParams for URL-encoded format
 
       // Map form fields to LeadPerfection parameters
       // Personal information
-      leadPerfectionData.firstname = formData.get("firstname") || ""
-      leadPerfectionData.lastname = formData.get("lastname") || ""
-      leadPerfectionData.address1 = formData.get("street_address") || ""
-      leadPerfectionData.city = formData.get("city") || ""
-      leadPerfectionData.state = formData.get("state") || ""
-      leadPerfectionData.zip = formData.get("zip_code") || ""
-      leadPerfectionData.phone1 = formData.get("phone") || ""
-      leadPerfectionData.email = formData.get("email") || ""
+      leadPerfectionData.append("firstname", formData.get("firstname") || "")
+      leadPerfectionData.append("lastname", formData.get("lastname") || "")
+      leadPerfectionData.append("address1", formData.get("street_address") || "")
+      leadPerfectionData.append("city", formData.get("city") || "")
+      leadPerfectionData.append("state", formData.get("state") || "")
+      leadPerfectionData.append("zip", formData.get("zip_code") || "")
+      leadPerfectionData.append("phone1", formData.get("phone") || "")
+      leadPerfectionData.append("email", formData.get("email") || "")
 
       // Add the specific product ID for roofing
-      leadPerfectionData.productid = "Roof"
-      leadPerfectionData.proddescr = "Roofing"
+      leadPerfectionData.append("productid", "Roof")
+      leadPerfectionData.append("proddescr", "Roofing")
 
       // Combine various form fields into notes
       let notes = "Project Details:\n"
@@ -49,14 +49,35 @@ document.addEventListener("DOMContentLoaded", () => {
       notes += `Budget: ${formData.get("budget") || "N/A"}\n`
       notes += `Comments: ${formData.get("comments") || "N/A"}`
 
-      leadPerfectionData.notes = notes
+      leadPerfectionData.append("notes", notes)
 
       // Add the required fields with exact values provided by LeadPerfection
-      leadPerfectionData.sender = "Instantroofingprices.com"
-      leadPerfectionData.srs_id = "1669"
+      leadPerfectionData.append("sender", "Instantroofingprices.com")
+      leadPerfectionData.append("srs_id", "1669")
 
-      // Store the data in localStorage to be processed after redirect
-      localStorage.setItem("leadPerfectionData", JSON.stringify(leadPerfectionData))
+      // Use a separate asynchronous request that won't block form submission
+      setTimeout(() => {
+        const leadPerfectionUrl = "https://th97.leadperfection.com/batch/addleads.asp"
+
+        // Create a new XMLHttpRequest
+        const xhr = new XMLHttpRequest()
+        xhr.open("POST", leadPerfectionUrl, true)
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            console.log("Lead data sent to LeadPerfection successfully")
+          } else {
+            console.error("Error sending to LeadPerfection:", xhr.statusText)
+          }
+        }
+
+        xhr.onerror = () => {
+          console.error("Network error when sending to LeadPerfection")
+        }
+
+        xhr.send(leadPerfectionData.toString())
+      }, 100)
 
       // Continue with normal form submission
       return true
@@ -72,27 +93,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Create form data for LeadPerfection
       const formData = new FormData(this)
-      const leadPerfectionData = {}
+      const leadPerfectionData = new URLSearchParams()
 
       // Map contact form fields to LeadPerfection parameters
-      leadPerfectionData.firstname = formData.get("firstname") || ""
-      leadPerfectionData.lastname = formData.get("lastname") || ""
-      leadPerfectionData.phone1 = formData.get("phone") || ""
-      leadPerfectionData.email = formData.get("email") || ""
+      leadPerfectionData.append("firstname", formData.get("firstname") || "")
+      leadPerfectionData.append("lastname", formData.get("lastname") || "")
+      leadPerfectionData.append("phone1", formData.get("phone") || "")
+      leadPerfectionData.append("email", formData.get("email") || "")
 
       // Add the specific product ID for roofing
-      leadPerfectionData.productid = "Roof"
-      leadPerfectionData.proddescr = "Roofing"
+      leadPerfectionData.append("productid", "Roof")
+      leadPerfectionData.append("proddescr", "Roofing")
 
       // Add message to notes
-      leadPerfectionData.notes = `Subject: ${formData.get("subject") || "N/A"}\nMessage: ${formData.get("message") || "N/A"}`
+      leadPerfectionData.append(
+        "notes",
+        `Subject: ${formData.get("subject") || "N/A"}\nMessage: ${formData.get("message") || "N/A"}`,
+      )
 
       // Add the required fields with exact values provided by LeadPerfection
-      leadPerfectionData.sender = "Instantroofingprices.com"
-      leadPerfectionData.srs_id = "1669"
+      leadPerfectionData.append("sender", "Instantroofingprices.com")
+      leadPerfectionData.append("srs_id", "1669")
 
-      // Store the data in localStorage to be processed after redirect
-      localStorage.setItem("contactLeadPerfectionData", JSON.stringify(leadPerfectionData))
+      // Use a separate asynchronous request that won't block form submission
+      setTimeout(() => {
+        const leadPerfectionUrl = "https://th97.leadperfection.com/batch/addleads.asp"
+
+        // Create a new XMLHttpRequest
+        const xhr = new XMLHttpRequest()
+        xhr.open("POST", leadPerfectionUrl, true)
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            console.log("Lead data sent to LeadPerfection successfully")
+          } else {
+            console.error("Error sending to LeadPerfection:", xhr.statusText)
+          }
+        }
+
+        xhr.onerror = () => {
+          console.error("Network error when sending to LeadPerfection")
+        }
+
+        xhr.send(leadPerfectionData.toString())
+      }, 100)
 
       // Continue with normal form submission
       return true
