@@ -150,3 +150,15 @@ a:hover {
   color: #e5b42a !important;
 }
 
+/* IMPORTANT: Fix for the hidden class to ensure it doesn't interfere with JavaScript */
+.questionnaire-step.hidden {
+  display: none !important;
+}
+
+/* Ensure fade-in animation works properly */
+.questionnaire-step.fade-in {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
