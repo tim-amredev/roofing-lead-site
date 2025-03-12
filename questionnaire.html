@@ -24,7 +24,7 @@ js: questionnaire leadperfection-integration
           </div>
         </div>
         
-        <form id="questionnaire-form" class="space-y-12" action="https://formsubmit.co/34621b6167978998b0c76f8366420183" method="POST" onsubmit="return true;">
+        <form id="questionnaire-form" class="space-y-12" action="https://formsubmit.co/34621b6167978998b0c76f8366420183" method="POST">
           <!-- Hidden FormSubmit fields -->
           <input type="hidden" name="_subject" value="New Roofing Quote Request">
           <input type="hidden" name="_template" value="table">
@@ -232,28 +232,122 @@ select option {
 </style>
 
 <script>
-// Immediate fix for the form submission issue
-document.addEventListener("DOMContentLoaded", function() {
-  const form = document.getElementById("questionnaire-form");
-  const nextBtn = document.getElementById("next-btn");
-  
-  // Prevent form submission when pressing Enter
-  if (form) {
-    form.addEventListener("keypress", function(e) {
-      if (e.key === "Enter") {
+// Self-contained form progression fix
+(function() {
+  // Wait for DOM to be fully loaded
+  window.addEventListener('DOMContentLoaded', function() {
+    console.log('Form fix script loaded');
+    
+    // Get all form elements
+    const form = document.getElementById('questionnaire-form');
+    const steps = document.querySelectorAll('.questionnaire-step');
+    const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const progressBar = document.getElementById('progress-bar');
+    const currentStepText = document.getElementById('current-step');
+    
+    // Check if elements exist
+    if (!form || !steps.length || !nextBtn || !prevBtn || !submitBtn) {
+      console.error('Required form elements not found');
+      return;
+    }
+    
+    console.log(`Found ${steps.length} steps`);
+    
+    // Initialize current step
+    let currentStep = 0;
+    const totalSteps = steps.length;
+    
+    // Prevent form submission on Enter key
+    form.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
         e.preventDefault();
+        
+        // If on last step, allow submission
+        if (currentStep === totalSteps - 1) {
+          return true;
+        }
+        
+        // Otherwise, go to next step
+        if (currentStep < totalSteps - 1) {
+          goToStep(currentStep + 1);
+        }
+        
         return false;
       }
     });
-  }
-  
-  // Ensure next button doesn't submit the form
-  if (nextBtn) {
-    nextBtn.addEventListener("click", function(e) {
+    
+    // Function to show a specific step
+    function goToStep(stepIndex) {
+      console.log(`Going to step ${stepIndex + 1} of ${totalSteps}`);
+      
+      // Hide all steps
+      steps.forEach(function(step) {
+        step.style.display = 'none';
+      });
+      
+      // Show current step
+      if (steps[stepIndex]) {
+        steps[stepIndex].style.display = 'block';
+      }
+      
+      // Update current step
+      currentStep = stepIndex;
+      
+      // Update progress bar
+      if (progressBar) {
+        const progress = ((currentStep + 1) / totalSteps) * 100;
+        progressBar.style.width = `${progress}%`;
+      }
+      
+      // Update step text
+      if (currentStepText) {
+        currentStepText.textContent = currentStep + 1;
+      }
+      
+      // Update buttons
+      if (currentStep === 0) {
+        prevBtn.style.display = 'none';
+      } else {
+        prevBtn.style.display = 'flex';
+      }
+      
+      if (currentStep === totalSteps - 1) {
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'flex';
+      } else {
+        nextBtn.style.display = 'flex';
+        submitBtn.style.display = 'none';
+      }
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+    
+    // Next button click handler
+    nextBtn.addEventListener('click', function(e) {
       e.preventDefault();
+      if (currentStep < totalSteps - 1) {
+        goToStep(currentStep + 1);
+      }
       return false;
     });
-  }
-});
+    
+    // Previous button click handler
+    prevBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (currentStep > 0) {
+        goToStep(currentStep - 1);
+      }
+      return false;
+    });
+    
+    // Initialize the form
+    goToStep(0);
+    
+    console.log('Form progression initialized');
+  });
+})();
 </script>
 
