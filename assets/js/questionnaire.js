@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextBtn = document.getElementById("next-btn")
   const submitBtn = document.getElementById("submit-btn")
 
-  let currentStep = 0
+  const currentStep = 0
   const totalSteps = steps.length
 
   console.log("Questionnaire JS loaded, found " + steps.length + " steps")
@@ -42,74 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("roof_type").value = this.dataset.value
     })
   })
-
-  // Show the current step
-  function showStep(stepIndex) {
-    console.log("Showing step", stepIndex)
-    steps.forEach((step, index) => {
-      if (index === stepIndex) {
-        step.classList.remove("hidden")
-        step.classList.add("fade-in")
-      } else {
-        step.classList.add("hidden")
-        step.classList.remove("fade-in")
-      }
-    })
-
-    // Update progress
-    const progress = ((stepIndex + 1) / totalSteps) * 100
-    progressBar.style.width = `${progress}%`
-    currentStepText.textContent = stepIndex + 1
-
-    // Show/hide buttons
-    if (stepIndex === 0) {
-      prevBtn.classList.add("hidden")
-    } else {
-      prevBtn.classList.remove("hidden")
-    }
-
-    if (stepIndex === totalSteps - 1) {
-      nextBtn.classList.add("hidden")
-      submitBtn.classList.remove("hidden")
-    } else {
-      nextBtn.classList.remove("hidden")
-      submitBtn.classList.add("hidden")
-    }
-  }
-
-  // Go to next step
-  function nextStep() {
-    console.log("Next button clicked, current step:", currentStep)
-    if (currentStep < totalSteps - 1) {
-      currentStep++
-      showStep(currentStep)
-      window.scrollTo(0, 0)
-    }
-  }
-
-  // Go to previous step
-  function prevStep() {
-    console.log("Previous button clicked, current step:", currentStep)
-    if (currentStep > 0) {
-      currentStep--
-      showStep(currentStep)
-      window.scrollTo(0, 0)
-    }
-  }
-
-  // Event listeners
-  if (nextBtn) {
-    console.log("Adding event listener to next button")
-    nextBtn.addEventListener("click", nextStep)
-  }
-
-  if (prevBtn) {
-    console.log("Adding event listener to previous button")
-    prevBtn.addEventListener("click", prevStep)
-  }
-
-  // Initialize the first step
-  showStep(currentStep)
 
   // Fix for checkboxes and radio buttons styling
   const styleFormElements = () => {
