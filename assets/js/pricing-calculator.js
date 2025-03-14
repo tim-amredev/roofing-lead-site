@@ -41,14 +41,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault()
-    calculateEstimate()
+    
+    // Validate contact information fields
+    const firstName = document.getElementById("first-name").value.trim()
+    const lastName = document.getElementById("last-name").value.trim()
+    const email = document.getElementById("email").value.trim()
+    const phone = document.getElementById("phone").value.trim()
+    const streetAddress = document.getElementById("street-address").value.trim()
+    const zipCode = document.getElementById("zip-code").value.trim()
+    const state = document.getElementById("state").value.trim()
+    
+    // Basic validation
+    if (!firstName || !lastName || !email || !phone || !streetAddress || !zipCode || !state) {
+      alert("Please fill in all contact information fields to get your estimate.")
+      return
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid email address.")
+      return
+    }
+    
+    // Calculate the estimate and collect the results
+    const estimateData = calculateEstimate()
+    
+    // If calculation was successful, send the data
+    if (estimateData) {
+      // Collect contact information
+      const contactInfo = {
+        firstName,
+        lastName,
+        email,
+        phone,
+        streetAddress,
+        zipCode,
+        state
+      }
+      
+      // Send the data to the email
+      sendFormData(contactInfo, estimateData)
+    }
   })
 
   recalculateBtn.addEventListener("click", () => {
     resultsSection.classList.add("hidden")
-    form.reset()
-    additionsList.innerHTML = ""
-    resultAdditions.classList.add("hidden")
+    // Don't reset the form completely to preserve contact info
+    // Just scroll back to the form
+    form.scrollIntoView({ behavior: "smooth" })
   })
 
   function calculateEstimate() {
@@ -67,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Input validation
     if (isNaN(area) || area < 100 || area > 10000) {
       alert("Please enter a valid roof area between 100 and 10,000 sq ft.")
-      return
+      return null
     }
 
     // Calculate base cost
@@ -143,6 +184,63 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show results
     resultsSection.classList.remove("hidden")
     resultsSection.scrollIntoView({ behavior: "smooth" })
+    
+    // Return the estimate data for email submission
+    return {
+      roofArea: area,
+      material: document.querySelector(`label[for="material-${material}"] h3`).textContent,
+      pitch: document.querySelector(`#roof-pitch option[value="${pitch}"]`).textContent,
+      location: document.querySelector(`#location option[value="${region}"]`).textContent,
+      selectedAdditions: activeAdditions.map(([key]) => 
+        document.querySelector(`label[for="option-${key}"] .font-medium`).textContent
+      ),
+      lowEstimate,
+      highEstimate,
+      averageEstimate
+    }
+  }
+  
+  // Function to send form data to email
+  function sendFormData(contactInfo, estimateData) {
+    // Create form data object
+    const formData = new FormData()
+    
+    // Add contact information
+    formData.append('firstName', contactInfo.firstName)
+    formData.append('lastName', contactInfo.lastName)
+    formData.append('email', contactInfo.email)
+    formData.append('phone', contactInfo.phone)
+    formData.append('streetAddress', contactInfo.streetAddress)
+    formData.append('zipCode', contactInfo.zipCode)
+    formData.append('state', contactInfo.state)
+    
+    // Add estimate information
+    formData.append('roofArea', estimateData.roofArea)
+    formData.append('material', estimateData.material)
+    formData.append('pitch', estimateData.pitch)
+    formData.append('location', estimateData.location)
+    formData.append('selectedAdditions', estimateData.selectedAdditions.join(', '))
+    formData.append('lowEstimate', estimateData.lowEstimate)
+    formData.append('highEstimate', estimateData.highEstimate)
+    formData.append('averageEstimate', estimateData.averageEstimate)
+    
+    // Add the FormSubmitAttachment snippet ID
+    formData.append('_formsubmit_attachment', 'snippet-pqC192izRi3cjEq4JN3yUWBy9kbTDA')
+    
+    // Send to FormSubmit
+    fetch('https://formsubmit.co/tim@americanremodeling.net', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      console.log('Form submitted successfully')
+    })
+    .catch(error => {
+      console.error('Error submitting form:', error)
+    })
   }
 
   // Declare fbq if it's not already defined (e.g., if the Facebook Pixel isn't loaded yet)
@@ -183,4 +281,3 @@ document.addEventListener("DOMContentLoaded", () => {
     attributeFilter: ["class"],
   })
 })
-
