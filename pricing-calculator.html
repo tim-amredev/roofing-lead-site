@@ -153,25 +153,63 @@ js: pricing-calculator
               <p class="text-sm text-gray-400 mt-1">Typical house: 1,500-2,500 sq ft</p>
             </div>
             
-            <div>
-              <label for="roof-pitch" class="block text-white font-medium mb-2">Roof Pitch</label>
-              <select 
-                id="roof-pitch" 
-                name="roof-pitch" 
-                class="w-full p-2 border rounded" 
-                style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
-                required
-              >
-                <option value="flat">Flat (0/12 pitch)</option>
-                <option value="low">Low (2/12 to 4/12 pitch)</option>
-                <option value="medium" selected>Medium (5/12 to 8/12 pitch)</option>
-                <option value="steep">Steep (9/12 to 12/12 pitch)</option>
-                <option value="very-steep">Very Steep (>12/12 pitch)</option>
-              </select>
-              <p class="text-sm text-gray-400 mt-1">Most homes have a medium pitch</p>
-            </div>
-          </div>
-        </div>
+           <!-- Replace the existing roof pitch dropdown with this -->
+<div>
+  <label for="roof-pitch" class="block text-white font-medium mb-2">Roof Pitch</label>
+  <div class="grid grid-cols-1 gap-2">
+    <button 
+      type="button"
+      data-pitch="flat"
+      class="pitch-option w-full text-left p-3 rounded transition-colors duration-200"
+      style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+    >
+      <span class="text-white font-medium">Flat</span>
+      <span class="block text-sm text-gray-400">0/12 pitch</span>
+    </button>
+    
+    <button 
+      type="button"
+      data-pitch="low"
+      class="pitch-option w-full text-left p-3 rounded transition-colors duration-200"
+      style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+    >
+      <span class="text-white font-medium">Low Slope</span>
+      <span class="block text-sm text-gray-400">2/12 to 4/12 pitch</span>
+    </button>
+    
+    <button 
+      type="button"
+      data-pitch="medium"
+      class="pitch-option w-full text-left p-3 rounded transition-colors duration-200"
+      style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+    >
+      <span class="text-white font-medium">Medium</span>
+      <span class="block text-sm text-gray-400">5/12 to 8/12 pitch</span>
+    </button>
+    
+    <button 
+      type="button"
+      data-pitch="steep"
+      class="pitch-option w-full text-left p-3 rounded transition-colors duration-200"
+      style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+    >
+      <span class="text-white font-medium">Steep</span>
+      <span class="block text-sm text-gray-400">9/12 to 12/12 pitch</span>
+    </button>
+    
+    <button 
+      type="button"
+      data-pitch="very-steep"
+      class="pitch-option w-full text-left p-3 rounded transition-colors duration-200"
+      style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+    >
+      <span class="text-white font-medium">Very Steep</span>
+      <span class="block text-sm text-gray-400">&gt;12/12 pitch</span>
+    </button>
+  </div>
+  <!-- Hidden input to store the selected pitch value -->
+  <input type="hidden" id="roof-pitch" name="roof-pitch" value="medium">
+</div>
         
         <!-- Roofing Materials -->
         <div>
