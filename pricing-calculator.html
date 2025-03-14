@@ -4,21 +4,21 @@ title: Roofing Price Calculator
 js: pricing-calculator
 ---
 
-<section class="py-12" style="background-color: #181818 !important;">
+<section class="py-8" style="background-color: #181818 !important;">
 <div class="container mx-auto px-4">
   <div class="max-w-4xl mx-auto">
-    <h1 class="text-3xl font-bold text-center mb-4 text-white">Roofing Price Calculator</h1>
-    <p class="text-lg text-gray-300 text-center mb-12">Get an instant estimate for your roofing project with our interactive calculator.</p>
+    <h1 class="text-3xl font-bold text-center mb-2 text-white">Roofing Price Calculator</h1>
+    <p class="text-lg text-gray-300 text-center mb-8">Get an instant estimate for your roofing project with our interactive calculator.</p>
     
-    <div class="rounded-lg shadow-md p-6 md:p-8 mb-10" style="background-color: #2A3555;">
-      <form id="calculator-form" class="space-y-8">
+    <div class="rounded-lg shadow-md p-6 md:p-8 mb-8" style="background-color: #2A3555;">
+      <form id="calculator-form" class="space-y-6">
         <!-- Contact Information -->
         <div>
-          <h2 class="text-xl font-semibold mb-6 text-white">Contact Information</h2>
+          <h2 class="text-xl font-semibold mb-4 text-white">Contact Information</h2>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label for="first-name" class="block text-white font-medium mb-2">First Name</label>
+              <label for="first-name" class="block text-white font-medium mb-1">First Name</label>
               <input 
                 type="text" 
                 id="first-name" 
@@ -31,7 +31,7 @@ js: pricing-calculator
             </div>
             
             <div>
-              <label for="last-name" class="block text-white font-medium mb-2">Last Name</label>
+              <label for="last-name" class="block text-white font-medium mb-1">Last Name</label>
               <input 
                 type="text" 
                 id="last-name" 
@@ -44,9 +44,9 @@ js: pricing-calculator
             </div>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div>
-              <label for="email" class="block text-white font-medium mb-2">Email Address</label>
+              <label for="email" class="block text-white font-medium mb-1">Email Address</label>
               <input 
                 type="email" 
                 id="email" 
@@ -59,7 +59,7 @@ js: pricing-calculator
             </div>
             
             <div>
-              <label for="phone" class="block text-white font-medium mb-2">Phone Number</label>
+              <label for="phone" class="block text-white font-medium mb-1">Phone Number</label>
               <input 
                 type="tel" 
                 id="phone" 
@@ -72,8 +72,8 @@ js: pricing-calculator
             </div>
           </div>
           
-          <div class="mt-6">
-            <label for="street-address" class="block text-white font-medium mb-2">Street Address</label>
+          <div class="mt-4">
+            <label for="street-address" class="block text-white font-medium mb-1">Street Address</label>
             <input 
               type="text" 
               id="street-address" 
@@ -85,9 +85,9 @@ js: pricing-calculator
             >
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             <div>
-              <label for="city" class="block text-white font-medium mb-2">City</label>
+              <label for="city" class="block text-white font-medium mb-1">City</label>
               <input 
                 type="text" 
                 id="city" 
@@ -100,7 +100,7 @@ js: pricing-calculator
             </div>
             
             <div>
-              <label for="state" class="block text-white font-medium mb-2">State</label>
+              <label for="state" class="block text-white font-medium mb-1">State</label>
               <input 
                 type="text" 
                 id="state" 
@@ -113,7 +113,7 @@ js: pricing-calculator
             </div>
             
             <div>
-              <label for="zip-code" class="block text-white font-medium mb-2">Zip Code</label>
+              <label for="zip-code" class="block text-white font-medium mb-1">Zip Code</label>
               <input 
                 type="text" 
                 id="zip-code" 
@@ -127,13 +127,14 @@ js: pricing-calculator
           </div>
         </div>
         
-        <!-- Roof Dimensions -->
-        <div>
-          <h2 class="text-xl font-semibold mb-6 text-white">Roof Dimensions</h2>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Roof Dimensions and Pitch in a 2-column layout -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Roof Dimensions -->
+          <div>
+            <h2 class="text-xl font-semibold mb-4 text-white">Roof Dimensions</h2>
+            
             <div>
-              <label for="roof-area" class="block text-white font-medium mb-2">Roof Area (Square Feet)</label>
+              <label for="roof-area" class="block text-white font-medium mb-1">Roof Area (Square Feet)</label>
               <div class="relative">
                 <input 
                   type="number" 
@@ -152,151 +153,153 @@ js: pricing-calculator
               </div>
               <p class="text-sm text-gray-400 mt-1">Typical house: 1,500-2,500 sq ft</p>
             </div>
-            
-           <!-- Replace the existing roof pitch dropdown with this -->
-<div>
-  <label for="roof-pitch" class="block text-white font-medium mb-2">Roof Pitch</label>
-  <div class="grid grid-cols-1 gap-2">
-    <button 
-      type="button"
-      data-pitch="flat"
-      class="pitch-option w-full text-left p-3 rounded transition-colors duration-200"
-      style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
-    >
-      <span class="text-white font-medium">Flat</span>
-      <span class="block text-sm text-gray-400">0/12 pitch</span>
-    </button>
-    
-    <button 
-      type="button"
-      data-pitch="low"
-      class="pitch-option w-full text-left p-3 rounded transition-colors duration-200"
-      style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
-    >
-      <span class="text-white font-medium">Low Slope</span>
-      <span class="block text-sm text-gray-400">2/12 to 4/12 pitch</span>
-    </button>
-    
-    <button 
-      type="button"
-      data-pitch="medium"
-      class="pitch-option w-full text-left p-3 rounded transition-colors duration-200"
-      style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
-    >
-      <span class="text-white font-medium">Medium</span>
-      <span class="block text-sm text-gray-400">5/12 to 8/12 pitch</span>
-    </button>
-    
-    <button 
-      type="button"
-      data-pitch="steep"
-      class="pitch-option w-full text-left p-3 rounded transition-colors duration-200"
-      style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
-    >
-      <span class="text-white font-medium">Steep</span>
-      <span class="block text-sm text-gray-400">9/12 to 12/12 pitch</span>
-    </button>
-    
-    <button 
-      type="button"
-      data-pitch="very-steep"
-      class="pitch-option w-full text-left p-3 rounded transition-colors duration-200"
-      style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
-    >
-      <span class="text-white font-medium">Very Steep</span>
-      <span class="block text-sm text-gray-400">&gt;12/12 pitch</span>
-    </button>
-  </div>
-  <!-- Hidden input to store the selected pitch value -->
-  <input type="hidden" id="roof-pitch" name="roof-pitch" value="medium">
-</div>
+          </div>
+          
+          <!-- Roof Pitch -->
+          <div>
+            <h2 class="text-xl font-semibold mb-4 text-white">Roof Pitch</h2>
+            <div class="grid grid-cols-1 gap-2">
+              <button 
+                type="button"
+                data-pitch="flat"
+                class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
+                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+              >
+                <span class="text-white font-medium">Flat</span>
+                <span class="block text-sm text-gray-400">0/12 pitch</span>
+              </button>
+              
+              <button 
+                type="button"
+                data-pitch="low"
+                class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
+                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+              >
+                <span class="text-white font-medium">Low Slope</span>
+                <span class="block text-sm text-gray-400">2/12 to 4/12 pitch</span>
+              </button>
+              
+              <button 
+                type="button"
+                data-pitch="medium"
+                class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
+                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+              >
+                <span class="text-white font-medium">Medium</span>
+                <span class="block text-sm text-gray-400">5/12 to 8/12 pitch</span>
+              </button>
+              
+              <button 
+                type="button"
+                data-pitch="steep"
+                class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
+                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+              >
+                <span class="text-white font-medium">Steep</span>
+                <span class="block text-sm text-gray-400">9/12 to 12/12 pitch</span>
+              </button>
+              
+              <button 
+                type="button"
+                data-pitch="very-steep"
+                class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
+                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+              >
+                <span class="text-white font-medium">Very Steep</span>
+                <span class="block text-sm text-gray-400">&gt;12/12 pitch</span>
+              </button>
+            </div>
+            <!-- Hidden input to store the selected pitch value -->
+            <input type="hidden" id="roof-pitch" name="roof-pitch" value="medium">
+          </div>
+        </div>
         
         <!-- Roofing Materials -->
         <div>
-          <h2 class="text-xl font-semibold mb-6 text-white">Roofing Materials</h2>
+          <h2 class="text-xl font-semibold mb-4 text-white">Roofing Materials</h2>
           
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
             <div class="material-option">
-              <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+              <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
                 <input type="radio" name="material" id="material-asphalt" value="asphalt" class="hidden" checked>
                 <label for="material-asphalt" class="block h-full cursor-pointer">
-                  <div class="aspect-w-4 aspect-h-3 mb-3">
+                  <div class="aspect-w-4 aspect-h-3 mb-2">
                     <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/asphalt.jpg-UeGUZOEIdP4JhUBcrM9EsubybweqQh.jpeg" alt="Various styles of asphalt shingles in different colors" class="w-full h-full object-cover rounded">
                   </div>
-                  <h3 class="font-medium text-center text-white">Asphalt Shingles</h3>
+                  <h3 class="font-medium text-center text-white text-sm">Asphalt Shingles</h3>
                 </label>
               </div>
             </div>
             
             <div class="material-option">
-              <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+              <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
                 <input type="radio" name="material" id="material-metal" value="metal" class="hidden">
                 <label for="material-metal" class="block h-full cursor-pointer">
-                  <div class="aspect-w-4 aspect-h-3 mb-3">
+                  <div class="aspect-w-4 aspect-h-3 mb-2">
                     <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/metal.jpg-tHBSkbc1ItFcVw9ziTiRI3DMFzTaNc.jpeg" alt="Corrugated metal roofing panels in silver and blue" class="w-full h-full object-cover rounded">
                   </div>
-                  <h3 class="font-medium text-center text-white">Metal Roofing</h3>
+                  <h3 class="font-medium text-center text-white text-sm">Metal Roofing</h3>
                 </label>
               </div>
             </div>
             
             <div class="material-option">
-              <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+              <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
                 <input type="radio" name="material" id="material-tile" value="tile" class="hidden">
                 <label for="material-tile" class="block h-full cursor-pointer">
-                  <div class="aspect-w-4 aspect-h-3 mb-3">
+                  <div class="aspect-w-4 aspect-h-3 mb-2">
                     <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/clay.jpg-DmNBgYiEOMVGA80EElTT62owKQNdCc.jpeg" alt="Traditional terracotta clay roof tiles" class="w-full h-full object-cover rounded">
                   </div>
-                  <h3 class="font-medium text-center text-white">Clay/Concrete Tile</h3>
+                  <h3 class="font-medium text-center text-white text-sm">Clay/Concrete Tile</h3>
                 </label>
               </div>
             </div>
             
             <div class="material-option">
-              <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+              <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
                 <input type="radio" name="material" id="material-wood" value="wood" class="hidden">
                 <label for="material-wood" class="block h-full cursor-pointer">
-                  <div class="aspect-w-4 aspect-h-3 mb-3">
+                  <div class="aspect-w-4 aspect-h-3 mb-2">
                     <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wood.jpg-rvzQIG9Sv1wltYlKmRRLHHufb77Er5.jpeg" alt="Natural cedar wood shingles" class="w-full h-full object-cover rounded">
                   </div>
-                  <h3 class="font-medium text-center text-white">Wood Shingles</h3>
+                  <h3 class="font-medium text-center text-white text-sm">Wood Shingles</h3>
                 </label>
               </div>
             </div>
             
             <div class="material-option">
-              <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+              <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
                 <input type="radio" name="material" id="material-slate" value="slate" class="hidden">
                 <label for="material-slate" class="block h-full cursor-pointer">
-                  <div class="aspect-w-4 aspect-h-3 mb-3">
+                  <div class="aspect-w-4 aspect-h-3 mb-2">
                     <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/slate.jpg-2wGZ7wRKV4tRGsi2WQ7Xlmmc8Fd1r2.jpeg" alt="Natural slate roof tiles in dark gray" class="w-full h-full object-cover rounded">
                   </div>
-                  <h3 class="font-medium text-center text-white">Slate</h3>
+                  <h3 class="font-medium text-center text-white text-sm">Slate</h3>
                 </label>
               </div>
             </div>
             
             <div class="material-option">
-              <div class="border rounded-lg p-4 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+              <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
                 <input type="radio" name="material" id="material-premium" value="premium" class="hidden">
                 <label for="material-premium" class="block h-full cursor-pointer">
-                  <div class="aspect-w-4 aspect-h-3 mb-3">
+                  <div class="aspect-w-4 aspect-h-3 mb-2">
                     <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
-                      <span class="text-gray-300">Premium Shingles</span>
+                      <span class="text-gray-300 text-xs">Premium</span>
                     </div>
                   </div>
-                  <h3 class="font-medium text-center text-white">Premium Shingles</h3>
+                  <h3 class="font-medium text-center text-white text-sm">Premium Shingles</h3>
                 </label>
               </div>
             </div>
           </div>
         </div>
         
-        <!-- Additional Options -->
+        <!-- Additional Options in a 2-column layout -->
         <div>
-          <h2 class="text-xl font-semibold mb-6 text-white">Additional Options</h2>
+          <h2 class="text-xl font-semibold mb-4 text-white">Additional Options</h2>
           
-          <div class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="flex items-start">
               <input type="checkbox" id="option-removal" name="option-removal" class="mt-1">
               <label for="option-removal" class="ml-2 text-gray-300">
@@ -339,10 +342,10 @@ js: pricing-calculator
           </div>
         </div>
     
-        <div class="text-center">
+        <div class="text-center mt-6">
           <button 
             type="submit" 
-            class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300 text-lg" 
+            class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300 text-lg mx-auto" 
             style="background-color: #D4A017;"
           >
             Calculate Estimate
@@ -351,7 +354,7 @@ js: pricing-calculator
       </form>
     </div>
 
-    <div class="bg-yellow-500 bg-opacity-10 border-l-4 border-yellow-500 p-4 mb-8 rounded" style="border-color: #D4A017;">
+    <div class="bg-yellow-500 bg-opacity-10 border-l-4 border-yellow-500 p-4 mb-6 rounded" style="border-color: #D4A017;">
       <div class="flex">
         <div class="flex-shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
@@ -373,7 +376,7 @@ js: pricing-calculator
     <div id="results-section" class="rounded-lg shadow-md p-6 md:p-8 hidden" style="background-color: #2A3555;">
       <h2 class="text-2xl font-bold mb-6 text-white text-center">Your Roofing Estimate</h2>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div class="rounded-lg p-6" style="background-color: rgba(255, 255, 255, 0.05);">
           <h3 class="text-xl font-semibold mb-4 text-white">Estimated Cost Range</h3>
           
@@ -454,13 +457,13 @@ js: pricing-calculator
     </div>
     
     <!-- Pricing Information -->
-    <div class="mt-16">
-      <h2 class="text-2xl font-bold mb-8 text-white text-center">Understanding Roofing Costs</h2>
+    <div class="mt-12">
+      <h2 class="text-2xl font-bold mb-6 text-white text-center">Understanding Roofing Costs</h2>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div class="rounded-lg p-6" style="background-color: #2A3555;">
           <h3 class="text-xl font-semibold mb-4 text-white">What Affects Roofing Costs?</h3>
-          <ul class="space-y-3 text-gray-300">
+          <ul class="space-y-2 text-gray-300">
             <li class="flex items-start">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 mr-2 mt-0.5" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
@@ -485,8 +488,6 @@ js: pricing-calculator
               </svg>
               <span><strong>Complexity:</strong> Multiple levels, dormers, and skylights increase cost.</span>
             </li>
-            <li class="flex items-start">  and skylights increase cost.</span>
-            </li>
             <li class="flex items-start">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 mr-2 mt-0.5" style="color: #D4A017;" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
@@ -498,7 +499,7 @@ js: pricing-calculator
         
         <div class="rounded-lg p-6" style="background-color: #2A3555;">
           <h3 class="text-xl font-semibold mb-4 text-white">Material Lifespan Comparison</h3>
-          <div class="space-y-4">
+          <div class="space-y-3">
             <div>
               <div class="flex justify-between mb-1">
                 <span class="text-gray-300">Asphalt Shingles</span>
@@ -552,11 +553,11 @@ js: pricing-calculator
         </div>
       </div>
 
-      <div class="mt-12 mb-16">
-        <h2 class="text-2xl font-bold mb-8 text-white text-center">Current Market Factors Affecting Roofing Prices</h2>
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold mb-6 text-white text-center">Current Market Factors Affecting Roofing Prices</h2>
         
         <div class="rounded-lg p-6" style="background-color: #2A3555;">
-          <div class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h3 class="text-xl font-semibold mb-3 text-white">Material Cost Fluctuations</h3>
               <p class="text-gray-300">The roofing industry has experienced significant price volatility in recent years. Petroleum-based products like asphalt shingles are affected by oil prices, while metal roofing costs fluctuate with global metal markets. Supply chain disruptions can cause temporary price increases of 10-25% in some regions.</p>
@@ -618,5 +619,10 @@ body, html, main, section {
 
 .material-option input[type="radio"]:checked + label img {
   opacity: 0.8;
+}
+
+.pitch-option.selected {
+  background-color: #3E4E88 !important;
+  border-color: #D4A017 !important;
 }
 </style>
