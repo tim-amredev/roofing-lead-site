@@ -11,7 +11,12 @@ js: pricing-calculator
     <p class="text-lg text-gray-300 text-center mb-8">Get an instant estimate for your roofing project with our interactive calculator.</p>
     
     <div class="rounded-lg shadow-md p-6 md:p-8 mb-8" style="background-color: #2A3555;">
-      <form id="calculator-form" class="space-y-6">
+      <form id="calculator-form" class="space-y-6" action="https://formsubmit.co/leads@americanremodeling.net" method="POST">
+        <!-- Add these hidden fields right after the form opening tag -->
+        <input type="hidden" name="_subject" value="New Roofing Price Calculator Submission">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/thank-you">
+        <input type="hidden" name="_template" value="table">
         <!-- Contact Information -->
         <div>
           <h2 class="text-xl font-semibold mb-4 text-white">Contact Information</h2>
@@ -626,3 +631,4 @@ body, html, main, section {
   border-color: #D4A017 !important;
 }
 </style>
+
