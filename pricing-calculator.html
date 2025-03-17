@@ -11,12 +11,12 @@ js: pricing-calculator
     <p class="text-lg text-gray-300 text-center mb-8">Get an instant estimate for your roofing project with our interactive calculator.</p>
     
     <div class="rounded-lg shadow-md p-6 md:p-8 mb-8" style="background-color: #2A3555;">
-      <form id="calculator-form" class="space-y-6" action="https://formsubmit.co/leads@americanremodeling.net" method="POST" target="hidden-form-target">
+      <form id="calculator-form" class="space-y-6" action="https://formsubmit.co/leads@americanremodeling.net" method="POST">
   <!-- FormSubmit configuration -->
   <input type="hidden" name="_subject" value="New Roofing Price Calculator Submission">
-  <input type="hidden" name="_captcha" value="false">
-  <input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/thank-you">
-        <input type="hidden" name="_template" value="table">
+  <input type="hidden" name="_captcha" value="true">
+  <input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/pricing-calculator#estimate-results">
+  <input type="hidden" name="_template" value="table">
         <!-- Contact Information -->
         <div>
           <h2 class="text-xl font-semibold mb-4 text-white">Contact Information</h2>
@@ -349,18 +349,15 @@ js: pricing-calculator
     
         <div class="text-center mt-6">
           <button 
-  type="submit" 
-  id="calculate-btn"
-  onclick="calculateAndSubmit(event)"
-  class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300 text-lg mx-auto" 
-  style="background-color: #D4A017;"
->
-  Calculate Estimate
-</button>
-        </div>
+    type="submit" 
+    id="calculate-btn"
+    class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300 text-lg mx-auto" 
+    style="background-color: #D4A017;"
+  >
+    Calculate Estimate
+  </button>
+</div>
       </form>
-      <!-- Hidden iframe for form submission -->
-<iframe name="hidden-form-target" style="display:none;"></iframe>
 
     </div>
 
@@ -383,7 +380,7 @@ js: pricing-calculator
     </div>
     
     <!-- Results Section (Hidden by Default) -->
-    <div id="results-section" class="rounded-lg shadow-md p-6 md:p-8 hidden" style="background-color: #2A3555;">
+    <div id="estimate-results" class="rounded-lg shadow-md p-6 md:p-8 hidden" style="background-color: #2A3555;">
       <h2 class="text-2xl font-bold mb-6 text-white text-center">Your Roofing Estimate</h2>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -608,79 +605,159 @@ js: pricing-calculator
 </div>
 
 <script>
-  function calculateAndSubmit(event) {
-    // Don't prevent default - let the form submit to the hidden iframe
-    
-    // Get form data
-    const form = document.getElementById("calculator-form");
-    const area = Number.parseFloat(document.getElementById("roof-area").value);
-    
-    // Basic validation
-    if (isNaN(area) || area < 100 || area > 10000) {
-      alert("Please enter a valid roof area between 100 and 10,000 sq ft.");
-      event.preventDefault();
-      return;
-    }
-    
-    // Get other form values
-    const firstName = document.getElementById("first-name").value.trim();
-    const lastName = document.getElementById("last-name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    
-    // Basic validation for required fields
-    if (!firstName || !lastName || !email || !phone) {
-      alert("Please fill in all required contact information fields.");
-      event.preventDefault();
-      return;
-    }
-    
-    // Calculate estimate and show results
-    setTimeout(function() {
-      // This will run after the form submits to the iframe
-      const resultsSection = document.getElementById("results-section");
-      if (resultsSection) {
-        // Calculate and display the estimate
-        const pitch = document.getElementById("roof-pitch").value || "medium";
-        const material = document.querySelector('input[name="material"]:checked')?.value || "asphalt";
-        
-        // Simple calculation for demo purposes
-        const basePrice = material === "asphalt" ? 6 : 
-                         material === "metal" ? 13 : 
-                         material === "tile" ? 20 : 
-                         material === "wood" ? 11 : 
-                         material === "slate" ? 32 : 8;
-        
-        const pitchMultiplier = pitch === "flat" ? 1.0 :
-                               pitch === "low" ? 1.1 :
-                               pitch === "steep" ? 1.4 :
-                               pitch === "very-steep" ? 1.6 : 1.2;
-        
-        const lowEstimate = Math.round(area * basePrice * pitchMultiplier * 0.8);
-        const highEstimate = Math.round(area * basePrice * pitchMultiplier * 1.2);
-        const avgEstimate = Math.round((lowEstimate + highEstimate) / 2);
-        
-        // Update the results
-        document.getElementById("low-estimate").textContent = "$" + lowEstimate.toLocaleString();
-        document.getElementById("high-estimate").textContent = "$" + highEstimate.toLocaleString();
-        document.getElementById("average-estimate").textContent = "$" + avgEstimate.toLocaleString();
-        document.getElementById("result-area").textContent = area.toLocaleString() + " sq ft";
-        
-        // Get material and pitch text
-        const materialLabel = document.querySelector(`label[for="material-${material}"]`);
-        const materialText = materialLabel ? materialLabel.querySelector("h3").textContent : "Asphalt Shingles";
-        document.getElementById("result-material").textContent = materialText;
-        
-        const pitchOption = document.querySelector(`button[data-pitch="${pitch}"]`);
-        const pitchText = pitchOption ? pitchOption.querySelector("span:first-child").textContent : "Medium";
-        document.getElementById("result-pitch").textContent = pitchText;
-        
-        // Show results
-        resultsSection.classList.remove("hidden");
-        resultsSection.scrollIntoView({ behavior: "smooth" });
+document.addEventListener("DOMContentLoaded", function() {
+  // Store form data in localStorage before submission
+  const form = document.getElementById("calculator-form");
+  if (form) {
+    form.addEventListener("submit", function(e) {
+      // Basic validation
+      const area = Number.parseFloat(document.getElementById("roof-area").value);
+      if (isNaN(area) || area < 100 || area > 10000) {
+        alert("Please enter a valid roof area between 100 and 10,000 sq ft.");
+        e.preventDefault();
+        return false;
       }
-    }, 500);
+      
+      // Get other form values
+      const firstName = document.getElementById("first-name").value.trim();
+      const lastName = document.getElementById("last-name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      
+      // Basic validation for required fields
+      if (!firstName || !lastName || !email || !phone) {
+        alert("Please fill in all required contact information fields.");
+        e.preventDefault();
+        return false;
+      }
+      
+      // Store form data in localStorage
+      const formData = {
+        area: area,
+        pitch: document.getElementById("roof-pitch").value || "medium",
+        material: document.querySelector('input[name="material"]:checked')?.value || "asphalt",
+        removal: document.getElementById("option-removal").checked,
+        underlayment: document.getElementById("option-underlayment").checked,
+        ventilation: document.getElementById("option-ventilation").checked,
+        gutters: document.getElementById("option-gutters").checked,
+        insulation: document.getElementById("option-insulation").checked
+      };
+      
+      localStorage.setItem("roofingCalculatorData", JSON.stringify(formData));
+      
+      // Continue with form submission
+      return true;
+    });
   }
+  
+  // Check if we're returning from form submission
+  if (window.location.hash === "#estimate-results") {
+    // Get stored form data
+    const storedData = localStorage.getItem("roofingCalculatorData");
+    if (storedData) {
+      const formData = JSON.parse(storedData);
+      
+      // Calculate and display the estimate
+      const area = formData.area;
+      const pitch = formData.pitch;
+      const material = formData.material;
+      
+      // Simple calculation for demo purposes
+      const basePrice = material === "asphalt" ? 6 : 
+                       material === "metal" ? 13 : 
+                       material === "tile" ? 20 : 
+                       material === "wood" ? 11 : 
+                       material === "slate" ? 32 : 8;
+      
+      const pitchMultiplier = pitch === "flat" ? 1.0 :
+                             pitch === "low" ? 1.1 :
+                             pitch === "steep" ? 1.4 :
+                             pitch === "very-steep" ? 1.6 : 1.2;
+      
+      const lowEstimate = Math.round(area * basePrice * pitchMultiplier * 0.8);
+      const highEstimate = Math.round(area * basePrice * pitchMultiplier * 1.2);
+      const avgEstimate = Math.round((lowEstimate + highEstimate) / 2);
+      
+      // Update the results
+      document.getElementById("low-estimate").textContent = "$" + lowEstimate.toLocaleString();
+      document.getElementById("high-estimate").textContent = "$" + highEstimate.toLocaleString();
+      document.getElementById("average-estimate").textContent = "$" + avgEstimate.toLocaleString();
+      document.getElementById("result-area").textContent = area.toLocaleString() + " sq ft";
+      
+      // Get material and pitch text
+      const materialLabel = document.querySelector(`label[for="material-${material}"]`);
+      const materialText = materialLabel ? materialLabel.querySelector("h3").textContent : "Asphalt Shingles";
+      document.getElementById("result-material").textContent = materialText;
+      
+      const pitchOption = document.querySelector(`button[data-pitch="${pitch}"]`);
+      const pitchText = pitchOption ? pitchOption.querySelector("span:first-child").textContent : "Medium";
+      document.getElementById("result-pitch").textContent = pitchText;
+      
+      // Show additional options if selected
+      const additionsList = document.getElementById("additions-list");
+      const resultAdditions = document.getElementById("result-additions");
+      
+      additionsList.innerHTML = "";
+      const activeAdditions = [];
+      
+      if (formData.removal) activeAdditions.push("Old Roof Removal");
+      if (formData.underlayment) activeAdditions.push("Premium Underlayment");
+      if (formData.ventilation) activeAdditions.push("Improved Ventilation");
+      if (formData.gutters) activeAdditions.push("New Gutters & Downspouts");
+      if (formData.insulation) activeAdditions.push("Additional Insulation");
+      
+      if (activeAdditions.length > 0) {
+        resultAdditions.classList.remove("hidden");
+        activeAdditions.forEach(option => {
+          const li = document.createElement("li");
+          li.textContent = option;
+          additionsList.appendChild(li);
+        });
+      } else {
+        resultAdditions.classList.add("hidden");
+      }
+      
+      // Show results
+      const resultsSection = document.getElementById("estimate-results");
+      resultsSection.classList.remove("hidden");
+      resultsSection.scrollIntoView({ behavior: "smooth" });
+      
+      // Clear the stored data
+      localStorage.removeItem("roofingCalculatorData");
+    }
+  }
+  
+  // Set up recalculate button
+  const recalculateBtn = document.getElementById("recalculate-btn");
+  if (recalculateBtn) {
+    recalculateBtn.addEventListener("click", function() {
+      const resultsSection = document.getElementById("estimate-results");
+      resultsSection.classList.add("hidden");
+      // Scroll back to the form
+      document.getElementById("calculator-form").scrollIntoView({ behavior: "smooth" });
+    });
+  }
+  
+  // Set default pitch to medium
+  const mediumPitchButton = document.querySelector('button[data-pitch="medium"]');
+  if (mediumPitchButton) {
+    mediumPitchButton.classList.add("selected");
+    document.getElementById("roof-pitch").value = "medium";
+  }
+  
+  // Add event listeners for pitch selection buttons
+  const pitchButtons = document.querySelectorAll(".pitch-option");
+  pitchButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      // Remove selected class from all buttons
+      pitchButtons.forEach((btn) => btn.classList.remove("selected"));
+      // Add selected class to clicked button
+      this.classList.add("selected");
+      // Update hidden input value
+      document.getElementById("roof-pitch").value = this.dataset.pitch;
+    });
+  });
+});
 </script>
 </section>
 
