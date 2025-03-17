@@ -515,9 +515,22 @@ js: questionnaire
       <input type="email" id="email" name="email" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200" required>
     </div>
     <div>
-      <label for="phone" class="block text-xl font-medium text-blue-100 mb-2">Phone Number</label>
-      <input type="tel" id="phone" name="phone" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200" required>
-    </div>
+  <label for="phone" class="block text-xl font-medium text-blue-100 mb-2">Phone Number</label>
+  <input 
+    type="tel" 
+    id="phone" 
+    name="phone" 
+    pattern="\d{10}" 
+    title="Please enter exactly 10 digits" 
+    placeholder="1234567890" 
+    inputmode="numeric" 
+    maxlength="10" 
+    oninput="this.value = this.value.replace(/\D/g, '')" 
+    class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200" 
+    required
+  >
+  <p class="text-sm text-gray-400 mt-1">Please enter exactly 10 digits (e.g., 1234567890)</p>
+   </div>
   </div>
 </div>
 
