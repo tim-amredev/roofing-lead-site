@@ -11,7 +11,7 @@ js: pricing-calculator
     <p class="text-lg text-gray-300 text-center mb-8">Get an instant estimate for your roofing project with our interactive calculator.</p>
     
     <div class="rounded-lg shadow-md p-6 md:p-8 mb-8" style="background-color: #2A3555;">
-      <form id="calculator-form" class="space-y-6" action="https://formsubmit.co/leads@americanremodeling.net" method="POST">
+      <form id="calculator-form" class="space-y-6" action="https://formsubmit.co/leads@americanremodeling.net" method="POST" target="hidden-form-target">
   <!-- FormSubmit configuration -->
   <input type="hidden" name="_subject" value="New Roofing Price Calculator Submission">
   <input type="hidden" name="_captcha" value="false">
@@ -350,6 +350,8 @@ js: pricing-calculator
         <div class="text-center mt-6">
           <button 
   type="submit" 
+  id="calculate-btn"
+  onclick="calculateAndSubmit(event)"
   class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300 text-lg mx-auto" 
   style="background-color: #D4A017;"
 >
@@ -357,6 +359,9 @@ js: pricing-calculator
 </button>
         </div>
       </form>
+      <!-- Hidden iframe for form submission -->
+<iframe name="hidden-form-target" style="display:none;"></iframe>
+
     </div>
 
     <div class="bg-yellow-500 bg-opacity-10 border-l-4 border-yellow-500 p-4 mb-6 rounded" style="border-color: #D4A017;">
@@ -601,6 +606,82 @@ js: pricing-calculator
     </div>
   </div>
 </div>
+
+<script>
+  function calculateAndSubmit(event) {
+    // Don't prevent default - let the form submit to the hidden iframe
+    
+    // Get form data
+    const form = document.getElementById("calculator-form");
+    const area = Number.parseFloat(document.getElementById("roof-area").value);
+    
+    // Basic validation
+    if (isNaN(area) || area < 100 || area > 10000) {
+      alert("Please enter a valid roof area between 100 and 10,000 sq ft.");
+      event.preventDefault();
+      return;
+    }
+    
+    // Get other form values
+    const firstName = document.getElementById("first-name").value.trim();
+    const lastName = document.getElementById("last-name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    
+    // Basic validation for required fields
+    if (!firstName || !lastName || !email || !phone) {
+      alert("Please fill in all required contact information fields.");
+      event.preventDefault();
+      return;
+    }
+    
+    // Calculate estimate and show results
+    setTimeout(function() {
+      // This will run after the form submits to the iframe
+      const resultsSection = document.getElementById("results-section");
+      if (resultsSection) {
+        // Calculate and display the estimate
+        const pitch = document.getElementById("roof-pitch").value || "medium";
+        const material = document.querySelector('input[name="material"]:checked')?.value || "asphalt";
+        
+        // Simple calculation for demo purposes
+        const basePrice = material === "asphalt" ? 6 : 
+                         material === "metal" ? 13 : 
+                         material === "tile" ? 20 : 
+                         material === "wood" ? 11 : 
+                         material === "slate" ? 32 : 8;
+        
+        const pitchMultiplier = pitch === "flat" ? 1.0 :
+                               pitch === "low" ? 1.1 :
+                               pitch === "steep" ? 1.4 :
+                               pitch === "very-steep" ? 1.6 : 1.2;
+        
+        const lowEstimate = Math.round(area * basePrice * pitchMultiplier * 0.8);
+        const highEstimate = Math.round(area * basePrice * pitchMultiplier * 1.2);
+        const avgEstimate = Math.round((lowEstimate + highEstimate) / 2);
+        
+        // Update the results
+        document.getElementById("low-estimate").textContent = "$" + lowEstimate.toLocaleString();
+        document.getElementById("high-estimate").textContent = "$" + highEstimate.toLocaleString();
+        document.getElementById("average-estimate").textContent = "$" + avgEstimate.toLocaleString();
+        document.getElementById("result-area").textContent = area.toLocaleString() + " sq ft";
+        
+        // Get material and pitch text
+        const materialLabel = document.querySelector(`label[for="material-${material}"]`);
+        const materialText = materialLabel ? materialLabel.querySelector("h3").textContent : "Asphalt Shingles";
+        document.getElementById("result-material").textContent = materialText;
+        
+        const pitchOption = document.querySelector(`button[data-pitch="${pitch}"]`);
+        const pitchText = pitchOption ? pitchOption.querySelector("span:first-child").textContent : "Medium";
+        document.getElementById("result-pitch").textContent = pitchText;
+        
+        // Show results
+        resultsSection.classList.remove("hidden");
+        resultsSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 500);
+  }
+</script>
 </section>
 
 <style>
