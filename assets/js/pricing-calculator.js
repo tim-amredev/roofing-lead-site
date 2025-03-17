@@ -73,8 +73,14 @@ document.addEventListener("DOMContentLoaded", () => {
         state,
       }
 
-      // Send the data to the email
-      sendFormData(contactInfo, estimateData)
+      try {
+        // Send the data to the email
+        sendFormData(contactInfo, estimateData)
+      } catch (error) {
+        console.error("Error in AJAX submission, falling back to standard form submission:", error)
+        // If AJAX submission fails, submit the form normally
+        form.submit()
+      }
     }
   })
 
@@ -235,6 +241,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to send form data to email
   function sendFormData(contactInfo, estimateData) {
+    // Check if Facebook Pixel is available
+    const fbq = window.fbq
+
     // Create form data object
     const formData = new FormData()
 
@@ -257,11 +266,11 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("highEstimate", estimateData.highEstimate)
     formData.append("averageEstimate", estimateData.averageEstimate)
 
-    // Add the FormSubmitAttachment snippet ID
-    formData.append("_formsubmit_id", "tim@americanremodeling.net")
+    // Add the FormSubmit email address
+    formData.append("_formsubmit_id", "leads@americanremodeling.net")
 
     // Send to FormSubmit
-    fetch("https://formsubmit.co/ajax/tim@americanremodeling.net", {
+    fetch("https://formsubmit.co/ajax/leads@americanremodeling.net", {
       method: "POST",
       body: formData,
     })
@@ -272,7 +281,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Form submitted successfully")
 
         // Fire Facebook Pixel event
-        if (typeof fbq !== "undefined") {
+        if (typeof fbq === "function") {
           const priceValue = Number.parseFloat(estimateData.averageEstimate.replace(/[$,]/g, ""))
           fbq("track", "Lead", {
             value: priceValue,
