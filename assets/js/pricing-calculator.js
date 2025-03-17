@@ -1,5 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Make sure the form submits normally
   const form = document.getElementById("calculator-form")
+  if (form) {
+    // Remove any existing event listeners by cloning and replacing the form
+    const newForm = form.cloneNode(true)
+    form.parentNode.replaceChild(newForm, form)
+
+    // Add a basic submit handler that doesn't prevent default
+    newForm.addEventListener("submit", () => {
+      console.log("Form is being submitted")
+      // Don't prevent default - let the form submit normally
+      return true
+    })
+  }
   const resultsSection = document.getElementById("results-section")
   const recalculateBtn = document.getElementById("recalculate-btn")
   const additionsList = document.getElementById("additions-list")
