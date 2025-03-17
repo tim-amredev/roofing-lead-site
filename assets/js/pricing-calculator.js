@@ -223,7 +223,14 @@ document.addEventListener("DOMContentLoaded", () => {
       email: document.getElementById("email").value,
       phone: document.getElementById("phone").value,
     }
+ // Also store the calculated estimates
+    const lowEstimate = document.getElementById("low-estimate").textContent
+    const highEstimate = document.getElementById("high-estimate").textContent
+    const averageEstimate = document.getElementById("average-estimate").textContent
 
+    formData.lowEstimate = lowEstimate
+    formData.highEstimate = highEstimate
+    formData.averageEstimate = averageEstimate
     localStorage.setItem("roofingCalculatorData", JSON.stringify(formData))
   }
 })
