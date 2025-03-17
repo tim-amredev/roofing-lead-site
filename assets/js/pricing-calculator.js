@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   form.addEventListener("submit", (e) => {
+    // Prevent default form submission temporarily
     e.preventDefault()
 
     // Validate contact information fields
@@ -60,29 +61,44 @@ document.addEventListener("DOMContentLoaded", () => {
     // Calculate the estimate and collect the results
     const estimateData = calculateEstimate()
 
-    // If calculation was successful, send the data
+    // If calculation was successful, add the estimate data to hidden fields and submit the form
     if (estimateData) {
-      // Collect contact information
-      const contactInfo = {
-        firstName,
-        lastName,
-        email,
-        phone,
-        streetAddress,
-        zipCode,
-        state,
+      // Add hidden fields for the estimate data
+      addHiddenField("roofArea", estimateData.roofArea)
+      addHiddenField("material", estimateData.material)
+      addHiddenField("pitch", estimateData.pitch)
+      addHiddenField("location", estimateData.location)
+      addHiddenField("selectedAdditions", estimateData.selectedAdditions.join(", "))
+      addHiddenField("lowEstimate", estimateData.lowEstimate)
+      addHiddenField("highEstimate", estimateData.highEstimate)
+      addHiddenField("averageEstimate", estimateData.averageEstimate)
+
+      // Track the lead with Facebook Pixel if available
+      if (typeof window.fbq === "function") {
+        const priceValue = Number.parseFloat(estimateData.averageEstimate.replace(/[$,]/g, ""))
+        window.fbq("track", "Lead", {
+          value: priceValue,
+          currency: "USD",
+          content_name: "Roofing Estimate",
+          content_category: "Roofing",
+        })
       }
 
-      try {
-        // Send the data to the email
-        sendFormData(contactInfo, estimateData)
-      } catch (error) {
-        console.error("Error in AJAX submission, falling back to standard form submission:", error)
-        // If AJAX submission fails, submit the form normally
+      // Submit the form after a short delay to ensure the user sees the estimate
+      setTimeout(() => {
         form.submit()
-      }
+      }, 3000)
     }
   })
+
+  // Helper function to add hidden fields to the form
+  function addHiddenField(name, value) {
+    const field = document.createElement("input")
+    field.type = "hidden"
+    field.name = name
+    field.value = value
+    form.appendChild(field)
+  }
 
   recalculateBtn.addEventListener("click", () => {
     resultsSection.classList.add("hidden")
