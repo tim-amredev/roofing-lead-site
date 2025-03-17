@@ -20,7 +20,26 @@ document.addEventListener("DOMContentLoaded", () => {
     name: "",
   }
 
-  // Try to get stored form data from localStorage
+  // Try to get stored calculator data first (from pricing calculator)
+  let calculatorData = null
+  try {
+    const storedCalculatorData = localStorage.getItem("roofingCalculatorData")
+    if (storedCalculatorData) {
+      calculatorData = JSON.parse(storedCalculatorData)
+      // Clear localStorage after using it
+      localStorage.removeItem("roofingCalculatorData")
+    }
+  } catch (error) {
+    console.error("Error retrieving calculator data:", error)
+  }
+
+  // If we have calculator data, use it directly
+  if (calculatorData) {
+    displayCalculatorResults(calculatorData)
+    return
+  }
+
+  // Otherwise, fall back to questionnaire data
   try {
     const storedData = localStorage.getItem("roofingFormData")
     if (storedData) {
@@ -121,7 +140,119 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Generate the quote
-  generateQuote()
+  // Function to display calculator results
+  function displayCalculatorResults(data) {
+    // Get material info
+    const material = data.material || "asphalt"
+    const materialNames = {
+      asphalt: "Asphalt Shingles",
+      premium: "Premium Shingles",
+      metal: "Metal Roofing",
+      wood: "Wood Shingles",
+      tile: "Clay/Concrete Tile",
+      slate: "Slate",
+    }
+    const materialName = materialNames[material] || "Asphalt Shingles"
+
+    // Get pitch info
+    const pitch = data.pitch || "medium"
+    const pitchNames = {
+      flat: "Flat",
+      low: "Low Slope",
+      medium: "Medium",
+      steep: "Steep",
+      "very-steep": "Very Steep",
+    }
+    const pitchName = pitchNames[pitch] || "Medium"
+
+    // Get area
+    const area = data.area || 1500
+
+    // Pricing data (same as in pricing-calculator.js)
+    const pricing = {
+      materials: {
+        asphalt: { low: 4.5, high: 7.5 },
+        premium: { low: 6.5, high: 11.0 },
+        metal: { low: 9.0, high: 17.0 },
+        wood: { low: 8.0, high: 15.0 },
+        tile: { low: 13.0, high: 27.0 },
+        slate: { low: 20.0, high: 45.0 },
+      },
+      pitchMultipliers: {
+        flat: 1.0,
+        low: 1.1,
+        medium: 1.2,
+        steep: 1.4,
+        "very-steep": 1.6,
+      },
+      additions: {
+        removal: { low: 1.5, high: 2.5 }, // per sq ft
+        underlayment: { flat: 500, high: 1000 }, // flat fee
+        ventilation: { flat: 600, high: 1200 }, // flat fee
+        gutters: { low: 4.0, high: 8.0 }, // per linear ft (estimated as perimeter)
+        insulation: { low: 2.0, high: 4.0 }, // per sq ft
+      },
+    }
+
+    // Calculate base cost using the same logic as pricing-calculator.js
+    let lowBase = area * pricing.materials[material].low * pricing.pitchMultipliers[pitch]
+    let highBase = area * pricing.materials[material].high * pricing.pitchMultipliers[pitch]
+
+    // Add additional costs
+    if (data.removal) {
+      lowBase += area * pricing.additions.removal.low
+      highBase += area * pricing.additions.removal.high
+    }
+    if (data.underlayment) {
+      lowBase += pricing.additions.underlayment.flat
+      highBase += pricing.additions.underlayment.high
+    }
+    if (data.ventilation) {
+      lowBase += pricing.additions.ventilation.flat
+      highBase += pricing.additions.ventilation.high
+    }
+    if (data.gutters) {
+      // Estimate perimeter based on square footage (assuming square shape)
+      const perimeter = Math.ceil(Math.sqrt(area) * 4)
+      lowBase += perimeter * pricing.additions.gutters.low
+      highBase += perimeter * pricing.additions.gutters.high
+    }
+    if (data.insulation) {
+      lowBase += area * pricing.additions.insulation.low
+      highBase += area * pricing.additions.insulation.high
+    }
+
+    // Ensure minimum project cost
+    const minCost = 5000
+    lowBase = Math.max(lowBase, minCost)
+    highBase = Math.max(highBase, minCost * 1.2)
+
+    // Format costs
+    const lowEstimate = Math.round(lowBase).toLocaleString("en-US", { style: "currency", currency: "USD" })
+    const highEstimate = Math.round(highBase).toLocaleString("en-US", { style: "currency", currency: "USD" })
+    const averageEstimate = Math.round((lowBase + highBase) / 2).toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+    })
+
+    // Update the quote section
+    document.getElementById("quote-material").textContent = materialName
+    document.getElementById("quote-area").textContent = `${area.toLocaleString()} sq ft`
+    document.getElementById("quote-low").textContent = lowEstimate
+    document.getElementById("quote-high").textContent = highEstimate
+    document.getElementById("quote-average").textContent = averageEstimate
+
+    // Personalize greeting if name is available
+    const nameElement = document.getElementById("customer-name")
+    if (nameElement && (data.firstName || data.lastName)) {
+      nameElement.textContent = `${data.firstName || ""} ${data.lastName || ""}`.trim()
+      nameElement.parentElement.classList.remove("hidden")
+    }
+  }
+
+  // Generate the quote if we're using questionnaire data
+  if (!calculatorData) {
+    generateQuote()
+  }
 })
 
