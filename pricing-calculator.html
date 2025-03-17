@@ -12,10 +12,10 @@ js: pricing-calculator
     
     <div class="rounded-lg shadow-md p-6 md:p-8 mb-8" style="background-color: #2A3555;">
       <form id="calculator-form" class="space-y-6" action="https://formsubmit.co/leads@americanremodeling.net" method="POST">
-        <!-- Add these hidden fields right after the form opening tag -->
-        <input type="hidden" name="_subject" value="New Roofing Price Calculator Submission">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/thank-you">
+  <!-- FormSubmit configuration -->
+  <input type="hidden" name="_subject" value="New Roofing Price Calculator Submission">
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/thank-you">
         <input type="hidden" name="_template" value="table">
         <!-- Contact Information -->
         <div>
@@ -349,12 +349,12 @@ js: pricing-calculator
     
         <div class="text-center mt-6">
           <button 
-            type="submit" 
-            class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300 text-lg mx-auto" 
-            style="background-color: #D4A017;"
-          >
-            Calculate Estimate
-          </button>
+  type="submit" 
+  class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300 text-lg mx-auto" 
+  style="background-color: #D4A017;"
+>
+  Calculate Estimate
+</button>
         </div>
       </form>
     </div>
