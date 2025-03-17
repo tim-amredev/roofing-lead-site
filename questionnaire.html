@@ -603,9 +603,21 @@ js: questionnaire
         </select>
       </div>
       <div>
-        <label for="zip_code" class="block text-base font-medium text-blue-100 mb-2">Zip Code</label>
-        <input type="text" id="zip_code" name="zip_code" maxlength="10" pattern="^\d{5}(-\d{4})?$" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200" required placeholder="e.g. 12345">
-      </div>
+  <label for="zip_code" class="block text-base font-medium text-blue-100 mb-2">Zip Code</label>
+  <input 
+    type="text" 
+    id="zip_code" 
+    name="zip_code" 
+    pattern="^\d{5}$" 
+    title="Please enter exactly 5 digits" 
+    placeholder="12345" 
+    maxlength="5" 
+    oninput="this.value = this.value.replace(/\D/g, '')" 
+    class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200" 
+    required
+  >
+  <p class="text-sm text-gray-400 mt-1">Please enter exactly 5 digits (e.g., 12345)</p>
+</div>
     </div>
   </div>
 </div>
