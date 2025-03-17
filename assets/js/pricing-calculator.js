@@ -1,22 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Make sure the form submits normally
+  // Get references to key elements
   const form = document.getElementById("calculator-form")
-  if (form) {
-    // Remove any existing event listeners by cloning and replacing the form
-    const newForm = form.cloneNode(true)
-    form.parentNode.replaceChild(newForm, form)
-
-    // Add a basic submit handler that doesn't prevent default
-    newForm.addEventListener("submit", () => {
-      console.log("Form is being submitted")
-      // Don't prevent default - let the form submit normally
-      return true
-    })
-  }
-  const resultsSection = document.getElementById("results-section")
+  const resultsSection = document.getElementById("estimate-results")
   const recalculateBtn = document.getElementById("recalculate-btn")
   const additionsList = document.getElementById("additions-list")
   const resultAdditions = document.getElementById("result-additions")
+
+  if (form) {
+    // Add a submit handler that calculates and displays the estimate
+    // but still allows the form to submit to FormSubmit
+    form.addEventListener("submit", (e) => {
+      // Calculate the estimate
+      calculateAndDisplayEstimate()
+
+      // Store the estimate data in localStorage for potential use after form submission
+      storeEstimateData()
+
+      // Continue with normal form submission to FormSubmit
+      return true
+    })
+  }
 
   // Add event listeners for pitch selection buttons
   const pitchButtons = document.querySelectorAll(".pitch-option")
@@ -31,100 +34,36 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   })
 
-  // Add event listeners for material selection
-  const materialOptions = document.querySelectorAll('.material-option input[type="radio"]')
-  materialOptions.forEach((option) => {
-    option.addEventListener("change", function () {
-      // Update visual selection if needed
-      const label = document.querySelector(`label[for="${this.id}"]`)
-      if (label) {
-        const allLabels = document.querySelectorAll(".material-option label")
-        allLabels.forEach((l) => l.parentElement.classList.remove("selected"))
-        label.parentElement.classList.add("selected")
-      }
+  // Set up recalculate button
+  if (recalculateBtn) {
+    recalculateBtn.addEventListener("click", () => {
+      resultsSection.classList.add("hidden")
+      // Scroll back to the form
+      form.scrollIntoView({ behavior: "smooth" })
     })
-  })
-
-  form.addEventListener("submit", (e) => {
-    // Prevent default form submission temporarily
-    e.preventDefault()
-
-    // Validate contact information fields
-    const firstName = document.getElementById("first-name").value.trim()
-    const lastName = document.getElementById("last-name").value.trim()
-    const email = document.getElementById("email").value.trim()
-    const phone = document.getElementById("phone").value.trim()
-    const streetAddress = document.getElementById("street-address").value.trim()
-    const zipCode = document.getElementById("zip-code").value.trim()
-    const state = document.getElementById("state").value.trim()
-
-    // Basic validation
-    if (!firstName || !lastName || !email || !phone || !streetAddress || !zipCode || !state) {
-      alert("Please fill in all contact information fields to get your estimate.")
-      return
-    }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      alert("Please enter a valid email address.")
-      return
-    }
-
-    // Calculate the estimate and collect the results
-    const estimateData = calculateEstimate()
-
-    // If calculation was successful, add the estimate data to hidden fields and submit the form
-    if (estimateData) {
-      // Add hidden fields for the estimate data
-      addHiddenField("roofArea", estimateData.roofArea)
-      addHiddenField("material", estimateData.material)
-      addHiddenField("pitch", estimateData.pitch)
-      addHiddenField("location", estimateData.location)
-      addHiddenField("selectedAdditions", estimateData.selectedAdditions.join(", "))
-      addHiddenField("lowEstimate", estimateData.lowEstimate)
-      addHiddenField("highEstimate", estimateData.highEstimate)
-      addHiddenField("averageEstimate", estimateData.averageEstimate)
-
-      // Track the lead with Facebook Pixel if available
-      if (typeof window.fbq === "function") {
-        const priceValue = Number.parseFloat(estimateData.averageEstimate.replace(/[$,]/g, ""))
-        window.fbq("track", "Lead", {
-          value: priceValue,
-          currency: "USD",
-          content_name: "Roofing Estimate",
-          content_category: "Roofing",
-        })
-      }
-
-      // Submit the form after a short delay to ensure the user sees the estimate
-      setTimeout(() => {
-        form.submit()
-      }, 3000)
-    }
-  })
-
-  // Helper function to add hidden fields to the form
-  function addHiddenField(name, value) {
-    const field = document.createElement("input")
-    field.type = "hidden"
-    field.name = name
-    field.value = value
-    form.appendChild(field)
   }
 
-  recalculateBtn.addEventListener("click", () => {
-    resultsSection.classList.add("hidden")
-    // Don't reset the form completely to preserve contact info
-    // Just scroll back to the form
-    form.scrollIntoView({ behavior: "smooth" })
-  })
+  // Set default pitch to medium
+  const mediumPitchButton = document.querySelector('button[data-pitch="medium"]')
+  if (mediumPitchButton) {
+    mediumPitchButton.classList.add("selected")
+    document.getElementById("roof-pitch").value = "medium"
+  }
 
-  function calculateEstimate() {
+  // Set default material to asphalt
+  const asphaltRadio = document.getElementById("material-asphalt")
+  if (asphaltRadio) {
+    asphaltRadio.checked = true
+  }
+
+  // Function to calculate and display the estimate
+  function calculateAndDisplayEstimate() {
+    // Get form values
     const area = Number.parseFloat(document.getElementById("roof-area").value)
-    const pitch = document.getElementById("roof-pitch").value || "medium" // Default to medium if not selected
-    const material = document.querySelector('input[name="material"]:checked')?.value || "asphalt" // Default to asphalt if not selected
-    const region = "midwest" // Default region if not specified in the UI
+    const pitch = document.getElementById("roof-pitch").value || "medium"
+    const material = document.querySelector('input[name="material"]:checked')?.value || "asphalt"
+
+    // Get additional options
     const additions = {
       removal: document.getElementById("option-removal").checked,
       underlayment: document.getElementById("option-underlayment").checked,
@@ -133,13 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
       insulation: document.getElementById("option-insulation").checked,
     }
 
-    // Input validation
-    if (isNaN(area) || area < 100 || area > 10000) {
-      alert("Please enter a valid roof area between 100 and 10,000 sq ft.")
-      return null
-    }
-
-    // Pricing data (hypothetical, based on 2025 industry averages)
+    // Pricing data (based on industry averages)
     const pricing = {
       materials: {
         asphalt: { low: 4.5, high: 7.5 },
@@ -156,28 +89,18 @@ document.addEventListener("DOMContentLoaded", () => {
         steep: 1.4,
         "very-steep": 1.6,
       },
-      regionMultipliers: {
-        northeast: 1.25,
-        midwest: 1.0,
-        south: 0.95,
-        west: 1.2,
-        northwest: 1.15,
-        southwest: 1.1,
-      },
       additions: {
         removal: { low: 1.5, high: 2.5 }, // per sq ft
         underlayment: { flat: 500, high: 1000 }, // flat fee
         ventilation: { flat: 600, high: 1200 }, // flat fee
-        gutters: { low: 4.0, high: 8.0 }, // per sq ft
+        gutters: { low: 4.0, high: 8.0 }, // per linear ft (estimated as perimeter)
         insulation: { low: 2.0, high: 4.0 }, // per sq ft
       },
     }
 
     // Calculate base cost
-    let lowBase =
-      area * pricing.materials[material].low * pricing.pitchMultipliers[pitch] * pricing.regionMultipliers[region]
-    let highBase =
-      area * pricing.materials[material].high * pricing.pitchMultipliers[pitch] * pricing.regionMultipliers[region]
+    let lowBase = area * pricing.materials[material].low * pricing.pitchMultipliers[pitch]
+    let highBase = area * pricing.materials[material].high * pricing.pitchMultipliers[pitch]
 
     // Add additional costs
     if (additions.removal) {
@@ -193,8 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
       highBase += pricing.additions.ventilation.high
     }
     if (additions.gutters) {
-      lowBase += area * pricing.additions.gutters.low
-      highBase += area * pricing.additions.gutters.high
+      // Estimate perimeter based on square footage (assuming square shape)
+      const perimeter = Math.ceil(Math.sqrt(area) * 4)
+      lowBase += perimeter * pricing.additions.gutters.low
+      highBase += perimeter * pricing.additions.gutters.high
     }
     if (additions.insulation) {
       lowBase += area * pricing.additions.insulation.low
@@ -230,18 +155,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const pitchText = pitchOption ? pitchOption.querySelector("span:first-child").textContent : "Medium"
     document.getElementById("result-pitch").textContent = pitchText
 
-    // Get the location text (hardcoded to Midwest for now)
-    document.getElementById("result-location").textContent = "Midwest"
-
     // Display additional options
     additionsList.innerHTML = ""
-    const activeAdditions = Object.entries(additions).filter(([_, checked]) => checked)
+    const activeAdditions = []
+
+    if (additions.removal) activeAdditions.push("Old Roof Removal")
+    if (additions.underlayment) activeAdditions.push("Premium Underlayment")
+    if (additions.ventilation) activeAdditions.push("Improved Ventilation")
+    if (additions.gutters) activeAdditions.push("New Gutters & Downspouts")
+    if (additions.insulation) activeAdditions.push("Additional Insulation")
+
     if (activeAdditions.length > 0) {
       resultAdditions.classList.remove("hidden")
-      activeAdditions.forEach(([key]) => {
+      activeAdditions.forEach((option) => {
         const li = document.createElement("li")
-        const label = document.querySelector(`label[for="option-${key}"]`)
-        li.textContent = label ? label.querySelector(".font-medium").textContent : key
+        li.textContent = option
         additionsList.appendChild(li)
       })
     } else {
@@ -250,95 +178,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Show results
     resultsSection.classList.remove("hidden")
-    resultsSection.scrollIntoView({ behavior: "smooth" })
 
-    // Return the estimate data for email submission
-    return {
-      roofArea: area,
-      material: materialText,
-      pitch: pitchText,
-      location: "Midwest",
-      selectedAdditions: activeAdditions.map(([key]) => {
-        const label = document.querySelector(`label[for="option-${key}"]`)
-        return label ? label.querySelector(".font-medium").textContent : key
-      }),
-      lowEstimate,
-      highEstimate,
-      averageEstimate,
+    // Add estimate data to hidden fields in the form
+    addHiddenField("estimate_low", lowEstimate)
+    addHiddenField("estimate_high", highEstimate)
+    addHiddenField("estimate_average", averageEstimate)
+    addHiddenField("roof_material", materialText)
+    addHiddenField("roof_pitch", pitchText)
+    addHiddenField("additional_options", activeAdditions.join(", "))
+  }
+
+  // Function to add hidden fields to the form
+  function addHiddenField(name, value) {
+    // Check if field already exists
+    let field = form.querySelector(`input[name="${name}"]`)
+    if (!field) {
+      // Create new field if it doesn't exist
+      field = document.createElement("input")
+      field.type = "hidden"
+      field.name = name
+      form.appendChild(field)
     }
+    // Set or update the value
+    field.value = value
   }
 
-  // Function to send form data to email
-  function sendFormData(contactInfo, estimateData) {
-    // Check if Facebook Pixel is available
-    const fbq = window.fbq
+  // Function to store estimate data in localStorage
+  function storeEstimateData() {
+    const area = Number.parseFloat(document.getElementById("roof-area").value)
+    const pitch = document.getElementById("roof-pitch").value || "medium"
+    const material = document.querySelector('input[name="material"]:checked')?.value || "asphalt"
 
-    // Create form data object
-    const formData = new FormData()
+    const formData = {
+      area: area,
+      pitch: pitch,
+      material: material,
+      removal: document.getElementById("option-removal").checked,
+      underlayment: document.getElementById("option-underlayment").checked,
+      ventilation: document.getElementById("option-ventilation").checked,
+      gutters: document.getElementById("option-gutters").checked,
+      insulation: document.getElementById("option-insulation").checked,
+      firstName: document.getElementById("first-name").value,
+      lastName: document.getElementById("last-name").value,
+      email: document.getElementById("email").value,
+      phone: document.getElementById("phone").value,
+    }
 
-    // Add contact information
-    formData.append("firstName", contactInfo.firstName)
-    formData.append("lastName", contactInfo.lastName)
-    formData.append("email", contactInfo.email)
-    formData.append("phone", contactInfo.phone)
-    formData.append("streetAddress", contactInfo.streetAddress)
-    formData.append("zipCode", contactInfo.zipCode)
-    formData.append("state", contactInfo.state)
-
-    // Add estimate information
-    formData.append("roofArea", estimateData.roofArea)
-    formData.append("material", estimateData.material)
-    formData.append("pitch", estimateData.pitch)
-    formData.append("location", estimateData.location)
-    formData.append("selectedAdditions", estimateData.selectedAdditions.join(", "))
-    formData.append("lowEstimate", estimateData.lowEstimate)
-    formData.append("highEstimate", estimateData.highEstimate)
-    formData.append("averageEstimate", estimateData.averageEstimate)
-
-    // Add the FormSubmit email address
-    formData.append("_formsubmit_id", "leads@americanremodeling.net")
-
-    // Send to FormSubmit
-    fetch("https://formsubmit.co/ajax/leads@americanremodeling.net", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok")
-        }
-        console.log("Form submitted successfully")
-
-        // Fire Facebook Pixel event
-        if (typeof fbq === "function") {
-          const priceValue = Number.parseFloat(estimateData.averageEstimate.replace(/[$,]/g, ""))
-          fbq("track", "Lead", {
-            value: priceValue,
-            currency: "USD",
-            content_name: "Roofing Estimate",
-            content_category: "Roofing",
-          })
-        }
-      })
-      .catch((error) => {
-        console.error("Error submitting form:", error)
-        alert(
-          "There was an error submitting your information. Your estimate is displayed below, but please try again later to ensure we receive your contact details.",
-        )
-      })
-  }
-
-  // Set default pitch to medium
-  const mediumPitchButton = document.querySelector('button[data-pitch="medium"]')
-  if (mediumPitchButton) {
-    mediumPitchButton.classList.add("selected")
-    document.getElementById("roof-pitch").value = "medium"
-  }
-
-  // Set default material to asphalt
-  const asphaltRadio = document.getElementById("material-asphalt")
-  if (asphaltRadio) {
-    asphaltRadio.checked = true
+    localStorage.setItem("roofingCalculatorData", JSON.stringify(formData))
   }
 })
 
