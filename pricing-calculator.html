@@ -12,352 +12,349 @@ js: pricing-calculator
     
     <div class="rounded-lg shadow-md p-6 md:p-8 mb-8" style="background-color: #2A3555;">
       <form id="calculator-form" class="space-y-6" action="https://formsubmit.co/leads@americanremodeling.net" method="POST">
-  <!-- FormSubmit configuration -->
-  <input type="hidden" name="_subject" value="New Roofing Price Calculator Submission">
-  <input type="hidden" name="_captcha" value="true">
-  <input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/pricing-calculator#estimate-results">
-  <input type="hidden" name="_template" value="table">
-        <!-- Contact Information -->
-        <div>
-          <h2 class="text-xl font-semibold mb-4 text-white">Contact Information</h2>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label for="first-name" class="block text-white font-medium mb-1">First Name</label>
-              <input 
-                type="text" 
-                id="first-name" 
-                name="first-name" 
-                placeholder="Your first name" 
-                class="w-full p-2 pl-3 border rounded" 
-                style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
-                required
-              >
-            </div>
-            
-            <div>
-              <label for="last-name" class="block text-white font-medium mb-1">Last Name</label>
-              <input 
-                type="text" 
-                id="last-name" 
-                name="last-name" 
-                placeholder="Your last name" 
-                class="w-full p-2 pl-3 border rounded" 
-                style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
-                required
-              >
-            </div>
-          </div>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            <div>
-              <label for="email" class="block text-white font-medium mb-1">Email Address</label>
-              <input 
-                type="email" 
-                id="email" 
-                name="email" 
-                placeholder="Your email address" 
-                class="w-full p-2 pl-3 border rounded" 
-                style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
-                required
-              >
-            </div>
-            
-            <div>
-              <label for="phone" class="block text-white font-medium mb-1">Phone Number</label>
-              <input 
-                type="tel" 
-                id="phone" 
-                name="phone" 
-                placeholder="Your phone number" 
-                class="w-full p-2 pl-3 border rounded" 
-                style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
-                required
-              >
-            </div>
-          </div>
-          
-          <div class="mt-4">
-            <label for="street-address" class="block text-white font-medium mb-1">Street Address</label>
-            <input 
-              type="text" 
-              id="street-address" 
-              name="street-address" 
-              placeholder="Your street address" 
-              class="w-full p-2 pl-3 border rounded" 
-              style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
-              required
-            >
-          </div>
-          
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-            <div>
-              <label for="city" class="block text-white font-medium mb-1">City</label>
-              <input 
-                type="text" 
-                id="city" 
-                name="city" 
-                placeholder="Your city" 
-                class="w-full p-2 pl-3 border rounded" 
-                style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
-                required
-              >
-            </div>
-            
-            <div>
-              <label for="state" class="block text-white font-medium mb-1">State</label>
-              <input 
-                type="text" 
-                id="state" 
-                name="state" 
-                placeholder="Your state" 
-                class="w-full p-2 pl-3 border rounded" 
-                style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
-                required
-              >
-            </div>
-            
-            <div>
-              <label for="zip-code" class="block text-white font-medium mb-1">Zip Code</label>
-              <input 
-                type="text" 
-                id="zip-code" 
-                name="zip-code" 
-                placeholder="Your zip code" 
-                class="w-full p-2 pl-3 border rounded" 
-                style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
-                required
-              >
-            </div>
-          </div>
-        </div>
-        
-        <!-- Roof Dimensions and Pitch in a 2-column layout -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Roof Dimensions -->
-          <div>
-            <h2 class="text-xl font-semibold mb-4 text-white">Roof Dimensions</h2>
-            
-            <div>
-              <label for="roof-area" class="block text-white font-medium mb-1">Roof Area (Square Feet)</label>
-              <div class="relative">
-                <input 
-                  type="number" 
-                  id="roof-area" 
-                  name="roof-area" 
-                  min="100" 
-                  max="10000" 
-                  placeholder="1500" 
-                  class="w-full p-2 pl-3 border rounded" 
-                  style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
-                  required
-                >
-                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <span class="text-gray-400">sq ft</span>
-                </div>
-              </div>
-              <p class="text-sm text-gray-400 mt-1">Typical house: 1,500-2,500 sq ft</p>
-            </div>
-          </div>
-          
-          <!-- Roof Pitch -->
-          <div>
-            <h2 class="text-xl font-semibold mb-4 text-white">Roof Pitch</h2>
-            <div class="grid grid-cols-1 gap-2">
-              <button 
-                type="button"
-                data-pitch="flat"
-                class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
-                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
-              >
-                <span class="text-white font-medium">Flat</span>
-                <span class="block text-sm text-gray-400">0/12 pitch</span>
-              </button>
-              
-              <button 
-                type="button"
-                data-pitch="low"
-                class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
-                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
-              >
-                <span class="text-white font-medium">Low Slope</span>
-                <span class="block text-sm text-gray-400">2/12 to 4/12 pitch</span>
-              </button>
-              
-              <button 
-                type="button"
-                data-pitch="medium"
-                class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
-                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
-              >
-                <span class="text-white font-medium">Medium</span>
-                <span class="block text-sm text-gray-400">5/12 to 8/12 pitch</span>
-              </button>
-              
-              <button 
-                type="button"
-                data-pitch="steep"
-                class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
-                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
-              >
-                <span class="text-white font-medium">Steep</span>
-                <span class="block text-sm text-gray-400">9/12 to 12/12 pitch</span>
-              </button>
-              
-              <button 
-                type="button"
-                data-pitch="very-steep"
-                class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
-                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
-              >
-                <span class="text-white font-medium">Very Steep</span>
-                <span class="block text-sm text-gray-400">&gt;12/12 pitch</span>
-              </button>
-            </div>
-            <!-- Hidden input to store the selected pitch value -->
-            <input type="hidden" id="roof-pitch" name="roof-pitch" value="medium">
-          </div>
-        </div>
-        
-        <!-- Roofing Materials -->
-        <div>
-          <h2 class="text-xl font-semibold mb-4 text-white">Roofing Materials</h2>
-          
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-            <div class="material-option">
-              <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
-                <input type="radio" name="material" id="material-asphalt" value="asphalt" class="hidden" checked>
-                <label for="material-asphalt" class="block h-full cursor-pointer">
-                  <div class="aspect-w-4 aspect-h-3 mb-2">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/asphalt.jpg-UeGUZOEIdP4JhUBcrM9EsubybweqQh.jpeg" alt="Various styles of asphalt shingles in different colors" class="w-full h-full object-cover rounded">
-                  </div>
-                  <h3 class="font-medium text-center text-white text-sm">Asphalt Shingles</h3>
-                </label>
-              </div>
-            </div>
-            
-            <div class="material-option">
-              <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
-                <input type="radio" name="material" id="material-metal" value="metal" class="hidden">
-                <label for="material-metal" class="block h-full cursor-pointer">
-                  <div class="aspect-w-4 aspect-h-3 mb-2">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/metal.jpg-tHBSkbc1ItFcVw9ziTiRI3DMFzTaNc.jpeg" alt="Corrugated metal roofing panels in silver and blue" class="w-full h-full object-cover rounded">
-                  </div>
-                  <h3 class="font-medium text-center text-white text-sm">Metal Roofing</h3>
-                </label>
-              </div>
-            </div>
-            
-            <div class="material-option">
-              <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
-                <input type="radio" name="material" id="material-tile" value="tile" class="hidden">
-                <label for="material-tile" class="block h-full cursor-pointer">
-                  <div class="aspect-w-4 aspect-h-3 mb-2">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/clay.jpg-DmNBgYiEOMVGA80EElTT62owKQNdCc.jpeg" alt="Traditional terracotta clay roof tiles" class="w-full h-full object-cover rounded">
-                  </div>
-                  <h3 class="font-medium text-center text-white text-sm">Clay/Concrete Tile</h3>
-                </label>
-              </div>
-            </div>
-            
-            <div class="material-option">
-              <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
-                <input type="radio" name="material" id="material-wood" value="wood" class="hidden">
-                <label for="material-wood" class="block h-full cursor-pointer">
-                  <div class="aspect-w-4 aspect-h-3 mb-2">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wood.jpg-rvzQIG9Sv1wltYlKmRRLHHufb77Er5.jpeg" alt="Natural cedar wood shingles" class="w-full h-full object-cover rounded">
-                  </div>
-                  <h3 class="font-medium text-center text-white text-sm">Wood Shingles</h3>
-                </label>
-              </div>
-            </div>
-            
-            <div class="material-option">
-              <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
-                <input type="radio" name="material" id="material-slate" value="slate" class="hidden">
-                <label for="material-slate" class="block h-full cursor-pointer">
-                  <div class="aspect-w-4 aspect-h-3 mb-2">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/slate.jpg-2wGZ7wRKV4tRGsi2WQ7Xlmmc8Fd1r2.jpeg" alt="Natural slate roof tiles in dark gray" class="w-full h-full object-cover rounded">
-                  </div>
-                  <h3 class="font-medium text-center text-white text-sm">Slate</h3>
-                </label>
-              </div>
-            </div>
-            
-            <div class="material-option">
-              <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
-                <input type="radio" name="material" id="material-premium" value="premium" class="hidden">
-                <label for="material-premium" class="block h-full cursor-pointer">
-                  <div class="aspect-w-4 aspect-h-3 mb-2">
-                    <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
-                      <span class="text-gray-300 text-xs">Premium</span>
-                    </div>
-                  </div>
-                  <h3 class="font-medium text-center text-white text-sm">Premium Shingles</h3>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Additional Options in a 2-column layout -->
-        <div>
-          <h2 class="text-xl font-semibold mb-4 text-white">Additional Options</h2>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="flex items-start">
-              <input type="checkbox" id="option-removal" name="option-removal" class="mt-1">
-              <label for="option-removal" class="ml-2 text-gray-300">
-                <span class="font-medium">Old Roof Removal</span>
-                <p class="text-sm text-gray-400">Includes removal and disposal of existing roofing material (1-2 layers)</p>
-              </label>
-            </div>
-            
-            <div class="flex items-start">
-              <input type="checkbox" id="option-underlayment" name="option-underlayment" class="mt-1">
-              <label for="option-underlayment" class="ml-2 text-gray-300">
-                <span class="font-medium">Premium Underlayment</span>
-                <p class="text-sm text-gray-400">Upgrade to high-quality synthetic underlayment for better protection</p>
-              </label>
-            </div>
-            
-            <div class="flex items-start">
-              <input type="checkbox" id="option-ventilation" name="option-ventilation" class="mt-1">
-              <label for="option-ventilation" class="ml-2 text-gray-300">
-                <span class="font-medium">Improved Ventilation</span>
-                <p class="text-sm text-gray-400">Add ridge vents and intake vents for better attic ventilation</p>
-              </label>
-            </div>
-            
-            <div class="flex items-start">
-              <input type="checkbox" id="option-gutters" name="option-gutters" class="mt-1">
-              <label for="option-gutters" class="ml-2 text-gray-300">
-                <span class="font-medium">New Gutters & Downspouts</span>
-                <p class="text-sm text-gray-400">Replace existing gutters and downspouts</p>
-              </label>
-            </div>
-            
-            <div class="flex items-start">
-              <input type="checkbox" id="option-insulation" name="option-insulation" class="mt-1">
-              <label for="option-insulation" class="ml-2 text-gray-300">
-                <span class="font-medium">Additional Insulation</span>
-                <p class="text-sm text-gray-400">Add extra insulation to improve energy efficiency</p>
-              </label>
-            </div>
-          </div>
-        </div>
+  <!-- FormSubmit configuration - absolute minimum -->
+  <input type="hidden" name="_captcha" value="false">
+  
+  <!-- Contact Information -->
+  <div>
+    <h2 class="text-xl font-semibold mb-4 text-white">Contact Information</h2>
     
-        <div class="text-center mt-6">
-          <button 
-    type="submit" 
-    id="calculate-btn"
-    class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300 text-lg mx-auto" 
-    style="background-color: #D4A017;"
-  >
-    Calculate Estimate
-  </button>
-</div>
-      </form>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label for="first-name" class="block text-white font-medium mb-1">First Name</label>
+        <input 
+          type="text" 
+          id="first-name" 
+          name="first-name" 
+          placeholder="Your first name" 
+          class="w-full p-2 pl-3 border rounded" 
+          style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
+          required
+        >
+      </div>
+      
+      <div>
+        <label for="last-name" class="block text-white font-medium mb-1">Last Name</label>
+        <input 
+          type="text" 
+          id="last-name" 
+          name="last-name" 
+          placeholder="Your last name" 
+          class="w-full p-2 pl-3 border rounded" 
+          style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
+          required
+        >
+      </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div>
+        <label for="email" class="block text-white font-medium mb-1">Email Address</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          placeholder="Your email address" 
+          class="w-full p-2 pl-3 border rounded" 
+          style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
+          required
+        >
+      </div>
+      
+      <div>
+        <label for="phone" class="block text-white font-medium mb-1">Phone Number</label>
+        <input 
+          type="tel" 
+          id="phone" 
+          name="phone" 
+          placeholder="Your phone number" 
+          class="w-full p-2 pl-3 border rounded" 
+          style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
+          required
+        >
+      </div>
+    </div>
+    
+    <div class="mt-4">
+      <label for="street-address" class="block text-white font-medium mb-1">Street Address</label>
+      <input 
+        type="text" 
+        id="street-address" 
+        name="street-address" 
+        placeholder="Your street address" 
+        class="w-full p-2 pl-3 border rounded" 
+        style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
+        required
+      >
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+      <div>
+        <label for="city" class="block text-white font-medium mb-1">City</label>
+        <input 
+          type="text" 
+          id="city" 
+          name="city" 
+          placeholder="Your city" 
+          class="w-full p-2 pl-3 border rounded" 
+          style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
+          required
+        >
+      </div>
+      
+      <div>
+        <label for="state" class="block text-white font-medium mb-1">State</label>
+        <input 
+          type="text" 
+          id="state" 
+          name="state" 
+          placeholder="Your state" 
+          class="w-full p-2 pl-3 border rounded" 
+          style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
+          required
+        >
+      </div>
+      
+      <div>
+        <label for="zip-code" class="block text-white font-medium mb-1">Zip Code</label>
+        <input 
+          type="text" 
+          id="zip-code" 
+          name="zip-code" 
+          placeholder="Your zip code" 
+          class="w-full p-2 pl-3 border rounded" 
+          style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
+          required
+        >
+      </div>
+    </div>
+  </div>
+  
+  <!-- Roof Dimensions and Pitch in a 2-column layout -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Roof Dimensions -->
+    <div>
+      <h2 class="text-xl font-semibold mb-4 text-white">Roof Dimensions</h2>
+      
+      <div>
+        <label for="roof-area" class="block text-white font-medium mb-1">Roof Area (Square Feet)</label>
+        <div class="relative">
+          <input 
+            type="number" 
+            id="roof-area" 
+            name="roof-area" 
+            min="100" 
+            max="10000" 
+            placeholder="1500" 
+            class="w-full p-2 pl-3 border rounded" 
+            style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;"
+            required
+          >
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <span class="text-gray-400">sq ft</span>
+          </div>
+        </div>
+        <p class="text-sm text-gray-400 mt-1">Typical house: 1,500-2,500 sq ft</p>
+      </div>
+    </div>
+    
+    <!-- Roof Pitch -->
+    <div>
+      <h2 class="text-xl font-semibold mb-4 text-white">Roof Pitch</h2>
+      <div class="grid grid-cols-1 gap-2">
+        <button 
+          type="button"
+          data-pitch="flat"
+          class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
+          style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+        >
+          <span class="text-white font-medium">Flat</span>
+          <span class="block text-sm text-gray-400">0/12 pitch</span>
+        </button>
+        
+        <button 
+          type="button"
+          data-pitch="low"
+          class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
+          style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+        >
+          <span class="text-white font-medium">Low Slope</span>
+          <span class="block text-sm text-gray-400">2/12 to 4/12 pitch</span>
+        </button>
+        
+        <button 
+          type="button"
+          data-pitch="medium"
+          class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
+          style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+        >
+          <span class="text-white font-medium">Medium</span>
+          <span class="block text-sm text-gray-400">5/12 to 8/12 pitch</span>
+        </button>
+        
+        <button 
+          type="button"
+          data-pitch="steep"
+          class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
+          style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+        >
+          <span class="text-white font-medium">Steep</span>
+          <span class="block text-sm text-gray-400">9/12 to 12/12 pitch</span>
+        </button>
+        
+        <button 
+          type="button"
+          data-pitch="very-steep"
+          class="pitch-option w-full text-left p-2 rounded transition-colors duration-200"
+          style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+        >
+          <span class="text-white font-medium">Very Steep</span>
+          <span class="block text-sm text-gray-400">&gt;12/12 pitch</span>
+        </button>
+      </div>
+      <!-- Hidden input to store the selected pitch value -->
+      <input type="hidden" id="roof-pitch" name="roof-pitch" value="medium">
+    </div>
+  </div>
+  
+  <!-- Roofing Materials -->
+  <div>
+    <h2 class="text-xl font-semibold mb-4 text-white">Roofing Materials</h2>
+    
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+      <div class="material-option">
+        <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+          <input type="radio" name="material" id="material-asphalt" value="asphalt" class="hidden" checked>
+          <label for="material-asphalt" class="block h-full cursor-pointer">
+            <div class="aspect-w-4 aspect-h-3 mb-2">
+              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/asphalt.jpg-UeGUZOEIdP4JhUBcrM9EsubybweqQh.jpeg" alt="Various styles of asphalt shingles in different colors" class="w-full h-full object-cover rounded">
+            </div>
+            <h3 class="font-medium text-center text-white text-sm">Asphalt Shingles</h3>
+          </label>
+        </div>
+      </div>
+      
+      <div class="material-option">
+        <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+          <input type="radio" name="material" id="material-metal" value="metal" class="hidden">
+          <label for="material-metal" class="block h-full cursor-pointer">
+            <div class="aspect-w-4 aspect-h-3 mb-2">
+              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/metal.jpg-tHBSkbc1ItFcVw9ziTiRI3DMFzTaNc.jpeg" alt="Corrugated metal roofing panels in silver and blue" class="w-full h-full object-cover rounded">
+            </div>
+            <h3 class="font-medium text-center text-white text-sm">Metal Roofing</h3>
+          </label>
+        </div>
+      </div>
+      
+      <div class="material-option">
+        <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+          <input type="radio" name="material" id="material-tile" value="tile" class="hidden">
+          <label for="material-tile" class="block h-full cursor-pointer">
+            <div class="aspect-w-4 aspect-h-3 mb-2">
+              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/clay.jpg-DmNBgYiEOMVGA80EElTT62owKQNdCc.jpeg" alt="Traditional terracotta clay roof tiles" class="w-full h-full object-cover rounded">
+            </div>
+            <h3 class="font-medium text-center text-white text-sm">Clay/Concrete Tile</h3>
+          </label>
+        </div>
+      </div>
+      
+      <div class="material-option">
+        <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+          <input type="radio" name="material" id="material-wood" value="wood" class="hidden">
+          <label for="material-wood" class="block h-full cursor-pointer">
+            <div class="aspect-w-4 aspect-h-3 mb-2">
+              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wood.jpg-rvzQIG9Sv1wltYlKmRRLHHufb77Er5.jpeg" alt="Natural cedar wood shingles" class="w-full h-full object-cover rounded">
+            </div>
+            <h3 class="font-medium text-center text-white text-sm">Wood Shingles</h3>
+          </label>
+        </div>
+      </div>
+      
+      <div class="material-option">
+        <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+          <input type="radio" name="material" id="material-slate" value="slate" class="hidden">
+          <label for="material-slate" class="block h-full cursor-pointer">
+            <div class="aspect-w-4 aspect-h-3 mb-2">
+              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/slate.jpg-2wGZ7wRKV4tRGsi2WQ7Xlmmc8Fd1r2.jpeg" alt="Natural slate roof tiles in dark gray" class="w-full h-full object-cover rounded">
+            </div>
+            <h3 class="font-medium text-center text-white text-sm">Slate</h3>
+          </label>
+        </div>
+      </div>
+      
+      <div class="material-option">
+        <div class="border rounded-lg p-2 h-full cursor-pointer hover:shadow-lg transition-shadow" style="background-color: #2E4A7D; border-color: rgba(255, 255, 255, 0.1);">
+          <input type="radio" name="material" id="material-premium" value="premium" class="hidden">
+          <label for="material-premium" class="block h-full cursor-pointer">
+            <div class="aspect-w-4 aspect-h-3 mb-2">
+              <div class="rounded w-full h-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.1);">
+                <span class="text-gray-300 text-xs">Premium</span>
+              </div>
+            </div>
+            <h3 class="font-medium text-center text-white text-sm">Premium Shingles</h3>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Additional Options in a 2-column layout -->
+  <div>
+    <h2 class="text-xl font-semibold mb-4 text-white">Additional Options</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex items-start">
+        <input type="checkbox" id="option-removal" name="option-removal" class="mt-1">
+        <label for="option-removal" class="ml-2 text-gray-300">
+          <span class="font-medium">Old Roof Removal</span>
+          <p class="text-sm text-gray-400">Includes removal and disposal of existing roofing material (1-2 layers)</p>
+        </label>
+      </div>
+      
+      <div class="flex items-start">
+        <input type="checkbox" id="option-underlayment" name="option-underlayment" class="mt-1">
+        <label for="option-underlayment" class="ml-2 text-gray-300">
+          <span class="font-medium">Premium Underlayment</span>
+          <p class="text-sm text-gray-400">Upgrade to high-quality synthetic underlayment for better protection</p>
+        </label>
+      </div>
+      
+      <div class="flex items-start">
+        <input type="checkbox" id="option-ventilation" name="option-ventilation" class="mt-1">
+        <label for="option-ventilation" class="ml-2 text-gray-300">
+          <span class="font-medium">Improved Ventilation</span>
+          <p class="text-sm text-gray-400">Add ridge vents and intake vents for better attic ventilation</p>
+        </label>
+      </div>
+      
+      <div class="flex items-start">
+        <input type="checkbox" id="option-gutters" name="option-gutters" class="mt-1">
+        <label for="option-gutters" class="ml-2 text-gray-300">
+          <span class="font-medium">New Gutters & Downspouts</span>
+          <p class="text-sm text-gray-400">Replace existing gutters and downspouts</p>
+        </label>
+      </div>
+      
+      <div class="flex items-start">
+        <input type="checkbox" id="option-insulation" name="option-insulation" class="mt-1">
+        <label for="option-insulation" class="ml-2 text-gray-300">
+          <span class="font-medium">Additional Insulation</span>
+          <p class="text-sm text-gray-400">Add extra insulation to improve energy efficiency</p>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-6">
+    <button 
+      type="submit" 
+      class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg transition-all duration-300 text-lg mx-auto" 
+      style="background-color: #D4A017;"
+    >
+      Calculate Estimate
+    </button>
+  </div>
+</form>
 
     </div>
 
