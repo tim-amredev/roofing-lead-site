@@ -702,7 +702,69 @@ document.addEventListener("DOMContentLoaded", function() {
         notes += "Average Estimate: " + averageEstimate + "\n";
       }
       
-      leadPerfectionData.append('notes', notes);
+     // Calculate estimates before sending to LeadPerfection
+      const pricing = {
+        materials: {
+          asphalt: { low: 4.5, high: 7.5 },
+          premium: { low: 6.5, high: 11.0 },
+          metal: { low: 9.0, high: 17.0 },
+          wood: { low: 8.0, high: 15.0 },
+          tile: { low: 13.0, high: 27.0 },
+          slate: { low: 20.0, high: 45.0 },
+        },
+        pitchMultipliers: {
+          flat: 1.0,
+          low: 1.1,
+          medium: 1.2,
+          steep: 1.4,
+          "very-steep": 1.6,
+        }
+      };
+
+      // Calculate base cost
+      const pitchValue = document.getElementById("roof-pitch").value || "medium";
+      const pitchMultiplier = pricing.pitchMultipliers[pitchValue] || 1.2;
+      const materialPricing = pricing.materials[materialValue] || pricing.materials.asphalt;
+
+      let lowBase = area * materialPricing.low * pitchMultiplier;
+      let highBase = area * materialPricing.high * pitchMultiplier;
+
+      // Add additional costs
+      if (document.getElementById("option-removal").checked) {
+        lowBase += area * 1.5;
+        highBase += area * 2.5;
+      }
+      if (document.getElementById("option-underlayment").checked) {
+        lowBase += 500;
+        highBase += 1000;
+      }
+      if (document.getElementById("option-ventilation").checked) {
+        lowBase += 600;
+        highBase += 1200;
+      }
+      if (document.getElementById("option-gutters").checked) {
+        const perimeter = Math.ceil(Math.sqrt(area) * 4);
+        lowBase += perimeter * 4.0;
+        highBase += perimeter * 8.0;
+      }
+      if (document.getElementById("option-insulation").checked) {
+        lowBase += area * 2.0;
+        highBase += area * 4.0;
+      }
+
+      // Ensure minimum project cost
+      const minCost = 5000;
+      lowBase = Math.max(lowBase, minCost);
+      highBase = Math.max(highBase, minCost * 1.2);
+
+      // Format costs for LeadPerfection
+      const calculatedLowEstimate = Math.round(lowBase);
+      const calculatedHighEstimate = Math.round(highBase);
+      const calculatedAverageEstimate = Math.round((lowBase + highBase) / 2);
+
+      notes += "Low Estimate: $" + calculatedLowEstimate.toLocaleString() + "\n";
+      notes += "High Estimate: $" + calculatedHighEstimate.toLocaleString() + "\n";
+      notes += "Average Estimate: $" + calculatedAverageEstimate.toLocaleString() + "\n";
       
       // Send data to LeadPerfection
       fetch('https://th97.leadperfection.com/batch/addleads.asp', {
