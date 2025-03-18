@@ -691,18 +691,7 @@ document.addEventListener("DOMContentLoaded", function() {
         notes += "Additional Options: " + additionalOptions.join(", ") + "\n";
       }
       
-      // Add estimate information if available
-      const lowEstimate = document.getElementById("low-estimate").textContent;
-      const highEstimate = document.getElementById("high-estimate").textContent;
-      const averageEstimate = document.getElementById("average-estimate").textContent;
-      
-      if (lowEstimate && highEstimate && averageEstimate) {
-        notes += "Low Estimate: " + lowEstimate + "\n";
-        notes += "High Estimate: " + highEstimate + "\n";
-        notes += "Average Estimate: " + averageEstimate + "\n";
-      }
-      
-     // Calculate estimates before sending to LeadPerfection
+      // Calculate estimates before sending to LeadPerfection
       const pricing = {
         materials: {
           asphalt: { low: 4.5, high: 7.5 },
@@ -765,6 +754,8 @@ document.addEventListener("DOMContentLoaded", function() {
       notes += "Low Estimate: $" + calculatedLowEstimate.toLocaleString() + "\n";
       notes += "High Estimate: $" + calculatedHighEstimate.toLocaleString() + "\n";
       notes += "Average Estimate: $" + calculatedAverageEstimate.toLocaleString() + "\n";
+      
+      leadPerfectionData.append('notes', notes);
       
       // Send data to LeadPerfection
       fetch('https://th97.leadperfection.com/batch/addleads.asp', {
