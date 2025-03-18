@@ -618,11 +618,13 @@ document.addEventListener("DOMContentLoaded", function() {
   const form = document.getElementById("calculator-form");
   if (form) {
     form.addEventListener("submit", function(e) {
+      // Prevent default submission temporarily
+      e.preventDefault();
+      
       // Basic validation
       const area = Number.parseFloat(document.getElementById("roof-area").value);
       if (isNaN(area) || area < 100 || area > 10000) {
         alert("Please enter a valid roof area between 100 and 10,000 sq ft.");
-        e.preventDefault();
         return false;
       }
       
@@ -635,26 +637,91 @@ document.addEventListener("DOMContentLoaded", function() {
       // Basic validation for required fields
       if (!firstName || !lastName || !email || !phone) {
         alert("Please fill in all required contact information fields.");
-        e.preventDefault();
         return false;
       }
       
       // Store form data in localStorage
-      const formData = {
-        area: area,
-        pitch: document.getElementById("roof-pitch").value || "medium",
-        material: document.querySelector('input[name="material"]:checked')?.value || "asphalt",
-        removal: document.getElementById("option-removal").checked,
-        underlayment: document.getElementById("option-underlayment").checked,
-        ventilation: document.getElementById("option-ventilation").checked,
-        gutters: document.getElementById("option-gutters").checked,
-        insulation: document.getElementById("option-insulation").checked
-      };
+      const formData = new FormData(this);
+      const formDataObj = {};
       
-      localStorage.setItem("roofingCalculatorData", JSON.stringify(formData));
+      // Convert FormData to object
+      formData.forEach((value, key) => {
+        formDataObj[key] = value;
+      });
       
-      // Continue with form submission
-      return true;
+      // Store in localStorage
+      localStorage.setItem("roofingCalculatorData", JSON.stringify(formDataObj));
+      
+      // Prepare data for LeadPerfection
+      const leadPerfectionData = new URLSearchParams();
+      leadPerfectionData.append('firstname', firstName);
+      leadPerfectionData.append('lastname', lastName);
+      leadPerfectionData.append('address1', document.getElementById("street-address").value || "");
+      leadPerfectionData.append('city', document.getElementById("city").value || "");
+      leadPerfectionData.append('state', document.getElementById("state").value || "");
+      leadPerfectionData.append('zip', document.getElementById("zip_code").value || "");
+      leadPerfectionData.append('phone1', phone);
+      leadPerfectionData.append('email', email);
+      
+      // Required fields
+      leadPerfectionData.append('sender', 'Instantroofingprices.com');
+      leadPerfectionData.append('srs_id', '1669');
+      leadPerfectionData.append('productid', 'Roof');
+      leadPerfectionData.append('proddescr', 'Roofing');
+      
+      // Compile notes from calculator data
+      let notes = "Roofing Calculator Estimate:\n";
+      notes += "Roof Area: " + area + " sq ft\n";
+      notes += "Roof Pitch: " + (document.getElementById("roof-pitch").value || "medium") + "\n";
+      
+      // Get selected material
+      const materialRadio = document.querySelector('input[name="material"]:checked');
+      const materialValue = materialRadio ? materialRadio.value : "asphalt";
+      notes += "Material: " + materialValue + "\n";
+      
+      // Get additional options
+      const additionalOptions = [];
+      if (document.getElementById("option-removal").checked) additionalOptions.push("Old Roof Removal");
+      if (document.getElementById("option-underlayment").checked) additionalOptions.push("Premium Underlayment");
+      if (document.getElementById("option-ventilation").checked) additionalOptions.push("Improved Ventilation");
+      if (document.getElementById("option-gutters").checked) additionalOptions.push("New Gutters & Downspouts");
+      if (document.getElementById("option-insulation").checked) additionalOptions.push("Additional Insulation");
+      
+      if (additionalOptions.length > 0) {
+        notes += "Additional Options: " + additionalOptions.join(", ") + "\n";
+      }
+      
+      // Add estimate information if available
+      const lowEstimate = document.getElementById("low-estimate").textContent;
+      const highEstimate = document.getElementById("high-estimate").textContent;
+      const averageEstimate = document.getElementById("average-estimate").textContent;
+      
+      if (lowEstimate && highEstimate && averageEstimate) {
+        notes += "Low Estimate: " + lowEstimate + "\n";
+        notes += "High Estimate: " + highEstimate + "\n";
+        notes += "Average Estimate: " + averageEstimate + "\n";
+      }
+      
+      leadPerfectionData.append('notes', notes);
+      
+      // Send data to LeadPerfection
+      fetch('https://th97.leadperfection.com/batch/addleads.asp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: leadPerfectionData
+      })
+      .then(response => {
+        console.log('LeadPerfection response:', response);
+        // Continue with the original form submission to FormSubmit
+        form.submit();
+      })
+      .catch(error => {
+        console.error('Error sending to LeadPerfection:', error);
+        // Continue with the original form submission to FormSubmit even if LeadPerfection fails
+        form.submit();
+      });
     });
   }
   
