@@ -7,29 +7,26 @@ document.addEventListener("DOMContentLoaded", () => {
   function sendToLeadConduit(leadData, source = "website") {
     const leadConduitData = new URLSearchParams()
 
-    // Map standard fields
-    leadConduitData.append("firstname", leadData.firstname || "")
-    leadConduitData.append("lastname", leadData.lastname || "")
-    leadConduitData.append("address1", leadData.address1 || "")
+    // Map standard fields using correct LeadConduit parameter names
+    leadConduitData.append("first_name", leadData.first_name || "")
+    leadConduitData.append("last_name", leadData.last_name || "")
+    leadConduitData.append("address_1", leadData.address_1 || "")
     leadConduitData.append("city", leadData.city || "")
     leadConduitData.append("state", leadData.state || "")
-    leadConduitData.append("zip", leadData.zip || "")
-    leadConduitData.append("phone1", leadData.phone1 || "")
+    leadConduitData.append("postal_code", leadData.postal_code || "")
+    leadConduitData.append("phone_1", leadData.phone_1 || "")
     leadConduitData.append("email", leadData.email || "")
 
-    // Required fields for LeadConduit
-    leadConduitData.append("sender", "Instantroofingprices.com")
-    leadConduitData.append("srs_id", "1669")
-    leadConduitData.append("productid", "Roof")
-    leadConduitData.append("proddescr", "Roofing")
+    // Product and source information
+    leadConduitData.append("product", "Roofing")
+    leadConduitData.append("sender_name_are", "Instantroofingprices.com")
 
-    // Add source information
-    leadConduitData.append("source", source)
-
-    // Add notes if provided
-    if (leadData.notes) {
-      leadConduitData.append("notes", leadData.notes)
+    // Add source information to comments
+    let comments = `Source: ${source}\n`
+    if (leadData.comments) {
+      comments += leadData.comments
     }
+    leadConduitData.append("comments", comments)
 
     // Send to LeadConduit
     return fetch("https://app.leadconduit.com/flows/67f7c604f84b9544eca41ff7/sources/680b67d1735fe6f491a213a8/submit", {
@@ -52,17 +49,17 @@ document.addEventListener("DOMContentLoaded", () => {
   /**
    * Extract name parts from full name string
    * @param {string} fullName - The full name string
-   * @returns {Object} Object with firstname and lastname
+   * @returns {Object} Object with first_name and last_name
    */
   function extractNameParts(fullName) {
     if (!fullName || typeof fullName !== "string") {
-      return { firstname: "", lastname: "" }
+      return { first_name: "", last_name: "" }
     }
 
     const nameParts = fullName.trim().split(" ")
     return {
-      firstname: nameParts[0] || "",
-      lastname: nameParts.slice(1).join(" ") || "",
+      first_name: nameParts[0] || "",
+      last_name: nameParts.slice(1).join(" ") || "",
     }
   }
 
@@ -72,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
    * @returns {boolean} True if valid, false otherwise
    */
   function validateLeadData(leadData) {
-    const requiredFields = ["firstname", "lastname", "email", "phone1"]
+    const requiredFields = ["first_name", "last_name", "email", "phone_1"]
 
     for (const field of requiredFields) {
       if (!leadData[field] || leadData[field].trim() === "") {
