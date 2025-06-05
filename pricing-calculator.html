@@ -11,12 +11,9 @@ js: pricing-calculator
     <p class="text-lg text-gray-300 text-center mb-8">Get an instant estimate for your roofing project with our interactive calculator.</p>
     
     <div class="rounded-lg shadow-md p-6 md:p-8 mb-8" style="background-color: #2A3555;">
-      <form id="calculator-form" class="space-y-6" action="https://formsubmit.co/leads@americanremodeling.net" method="POST">
-  <!-- FormSubmit configuration -->
-  <input type="hidden" name="_captcha" value="false">
-  <input type="hidden" name="_subject" value="Roofing Calculator Estimate Request">
-  <input type="hidden" name="_template" value="table">
-  <input type="hidden" name="_next" value="{{ site.url }}{{ site.baseurl }}/thank-you">
+      <!-- REMOVED FormSubmit action and method - now only submits to LeadConduit -->
+      <form id="calculator-form" class="space-y-6" onsubmit="submitCalculatorForm(event)">
+  
   <!-- Contact Information -->
   <div>
     <h2 class="text-xl font-semibold mb-4 text-white">Contact Information</h2>
@@ -369,6 +366,7 @@ js: pricing-calculator
 
     </div>
 
+    <!-- Rest of the page content remains the same -->
     <div class="bg-yellow-500 bg-opacity-10 border-l-4 border-yellow-500 p-4 mb-6 rounded" style="border-color: #D4A017;">
       <div class="flex">
         <div class="flex-shrink-0">
@@ -614,168 +612,6 @@ js: pricing-calculator
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  // Store form data in localStorage before submission
-  const form = document.getElementById("calculator-form");
-  if (form) {
-    form.addEventListener("submit", function(e) {
-      // Prevent default submission temporarily
-      e.preventDefault();
-      
-      // Basic validation
-      const area = Number.parseFloat(document.getElementById("roof-area").value);
-      if (isNaN(area) || area < 100 || area > 10000) {
-        alert("Please enter a valid roof area between 100 and 10,000 sq ft.");
-        return false;
-      }
-      
-      // Get other form values
-      const firstName = document.getElementById("first-name").value.trim();
-      const lastName = document.getElementById("last-name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      
-      // Basic validation for required fields
-      if (!firstName || !lastName || !email || !phone) {
-        alert("Please fill in all required contact information fields.");
-        return false;
-      }
-      
-      // Store form data in localStorage
-      const formData = new FormData(this);
-      const formDataObj = {};
-      
-      // Convert FormData to object
-      formData.forEach((value, key) => {
-        formDataObj[key] = value;
-      });
-      
-      // Store in localStorage
-      localStorage.setItem("roofingCalculatorData", JSON.stringify(formDataObj));
-      
-      // Prepare data for LeadConduit
-      const leadConduitData = new URLSearchParams();
-      leadConduitData.append('first_name', firstName);
-      leadConduitData.append('last_name', lastName);
-      leadConduitData.append('address_1', document.getElementById("street-address").value || "");
-      leadConduitData.append('city', document.getElementById("city").value || "");
-      leadConduitData.append('state', document.getElementById("state").value || "");
-      leadConduitData.append('postal_code', document.getElementById("zip_code").value || "");
-      leadConduitData.append('phone_1', phone);
-      leadConduitData.append('email', email);
-
-      // Product information
-      leadConduitData.append('product', 'Roofing');
-      leadConduitData.append('sender_name_are', 'Instantroofingprices.com');
-      
-      // Compile notes from calculator data
-      let notes = "Roofing Calculator Estimate:\n";
-      notes += "Roof Area: " + area + " sq ft\n";
-      notes += "Roof Pitch: " + (document.getElementById("roof-pitch").value || "medium") + "\n";
-      
-      // Get selected material
-      const materialRadio = document.querySelector('input[name="material"]:checked');
-      const materialValue = materialRadio ? materialRadio.value : "asphalt";
-      notes += "Material: " + materialValue + "\n";
-      
-      // Get additional options
-      const additionalOptions = [];
-      if (document.getElementById("option-removal").checked) additionalOptions.push("Old Roof Removal");
-      if (document.getElementById("option-underlayment").checked) additionalOptions.push("Premium Underlayment");
-      if (document.getElementById("option-ventilation").checked) additionalOptions.push("Improved Ventilation");
-      if (document.getElementById("option-gutters").checked) additionalOptions.push("New Gutters & Downspouts");
-      if (document.getElementById("option-insulation").checked) additionalOptions.push("Additional Insulation");
-      
-      if (additionalOptions.length > 0) {
-        notes += "Additional Options: " + additionalOptions.join(", ") + "\n";
-      }
-      
-      // Calculate estimates before sending to LeadConduit
-      const pricing = {
-        materials: {
-          asphalt: { low: 4.5, high: 7.5 },
-          premium: { low: 6.5, high: 11.0 },
-          metal: { low: 9.0, high: 17.0 },
-          wood: { low: 8.0, high: 15.0 },
-          tile: { low: 13.0, high: 27.0 },
-          slate: { low: 20.0, high: 45.0 },
-        },
-        pitchMultipliers: {
-          flat: 1.0,
-          low: 1.1,
-          medium: 1.2,
-          steep: 1.4,
-          "very-steep": 1.6,
-        }
-      };
-
-      // Calculate base cost
-      const pitchValue = document.getElementById("roof-pitch").value || "medium";
-      const pitchMultiplier = pricing.pitchMultipliers[pitchValue] || 1.2;
-      const materialPricing = pricing.materials[materialValue] || pricing.materials.asphalt;
-
-      let lowBase = area * materialPricing.low * pitchMultiplier;
-      let highBase = area * materialPricing.high * pitchMultiplier;
-
-      // Add additional costs
-      if (document.getElementById("option-removal").checked) {
-        lowBase += area * 1.5;
-        highBase += area * 2.5;
-      }
-      if (document.getElementById("option-underlayment").checked) {
-        lowBase += 500;
-        highBase += 1000;
-      }
-      if (document.getElementById("option-ventilation").checked) {
-        lowBase += 600;
-        highBase += 1200;
-      }
-      if (document.getElementById("option-gutters").checked) {
-        const perimeter = Math.ceil(Math.sqrt(area) * 4);
-        lowBase += perimeter * 4.0;
-        highBase += perimeter * 8.0;
-      }
-      if (document.getElementById("option-insulation").checked) {
-        lowBase += area * 2.0;
-        highBase += area * 4.0;
-      }
-
-      // Ensure minimum project cost
-      const minCost = 5000;
-      lowBase = Math.max(lowBase, minCost);
-      highBase = Math.max(highBase, minCost * 1.2);
-
-            // Format costs for LeadConduit
-      const calculatedLowEstimate = Math.round(lowBase);
-      const calculatedHighEstimate = Math.round(highBase);
-      const calculatedAverageEstimate = Math.round((lowBase + highBase) / 2);
-
-      notes += "Low Estimate: $" + calculatedLowEstimate.toLocaleString() + "\n";
-      notes += "High Estimate: $" + calculatedHighEstimate.toLocaleString() + "\n";
-      notes += "Average Estimate: $" + calculatedAverageEstimate.toLocaleString() + "\n";
-      
-      leadConduitData.append('notes', notes);
-      
-      // Send data to LeadConduit
-      fetch('https://app.leadconduit.com/flows/67f7c604f84b9544eca41ff7/sources/680b67d1735fe6f491a213a8/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: leadConduitData
-      })
-      .then(response => {
-        console.log('LeadConduit response:', response);
-        // Continue with the original form submission to FormSubmit
-        form.submit();
-      })
-      .catch(error => {
-        console.error('Error sending to LeadConduit:', error);
-        // Continue with the original form submission to FormSubmit even if LeadConduit fails
-        form.submit();
-      });
-    });
-  }
-  
   // Check if we're returning from form submission
   if (window.location.hash === "#estimate-results") {
     // Get stored form data
@@ -884,8 +720,167 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 });
+
+// Separate function for form submission - ONLY submits to LeadConduit
+function submitCalculatorForm(event) {
+  // Prevent default submission
+  event.preventDefault();
+  
+  // Basic validation
+  const area = Number.parseFloat(document.getElementById("roof-area").value);
+  if (isNaN(area) || area < 100 || area > 10000) {
+    alert("Please enter a valid roof area between 100 and 10,000 sq ft.");
+    return false;
+  }
+  
+  // Get other form values
+  const firstName = document.getElementById("first-name").value.trim();
+  const lastName = document.getElementById("last-name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  
+  // Basic validation for required fields
+  if (!firstName || !lastName || !email || !phone) {
+    alert("Please fill in all required contact information fields.");
+    return false;
+  }
+  
+  // Store form data in localStorage
+  const formData = new FormData(event.target);
+  const formDataObj = {};
+  
+  // Convert FormData to object
+  formData.forEach((value, key) => {
+    formDataObj[key] = value;
+  });
+  
+  // Store in localStorage
+  localStorage.setItem("roofingCalculatorData", JSON.stringify(formDataObj));
+  
+  // Prepare data for LeadConduit
+  const leadConduitData = new URLSearchParams();
+  leadConduitData.append('first_name', firstName);
+  leadConduitData.append('last_name', lastName);
+  leadConduitData.append('address_1', document.getElementById("street-address").value || "");
+  leadConduitData.append('city', document.getElementById("city").value || "");
+  leadConduitData.append('state', document.getElementById("state").value || "");
+  leadConduitData.append('postal_code', document.getElementById("zip_code").value || "");
+  leadConduitData.append('phone_1', phone);
+  leadConduitData.append('email', email);
+
+  // Product information
+  leadConduitData.append('product', 'Roofing');
+  leadConduitData.append('sender_name_are', 'Instantroofingprices.com');
+  
+  // Compile notes from calculator data
+  let notes = "Roofing Calculator Estimate:\n";
+  notes += "Roof Area: " + area + " sq ft\n";
+  notes += "Roof Pitch: " + (document.getElementById("roof-pitch").value || "medium") + "\n";
+  
+  // Get selected material
+  const materialRadio = document.querySelector('input[name="material"]:checked');
+  const materialValue = materialRadio ? materialRadio.value : "asphalt";
+  notes += "Material: " + materialValue + "\n";
+  
+  // Get additional options
+  const additionalOptions = [];
+  if (document.getElementById("option-removal").checked) additionalOptions.push("Old Roof Removal");
+  if (document.getElementById("option-underlayment").checked) additionalOptions.push("Premium Underlayment");
+  if (document.getElementById("option-ventilation").checked) additionalOptions.push("Improved Ventilation");
+  if (document.getElementById("option-gutters").checked) additionalOptions.push("New Gutters & Downspouts");
+  if (document.getElementById("option-insulation").checked) additionalOptions.push("Additional Insulation");
+  
+  if (additionalOptions.length > 0) {
+    notes += "Additional Options: " + additionalOptions.join(", ") + "\n";
+  }
+  
+  // Calculate estimates before sending to LeadConduit
+  const pricing = {
+    materials: {
+      asphalt: { low: 4.5, high: 7.5 },
+      premium: { low: 6.5, high: 11.0 },
+      metal: { low: 9.0, high: 17.0 },
+      wood: { low: 8.0, high: 15.0 },
+      tile: { low: 13.0, high: 27.0 },
+      slate: { low: 20.0, high: 45.0 },
+    },
+    pitchMultipliers: {
+      flat: 1.0,
+      low: 1.1,
+      medium: 1.2,
+      steep: 1.4,
+      "very-steep": 1.6,
+    }
+  };
+
+  // Calculate base cost
+  const pitchValue = document.getElementById("roof-pitch").value || "medium";
+  const pitchMultiplier = pricing.pitchMultipliers[pitchValue] || 1.2;
+  const materialPricing = pricing.materials[materialValue] || pricing.materials.asphalt;
+
+  let lowBase = area * materialPricing.low * pitchMultiplier;
+  let highBase = area * materialPricing.high * pitchMultiplier;
+
+  // Add additional costs
+  if (document.getElementById("option-removal").checked) {
+    lowBase += area * 1.5;
+    highBase += area * 2.5;
+  }
+  if (document.getElementById("option-underlayment").checked) {
+    lowBase += 500;
+    highBase += 1000;
+  }
+  if (document.getElementById("option-ventilation").checked) {
+    lowBase += 600;
+    highBase += 1200;
+  }
+  if (document.getElementById("option-gutters").checked) {
+    const perimeter = Math.ceil(Math.sqrt(area) * 4);
+    lowBase += perimeter * 4.0;
+    highBase += perimeter * 8.0;
+  }
+  if (document.getElementById("option-insulation").checked) {
+    lowBase += area * 2.0;
+    highBase += area * 4.0;
+  }
+
+  // Ensure minimum project cost
+  const minCost = 5000;
+  lowBase = Math.max(lowBase, minCost);
+  highBase = Math.max(highBase, minCost * 1.2);
+
+  // Format costs for LeadConduit
+  const calculatedLowEstimate = Math.round(lowBase);
+  const calculatedHighEstimate = Math.round(highBase);
+  const calculatedAverageEstimate = Math.round((lowBase + highBase) / 2);
+
+  notes += "Low Estimate: $" + calculatedLowEstimate.toLocaleString() + "\n";
+  notes += "High Estimate: $" + calculatedHighEstimate.toLocaleString() + "\n";
+  notes += "Average Estimate: $" + calculatedAverageEstimate.toLocaleString() + "\n";
+  
+  leadConduitData.append('comments', notes);
+  
+  // Send data to LeadConduit ONLY
+  fetch('https://app.leadconduit.com/flows/67f7c604f84b9544eca41ff7/sources/680b67d1735fe6f491a213a8/submit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: leadConduitData
+  })
+  .then(response => {
+    console.log('LeadConduit response:', response);
+    // Show success message or redirect
+    alert('Thank you! Your estimate request has been submitted successfully. We will contact you shortly.');
+    // Optionally redirect to a thank you page
+    // window.location.href = '/thank-you';
+  })
+  .catch(error => {
+    console.error('Error sending to LeadConduit:', error);
+    alert('There was an error submitting your request. Please try again or contact us directly.');
+  });
+}
 </script>
-</section>
 
 <style>
 body, html, main, section {
@@ -915,3 +910,4 @@ body, html, main, section {
   border-color: #D4A017 !important;
 }
 </style>
+</section>
