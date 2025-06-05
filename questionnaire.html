@@ -725,9 +725,6 @@ js: questionnaire
     // Product information
     leadConduitData.append('product', 'Roofing');
     leadConduitData.append('sender_name_are', 'Instantroofingprices.com');
-
-    // Use comments field for all the questionnaire data
-    leadConduitData.append('comments', notes);
     
     // Compile comprehensive notes from questionnaire answers
     let notes = "Roofing Project Questionnaire:\n";
@@ -760,6 +757,8 @@ js: questionnaire
       notes += "Comments: " + formDataObj.comments.trim() + "\n";
     }
     
+    // Use comments field for all the questionnaire data
+    leadConduitData.append('comments', notes);
     
     // Send data to LeadConduit
     fetch('https://app.leadconduit.com/flows/67f7c604f84b9544eca41ff7/sources/680b67d1735fe6f491a213a8/submit', {
@@ -772,11 +771,14 @@ js: questionnaire
     .then(response => {
       console.log('LeadConduit response status:', response.status);
       // Continue with the original form submission to FormSubmit
+      // Remove the onsubmit handler to prevent infinite loop
+      event.target.onsubmit = null;
       event.target.submit();
     })
     .catch(error => {
       console.error('Error sending to LeadConduit:', error);
       // Continue with the original form submission to FormSubmit even if LeadConduit fails
+      event.target.onsubmit = null;
       event.target.submit();
     });
   }
