@@ -22,7 +22,7 @@ js: questionnaire
           </div>
         </div>
         
-        <form id="questionnaire-form" class="space-y-12" action="https://formsubmit.co/34621b6167978998b0c76f8366420183" method="POST" onsubmit="sendToLeadPerfection(event)">
+       <form id="questionnaire-form" class="space-y-12" action="https://formsubmit.co/34621b6167978998b0c76f8366420183" method="POST" onsubmit="sendToLeadConduit(event)">
           <!-- Hidden FormSubmit fields -->
           <input type="hidden" name="_subject" value="New Roofing Quote Request">
           <input type="hidden" name="_template" value="table">
@@ -694,7 +694,7 @@ js: questionnaire
 </div>
 
 <script>
-  function sendToLeadPerfection(event) {
+  function sendToLeadConduit(event) {
     // Prevent the default form submission temporarily
     event.preventDefault();
     
@@ -716,22 +716,22 @@ js: questionnaire
       lastName = nameParts.slice(1).join(' ') || "";
     }
     
-    // Prepare data for LeadPerfection
-    const leadPerfectionData = new URLSearchParams();
-    leadPerfectionData.append('firstname', firstName);
-    leadPerfectionData.append('lastname', lastName);
-    leadPerfectionData.append('address1', formDataObj.street_address || "");
-    leadPerfectionData.append('city', formDataObj.city || "");
-    leadPerfectionData.append('state', formDataObj.state || "");
-    leadPerfectionData.append('zip', formDataObj.zip_code || "");
-    leadPerfectionData.append('phone1', formDataObj.phone || "");
-    leadPerfectionData.append('email', formDataObj.email || "");
+     // Prepare data for LeadConduit
+    const leadConduitData = new URLSearchParams();
+    leadConduitData.append('firstname', firstName);
+    leadConduitData.append('lastname', lastName);
+    leadConduitData.append('address1', formDataObj.street_address || "");
+    leadConduitData.append('city', formDataObj.city || "");
+    leadConduitData.append('state', formDataObj.state || "");
+    leadConduitData.append('zip', formDataObj.zip_code || "");
+    leadConduitData.append('phone1', formDataObj.phone || "");
+    leadConduitData.append('email', formDataObj.email || "");
     
     // Required fields
-    leadPerfectionData.append('sender', 'Instantroofingprices.com');
-    leadPerfectionData.append('srs_id', '1669');
-    leadPerfectionData.append('productid', 'Roof');
-    leadPerfectionData.append('proddescr', 'Roofing');
+    leadConduitData.append('sender', 'Instantroofingprices.com');
+    leadConduitData.append('srs_id', '1669');
+    leadConduitData.append('productid', 'Roof');
+    leadConduitData.append('proddescr', 'Roofing');
     // Compile notes from questionnaire answers
     let notes = "Roofing Project Details:\n";
     notes += "Reason: " + (formDataObj.reason || "N/A") + "\n";
@@ -759,24 +759,24 @@ js: questionnaire
       notes += "Comments: " + formDataObj.comments + "\n";
     }
     
-    leadPerfectionData.append('notes', notes);
+      leadConduitData.append('notes', notes);
     
-    // Send data to LeadPerfection
-    fetch('https://th97.leadperfection.com/batch/addleads.asp', {
+    // Send data to LeadConduit
+    fetch('https://app.leadconduit.com/flows/67f7c604f84b9544eca41ff7/sources/680b67d1735fe6f491a213a8/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: leadPerfectionData
+      body: leadConduitData
     })
     .then(response => {
-      console.log('LeadPerfection response:', response);
+      console.log('LeadConduit response:', response);
       // Continue with the original form submission to FormSubmit
       event.target.submit();
     })
     .catch(error => {
-      console.error('Error sending to LeadPerfection:', error);
-      // Continue with the original form submission to FormSubmit even if LeadPerfection fails
+      console.error('Error sending to LeadConduit:', error);
+      // Continue with the original form submission to FormSubmit even if LeadConduit fails
       event.target.submit();
     });
   }
