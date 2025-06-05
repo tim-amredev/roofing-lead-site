@@ -707,16 +707,16 @@ js: questionnaire
       formDataObj[key] = value;
     });
     
-    // Split name into first and last name
+    // Extract first and last name from the name field
     let firstName = "";
     let lastName = "";
     if (formDataObj.name) {
-      const nameParts = formDataObj.name.split(' ');
+      const nameParts = formDataObj.name.trim().split(' ');
       firstName = nameParts[0] || "";
       lastName = nameParts.slice(1).join(' ') || "";
     }
     
-     // Prepare data for LeadConduit
+    // Prepare data for LeadConduit
     const leadConduitData = new URLSearchParams();
     leadConduitData.append('firstname', firstName);
     leadConduitData.append('lastname', lastName);
@@ -727,13 +727,14 @@ js: questionnaire
     leadConduitData.append('phone1', formDataObj.phone || "");
     leadConduitData.append('email', formDataObj.email || "");
     
-    // Required fields
+    // Required fields for LeadConduit
     leadConduitData.append('sender', 'Instantroofingprices.com');
     leadConduitData.append('srs_id', '1669');
     leadConduitData.append('productid', 'Roof');
     leadConduitData.append('proddescr', 'Roofing');
-    // Compile notes from questionnaire answers
-    let notes = "Roofing Project Details:\n";
+    
+    // Compile comprehensive notes from questionnaire answers
+    let notes = "Roofing Project Questionnaire:\n";
     notes += "Reason: " + (formDataObj.reason || "N/A") + "\n";
     notes += "Roof Age: " + (formDataObj.roof_age || "N/A") + "\n";
     notes += "Square Footage: " + (formDataObj.square_footage || "N/A") + "\n";
@@ -742,24 +743,28 @@ js: questionnaire
     notes += "Roof Type: " + (formDataObj.roof_type || "N/A") + "\n";
     
     // Add issues if present
-    if (formData.getAll("issues[]").length > 0) {
-      notes += "Issues: " + formData.getAll("issues[]").join(", ") + "\n";
+    const issues = formData.getAll("issues[]");
+    if (issues.length > 0) {
+      notes += "Issues: " + issues.join(", ") + "\n";
     }
     
     // Add features if present
-    if (formData.getAll("features[]").length > 0) {
-      notes += "Features: " + formData.getAll("features[]").join(", ") + "\n";
+    const features = formData.getAll("features[]");
+    if (features.length > 0) {
+      notes += "Features: " + features.join(", ") + "\n";
     }
     
     notes += "Timeframe: " + (formDataObj.timeframe || "N/A") + "\n";
     notes += "Budget: " + (formDataObj.budget || "N/A") + "\n";
+    notes += "How they heard about us: " + (formDataObj.referral || "N/A") + "\n";
+    notes += "Preferred contact method: " + (formDataObj.contact_method || "N/A") + "\n";
     
     // Add any comments
-    if (formDataObj.comments) {
-      notes += "Comments: " + formDataObj.comments + "\n";
+    if (formDataObj.comments && formDataObj.comments.trim()) {
+      notes += "Comments: " + formDataObj.comments.trim() + "\n";
     }
     
-      leadConduitData.append('notes', notes);
+    leadConduitData.append('notes', notes);
     
     // Send data to LeadConduit
     fetch('https://app.leadconduit.com/flows/67f7c604f84b9544eca41ff7/sources/680b67d1735fe6f491a213a8/submit', {
@@ -770,7 +775,7 @@ js: questionnaire
       body: leadConduitData
     })
     .then(response => {
-      console.log('LeadConduit response:', response);
+      console.log('LeadConduit response status:', response.status);
       // Continue with the original form submission to FormSubmit
       event.target.submit();
     })
@@ -781,4 +786,3 @@ js: questionnaire
     });
   }
 </script>
-
