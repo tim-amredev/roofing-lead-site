@@ -1,68 +1,93 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Target the questionnaire form
-  const questionnaireForm = document.getElementById("questionnaire-form");
+  /**
+   * Send lead data to LeadConduit
+   * @param {Object} leadData - The lead data object
+   * @param {string} source - The source of the lead (calculator, questionnaire, etc.)
+   */
+  function sendToLeadConduit(leadData, source = "website") {
+    const leadConduitData = new URLSearchParams()
 
-  if (questionnaireForm) {
-    questionnaireForm.addEventListener("submit", function (e) {
-      e.preventDefault();  // Prevent default to avoid double submission
+    // Map standard fields
+    leadConduitData.append("firstname", leadData.firstname || "")
+    leadConduitData.append("lastname", leadData.lastname || "")
+    leadConduitData.append("address1", leadData.address1 || "")
+    leadConduitData.append("city", leadData.city || "")
+    leadConduitData.append("state", leadData.state || "")
+    leadConduitData.append("zip", leadData.zip || "")
+    leadConduitData.append("phone1", leadData.phone1 || "")
+    leadConduitData.append("email", leadData.email || "")
 
-      // Create form data for LeadConduit
-      const formData = new FormData(this);
-      const leadConduitData = new URLSearchParams(); // Use URLSearchParams for URL-encoded format
+    // Required fields for LeadConduit
+    leadConduitData.append("sender", "Instantroofingprices.com")
+    leadConduitData.append("srs_id", "1669")
+    leadConduitData.append("productid", "Roof")
+    leadConduitData.append("proddescr", "Roofing")
 
-      // Map form fields to LeadConduit parameters
-      leadConduitData.append("firstname", formData.get("firstname") || "");
-      leadConduitData.append("lastname", formData.get("lastname") || "");
-      leadConduitData.append("address1", formData.get("street_address") || "");
-      leadConduitData.append("city", formData.get("city") || "");
-      leadConduitData.append("state", formData.get("state") || "");
-      leadConduitData.append("zip", formData.get("zip_code") || "");
-      leadConduitData.append("phone1", formData.get("phone") || "");
-      leadConduitData.append("email", formData.get("email") || "");
+    // Add source information
+    leadConduitData.append("source", source)
 
-      // Add the specific product ID for roofing
-      leadConduitData.append("productid", "Roof");
-      leadConduitData.append("proddescr", "Roofing");
+    // Add notes if provided
+    if (leadData.notes) {
+      leadConduitData.append("notes", leadData.notes)
+    }
 
-      // Combine various form fields into notes
-      let notes = "Project Details:\n";
-      notes += `Reason: ${formData.get("reason") || "N/A"}\n`;
-      notes += `Roof Age: ${formData.get("roof_age") || "N/A"}\n`;
-      notes += `Square Footage: ${formData.get("square_footage") || "N/A"}\n`;
-      notes += `Current Material: ${formData.get("current_material") || "N/A"}\n`;
-      notes += `Desired Material: ${formData.get("desired_material") || "N/A"}\n`;
-      notes += `Roof Type: ${formData.get("roof_type") || "N/A"}\n`;
-
-      const issues = formData.getAll("issues[]");
-      if (issues.length > 0) {
-        notes += `Issues: ${issues.join(", ")}\n`;
-      }
-
-      const features = formData.getAll("features[]");
-      if (features.length > 0) {
-        notes += `Desired Features: ${features.join(", ")}\n`;
-      }
-
-      notes += `Timeframe: ${formData.get("timeframe") || "N/A"}\n`;
-      notes += `Budget: ${formData.get("budget") || "N/A"}\n`;
-      notes += `Comments: ${formData.get("comments") || "N/A"}`;
-
-      leadConduitData.append("notes", notes);
-
-      // Required identifiers for LeadConduit
-      leadConduitData.append("sender", "Instantroofingprices.com");
-      leadConduitData.append("srs_id", "1669");
-
-      // Send asynchronously to avoid blocking user
-      setTimeout(() => {
-        const leadConduitUrl = "https://app.leadconduit.com/flows/67f7c604f84b9544eca41ff7/sources/680b67d1735fe6f491a213a8/submit";
-
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", leadConduitUrl, true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-        xhr.send(leadConduitData.toString());
-      }, 0);
-    });
+    // Send to LeadConduit
+    return fetch("https://app.leadconduit.com/flows/67f7c604f84b9544eca41ff7/sources/680b67d1735fe6f491a213a8/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: leadConduitData,
+    })
+      .then((response) => {
+        console.log("LeadConduit response status:", response.status)
+        return response
+      })
+      .catch((error) => {
+        console.error("Error sending to LeadConduit:", error)
+        throw error
+      })
   }
-});
+
+  /**
+   * Extract name parts from full name string
+   * @param {string} fullName - The full name string
+   * @returns {Object} Object with firstname and lastname
+   */
+  function extractNameParts(fullName) {
+    if (!fullName || typeof fullName !== "string") {
+      return { firstname: "", lastname: "" }
+    }
+
+    const nameParts = fullName.trim().split(" ")
+    return {
+      firstname: nameParts[0] || "",
+      lastname: nameParts.slice(1).join(" ") || "",
+    }
+  }
+
+  /**
+   * Validate required fields for LeadConduit
+   * @param {Object} leadData - The lead data object
+   * @returns {boolean} True if valid, false otherwise
+   */
+  function validateLeadData(leadData) {
+    const requiredFields = ["firstname", "lastname", "email", "phone1"]
+
+    for (const field of requiredFields) {
+      if (!leadData[field] || leadData[field].trim() === "") {
+        console.warn(`Missing required field: ${field}`)
+        return false
+      }
+    }
+
+    return true
+  }
+
+  // Make functions available globally for form handlers
+  window.LeadConduitIntegration = {
+    sendToLeadConduit,
+    extractNameParts,
+    validateLeadData,
+  }
+})
