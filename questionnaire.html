@@ -713,20 +713,21 @@ js: questionnaire
 
     // Prepare data for LeadConduit
     const leadConduitData = new URLSearchParams();
-    leadConduitData.append('firstname', firstName);
-    leadConduitData.append('lastname', lastName);
-    leadConduitData.append('address1', formDataObj.street_address || "");
+    leadConduitData.append('first_name', firstName);
+    leadConduitData.append('last_name', lastName);
+    leadConduitData.append('address_1', formDataObj.street_address || "");
     leadConduitData.append('city', formDataObj.city || "");
     leadConduitData.append('state', formDataObj.state || "");
-    leadConduitData.append('zip', formDataObj.zip_code || "");
-    leadConduitData.append('phone1', formDataObj.phone || "");
+    leadConduitData.append('postal_code', formDataObj.zip_code || "");
+    leadConduitData.append('phone_1', formDataObj.phone || "");
     leadConduitData.append('email', formDataObj.email || "");
-    
-    // Required fields for LeadConduit
-    leadConduitData.append('sender', 'Instantroofingprices.com');
-    leadConduitData.append('srs_id', '1669');
-    leadConduitData.append('productid', 'Roof');
-    leadConduitData.append('proddescr', 'Roofing');
+
+    // Product information
+    leadConduitData.append('product', 'Roofing');
+    leadConduitData.append('sender_name_are', 'Instantroofingprices.com');
+
+    // Use comments field for all the questionnaire data
+    leadConduitData.append('comments', notes);
     
     // Compile comprehensive notes from questionnaire answers
     let notes = "Roofing Project Questionnaire:\n";
@@ -759,7 +760,6 @@ js: questionnaire
       notes += "Comments: " + formDataObj.comments.trim() + "\n";
     }
     
-    leadConduitData.append('notes', notes);
     
     // Send data to LeadConduit
     fetch('https://app.leadconduit.com/flows/67f7c604f84b9544eca41ff7/sources/680b67d1735fe6f491a213a8/submit', {
