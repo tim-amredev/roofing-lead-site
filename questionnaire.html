@@ -503,12 +503,12 @@ js: questionnaire
 <div class="question-group">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div>
-      <label for="name" class="block text-xl font-medium text-blue-100 mb-2">First Name</label>
-      <input type="text" id="name" name="name" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200" required>
+      <label for="firstname" class="block text-xl font-medium text-blue-100 mb-2">First Name</label>
+      <input type="text" id="firstname" name="firstname" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200" required>
     </div>
     <div>
-      <label for="name" class="block text-xl font-medium text-blue-100 mb-2">Last Name</label>
-      <input type="text" id="name" name="name" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200" required>
+      <label for="lastname" class="block text-xl font-medium text-blue-100 mb-2">Last Name</label>
+      <input type="text" id="lastname" name="lastname" class="w-full p-2 border border-gray-600 bg-white/5 rounded text-gray-200" required>
     </div>
     <div>
       <label for="email" class="block text-xl font-medium text-blue-100 mb-2">Email Address</label>
@@ -707,15 +707,10 @@ js: questionnaire
       formDataObj[key] = value;
     });
     
-    // Extract first and last name from the name field
-    let firstName = "";
-    let lastName = "";
-    if (formDataObj.name) {
-      const nameParts = formDataObj.name.trim().split(' ');
-      firstName = nameParts[0] || "";
-      lastName = nameParts.slice(1).join(' ') || "";
-    }
-    
+    // Get first and last name directly from form fields
+    const firstName = formDataObj.firstname || "";
+    const lastName = formDataObj.lastname || "";
+
     // Prepare data for LeadConduit
     const leadConduitData = new URLSearchParams();
     leadConduitData.append('firstname', firstName);
