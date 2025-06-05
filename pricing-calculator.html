@@ -652,22 +652,22 @@ document.addEventListener("DOMContentLoaded", function() {
       // Store in localStorage
       localStorage.setItem("roofingCalculatorData", JSON.stringify(formDataObj));
       
-      // Prepare data for LeadPerfection
-      const leadPerfectionData = new URLSearchParams();
-      leadPerfectionData.append('firstname', firstName);
-      leadPerfectionData.append('lastname', lastName);
-      leadPerfectionData.append('address1', document.getElementById("street-address").value || "");
-      leadPerfectionData.append('city', document.getElementById("city").value || "");
-      leadPerfectionData.append('state', document.getElementById("state").value || "");
-      leadPerfectionData.append('zip', document.getElementById("zip_code").value || "");
-      leadPerfectionData.append('phone1', phone);
-      leadPerfectionData.append('email', email);
+      // Prepare data for LeadConduit
+      const leadConduitData = new URLSearchParams();
+      leadConduitData.append('firstname', firstName);
+      leadConduitData.append('lastname', lastName);
+      leadConduitData.append('address1', document.getElementById("street-address").value || "");
+      leadConduitData.append('city', document.getElementById("city").value || "");
+      leadConduitData.append('state', document.getElementById("state").value || "");
+      leadConduitData.append('zip', document.getElementById("zip_code").value || "");
+      leadConduitData.append('phone1', phone);
+      leadConduitData.append('email', email);
       
       // Required fields
-      leadPerfectionData.append('sender', 'Instantroofingprices.com');
-      leadPerfectionData.append('srs_id', '1669');
-      leadPerfectionData.append('productid', 'Roof');
-      leadPerfectionData.append('proddescr', 'Roofing');
+      leadConduitData.append('sender', 'Instantroofingprices.com');
+      leadConduitData.append('srs_id', '1669');
+      leadConduitData.append('productid', 'Roof');
+      leadConduitData.append('proddescr', 'Roofing');
       
       // Compile notes from calculator data
       let notes = "Roofing Calculator Estimate:\n";
