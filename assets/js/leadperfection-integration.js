@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     leadConduitData.append("comments", comments)
 
     // Send to LeadConduit
-    return fetch("https://app.leadconduit.com/flows/67f7c604f84b9544eca41ff7/sources/680b67d1735fe6f491a213a8/submit", {
+    return fetch("https://app.leadconduit.com/flows/684198bbf6391f0c24db713a/sources/68556e9a6cfc53ae321b466c/submit", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
