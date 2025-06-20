@@ -139,11 +139,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // Save to localStorage
+      
       localStorage.setItem("roofingFormData", JSON.stringify(formDataObj))
 
-      // Continue with normal form submission to FormSubmit
-      // No need to prevent default
     })
   }
 })
