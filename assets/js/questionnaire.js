@@ -307,6 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * Submit lead data to UrLeads API
+   * Uses Authorization Bearer header for CORS compatibility
    */
   async function submitToUrLeads(leadData) {
     debugLog('Submitting to UrLeads API...');
@@ -319,7 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-Key': URLEADS_CONFIG.apiKey,
+          'Authorization': 'Bearer ' + URLEADS_CONFIG.apiKey,
           'Accept': 'application/json'
         },
         body: JSON.stringify(leadData),
