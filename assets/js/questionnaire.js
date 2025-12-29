@@ -7,7 +7,7 @@
  * SECURITY: No API keys are exposed in this file. Authentication is
  * handled server-side via domain validation (Origin/Referer headers).
  * 
- * @version 3.0.0
+ * @version 3.1.0
  * @author UrLeads Integration
  */
 
@@ -30,7 +30,39 @@ document.addEventListener("DOMContentLoaded", () => {
     timeout: 30000,
     
     // Enable debug logging (set to false in production)
-    debug: false
+    debug: true
+  };
+
+  // =========================================================================
+  // PRICING DATA (matches thank-you-quote.js)
+  // =========================================================================
+  
+  const PRICING = {
+    materials: {
+      asphalt: { low: 4.5, high: 7.5, name: "Asphalt Shingles" },
+      premium: { low: 6.5, high: 11.0, name: "Premium Shingles" },
+      metal: { low: 9.0, high: 17.0, name: "Metal Roofing" },
+      wood: { low: 8.0, high: 15.0, name: "Wood Shingles" },
+      tile: { low: 13.0, high: 27.0, name: "Clay/Concrete Tile" },
+      slate: { low: 20.0, high: 45.0, name: "Slate" },
+      other: { low: 5.0, high: 10.0, name: "Other" }
+    },
+    roofSizes: {
+      "less-1000": { min: 800, max: 1000 },
+      "1000-1500": { min: 1000, max: 1500 },
+      "1501-2000": { min: 1501, max: 2000 },
+      "2001-2500": { min: 2001, max: 2500 },
+      "2500+": { min: 2500, max: 3500 },
+      "unknown": { min: 1500, max: 2000 }
+    },
+    pitchMultipliers: {
+      flat: 1.0,
+      gabled: 1.2,
+      hip: 1.3,
+      mansard: 1.4,
+      gambrel: 1.35,
+      other: 1.2
+    }
   };
 
   // =========================================================================
@@ -155,6 +187,73 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================================================================
+  // PRICE CALCULATION
+  // =========================================================================
+
+  /**
+   * Calculate estimated price based on form data
+   * Returns an object with low, high, and average estimates
+   */
+  function calculatePrice(formData) {
+    // Get material pricing
+    const material = formData.desired_material || formData.current_material || 'asphalt';
+    const materialInfo = PRICING.materials[material] || PRICING.materials.asphalt;
+
+    // Get roof size range
+    const sizeKey = formData.square_footage || '1501-2000';
+    const sizeRange = PRICING.roofSizes[sizeKey] || PRICING.roofSizes['1501-2000'];
+    
+    // Use midpoint of size range for consistent pricing
+    const area = Math.floor((sizeRange.min + sizeRange.max) / 2);
+
+    // Get pitch multiplier based on roof type
+    const roofType = formData.roof_type || 'gabled';
+    const pitchMultiplier = PRICING.pitchMultipliers[roofType] || PRICING.pitchMultipliers.gabled;
+
+    // Calculate base cost
+    let lowBase = area * materialInfo.low * pitchMultiplier;
+    let highBase = area * materialInfo.high * pitchMultiplier;
+
+    // Add complexity factor based on issues
+    const issues = Array.isArray(formData.issues) ? formData.issues : [formData.issues].filter(Boolean);
+    if (issues.includes('leaks') || issues.includes('sagging')) {
+      lowBase *= 1.15;
+      highBase *= 1.15;
+    }
+
+    // Add features cost
+    const features = Array.isArray(formData.features) ? formData.features : [formData.features].filter(Boolean);
+    if (features.length > 0 && !features.includes('none')) {
+      const featureMultiplier = 1 + Math.min(features.length, 4) * 0.05;
+      lowBase *= featureMultiplier;
+      highBase *= featureMultiplier;
+    }
+
+    // Ensure minimum project cost
+    const minCost = 5000;
+    lowBase = Math.max(lowBase, minCost);
+    highBase = Math.max(highBase, minCost * 1.2);
+
+    // Round to whole numbers
+    const lowEstimate = Math.round(lowBase);
+    const highEstimate = Math.round(highBase);
+    const averageEstimate = Math.round((lowBase + highBase) / 2);
+
+    return {
+      low: lowEstimate,
+      high: highEstimate,
+      average: averageEstimate,
+      area: area,
+      material: materialInfo.name,
+      formatted: {
+        low: lowEstimate.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
+        high: highEstimate.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
+        average: averageEstimate.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })
+      }
+    };
+  }
+
+  // =========================================================================
   // FORM NAVIGATION
   // =========================================================================
 
@@ -257,6 +356,92 @@ document.addEventListener("DOMContentLoaded", () => {
   showStep(currentStep);
 
   // =========================================================================
+  // IMAGE CARD SELECTION HANDLERS
+  // =========================================================================
+
+  // Track selected values
+  let selectedDesiredMaterial = '';
+  let selectedRoofType = '';
+
+  /**
+   * Handle material card selection (Question 5)
+   */
+  const materialCards = document.querySelectorAll('.material-card');
+  
+  materialCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Remove selected state from all cards
+      materialCards.forEach(c => {
+        const innerDiv = c.querySelector('div');
+        if (innerDiv) {
+          innerDiv.classList.remove('border-blue-500', 'bg-blue-500/20');
+          innerDiv.classList.add('border-gray-500');
+        }
+      });
+      
+      // Add selected state to clicked card
+      const innerDiv = card.querySelector('div');
+      if (innerDiv) {
+        innerDiv.classList.remove('border-gray-500');
+        innerDiv.classList.add('border-blue-500', 'bg-blue-500/20');
+      }
+      
+      // Store the selected value
+      selectedDesiredMaterial = card.dataset.value || '';
+      
+      // Also update hidden input if it exists
+      const hiddenInput = document.getElementById('desired_material');
+      if (hiddenInput) {
+        hiddenInput.value = selectedDesiredMaterial;
+      }
+      
+      debugLog('Material selected:', selectedDesiredMaterial);
+    });
+  });
+
+  /**
+   * Handle roof type card selection (Question 6)
+   */
+  const roofTypeCards = document.querySelectorAll('.roof-type-card');
+  
+  roofTypeCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Remove selected state from all cards
+      roofTypeCards.forEach(c => {
+        const innerDiv = c.querySelector('div');
+        if (innerDiv) {
+          innerDiv.classList.remove('border-blue-500', 'bg-blue-500/20');
+          innerDiv.classList.add('border-gray-500');
+        }
+      });
+      
+      // Add selected state to clicked card
+      const innerDiv = card.querySelector('div');
+      if (innerDiv) {
+        innerDiv.classList.remove('border-gray-500');
+        innerDiv.classList.add('border-blue-500', 'bg-blue-500/20');
+      }
+      
+      // Store the selected value
+      selectedRoofType = card.dataset.value || '';
+      
+      // Also update hidden input if it exists
+      const hiddenInput = document.getElementById('roof_type');
+      if (hiddenInput) {
+        hiddenInput.value = selectedRoofType;
+      }
+      
+      debugLog('Roof type selected:', selectedRoofType);
+    });
+  });
+
+  // =========================================================================
   // FORM DATA COLLECTION
   // =========================================================================
 
@@ -264,6 +449,17 @@ document.addEventListener("DOMContentLoaded", () => {
    * Collect and format form data for API submission
    */
   function collectFormData() {
+    // Get desired_material and roof_type from multiple sources
+    const desiredMaterial = selectedDesiredMaterial || 
+                           document.getElementById('desired_material')?.value || 
+                           getRadioValue('desired_material') || 
+                           '';
+    
+    const roofType = selectedRoofType || 
+                    document.getElementById('roof_type')?.value || 
+                    getRadioValue('roof_type') || 
+                    '';
+
     const data = {
       // Required fields
       first_name: form.querySelector('#first_name')?.value?.trim() || '',
@@ -280,8 +476,8 @@ document.addEventListener("DOMContentLoaded", () => {
       roof_age: getRadioValue('roof_age'),
       square_footage: getRadioValue('square_footage'),
       current_material: getRadioValue('current_material'),
-      desired_material: form.querySelector('#desired_material')?.value || getRadioValue('desired_material'),
-      roof_type: form.querySelector('#roof_type')?.value || getRadioValue('roof_type'),
+      desired_material: desiredMaterial,
+      roof_type: roofType,
       issues: getCheckedValues('issues'),
       features: getCheckedValues('features'),
       timeframe: getRadioValue('timeframe'),
@@ -294,7 +490,6 @@ document.addEventListener("DOMContentLoaded", () => {
       terms_accepted: form.querySelector('input[name="terms"]')?.checked || false,
       
       // Honeypot field - should always be empty for real users
-      // Bots typically fill all fields, so this catches them
       website_url: form.querySelector('input[name="website_url"]')?.value || '',
       
       // Source information
@@ -302,7 +497,16 @@ document.addEventListener("DOMContentLoaded", () => {
       category: URLEADS_CONFIG.category
     };
 
+    // Calculate and add price estimate
+    const priceEstimate = calculatePrice(data);
+    data.estimated_price_low = priceEstimate.low;
+    data.estimated_price_high = priceEstimate.high;
+    data.estimated_price_average = priceEstimate.average;
+    data.estimated_area = priceEstimate.area;
+
     debugLog('Collected form data:', data);
+    debugLog('Price estimate:', priceEstimate);
+    
     return data;
   }
 
@@ -418,10 +622,10 @@ document.addEventListener("DOMContentLoaded", () => {
       debugLog('Form submission initiated');
 
       // Collect form data
-      const formData = collectFormData();
+      const leadData = collectFormData();
 
       // Validate form data
-      const validation = validateFormData(formData);
+      const validation = validateFormData(leadData);
       if (!validation.valid) {
         showErrorMessage(validation.message);
         return;
@@ -431,12 +635,23 @@ document.addEventListener("DOMContentLoaded", () => {
       setButtonLoading(submitBtn, true);
 
       try {
+        // Store form data in localStorage for thank-you page
+        const formDataForThankYou = {
+          name: `${leadData.first_name} ${leadData.last_name}`.trim(),
+          desired_material: leadData.desired_material,
+          roof_type: leadData.roof_type,
+          square_footage: leadData.square_footage,
+          issues: leadData.issues,
+          features: leadData.features
+        };
+        localStorage.setItem('roofingFormData', JSON.stringify(formDataForThankYou));
+
         // Submit to UrLeads API
-        const result = await submitToUrLeads(formData);
+        const response = await submitToUrLeads(leadData);
 
-        debugLog('Submission successful:', result);
+        debugLog('Submission successful:', response);
 
-        // Redirect to thank you page on success
+        // Redirect to thank you page
         window.location.href = '/thank-you';
 
       } catch (error) {
@@ -446,7 +661,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let errorMessage = 'An error occurred while submitting your request. Please try again.';
         
         if (error.message) {
-          // Use the error message from the API if available
           errorMessage = error.message;
         }
 
@@ -458,62 +672,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  // =========================================================================
-  // IMAGE CARD SELECTION HANDLERS
-  // =========================================================================
-
-  /**
-   * Handle material card selection (Question 5)
-   */
-  const materialCards = document.querySelectorAll('.material-card');
-  const desiredMaterialInput = document.getElementById('desired_material');
-  
-  materialCards.forEach(card => {
-    card.addEventListener('click', () => {
-      // Remove selected state from all cards
-      materialCards.forEach(c => {
-        c.querySelector('div').classList.remove('border-blue-500', 'bg-blue-500/20');
-        c.querySelector('div').classList.add('border-gray-500');
-      });
-      
-      // Add selected state to clicked card
-      card.querySelector('div').classList.remove('border-gray-500');
-      card.querySelector('div').classList.add('border-blue-500', 'bg-blue-500/20');
-      
-      // Update hidden input
-      if (desiredMaterialInput) {
-        desiredMaterialInput.value = card.dataset.value;
-        debugLog('Material selected:', card.dataset.value);
-      }
-    });
-  });
-
-  /**
-   * Handle roof type card selection (Question 6)
-   */
-  const roofTypeCards = document.querySelectorAll('.roof-type-card');
-  const roofTypeInput = document.getElementById('roof_type');
-  
-  roofTypeCards.forEach(card => {
-    card.addEventListener('click', () => {
-      // Remove selected state from all cards
-      roofTypeCards.forEach(c => {
-        c.querySelector('div').classList.remove('border-blue-500', 'bg-blue-500/20');
-        c.querySelector('div').classList.add('border-gray-500');
-      });
-      
-      // Add selected state to clicked card
-      card.querySelector('div').classList.remove('border-gray-500');
-      card.querySelector('div').classList.add('border-blue-500', 'bg-blue-500/20');
-      
-      // Update hidden input
-      if (roofTypeInput) {
-        roofTypeInput.value = card.dataset.value;
-        debugLog('Roof type selected:', card.dataset.value);
-      }
-    });
-  });
 
   // =========================================================================
   // KEYBOARD NAVIGATION
@@ -531,5 +689,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  debugLog('Questionnaire initialized', { totalSteps, apiUrl: URLEADS_CONFIG.apiUrl });
+  debugLog('Questionnaire initialized', { 
+    totalSteps, 
+    apiUrl: URLEADS_CONFIG.apiUrl,
+    materialCards: materialCards.length,
+    roofTypeCards: roofTypeCards.length
+  });
 });
