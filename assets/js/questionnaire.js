@@ -4,7 +4,10 @@
  * This script handles the multi-step form navigation and submits
  * lead data to the UrLeads API endpoint.
  * 
- * @version 2.0.0
+ * SECURITY: No API keys are exposed in this file. Authentication is
+ * handled server-side via domain validation (Origin/Referer headers).
+ * 
+ * @version 3.0.0
  * @author UrLeads Integration
  */
 
@@ -17,10 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // API endpoint URL
     apiUrl: 'https://urleads.com/wp-json/urleads/v1/lead',
     
-    // API key for authentication (sent via X-API-Key header)
-    apiKey: 'B6OEDSNOko33XGW4I3KIC46Jsr7vn1uH',
-    
-    // Source site identifier
+    // Source site identifier (used for tracking/categorization)
     sourceSite: 'InstantRoofingPrices.com',
     
     // Lead category
@@ -106,33 +106,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Create error message element
     const errorDiv = document.createElement('div');
-    errorDiv.className = 'urleads-error-message bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4';
-    errorDiv.setAttribute('role', 'alert');
+    errorDiv.className = 'urleads-error-message';
+    errorDiv.style.cssText = `
+      background-color: #fee2e2;
+      border: 1px solid #ef4444;
+      color: #dc2626;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    `;
+    
     errorDiv.innerHTML = `
-      <strong class="font-bold">Submission Error</strong>
-      <span class="block sm:inline">${message}</span>
-      <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.remove()">
-        <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-          <title>Close</title>
-          <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
-        </svg>
-      </button>
+      <span><strong>Submission Error</strong> ${message}</span>
+      <button type="button" onclick="this.parentElement.remove()" style="background:none;border:none;color:#dc2626;cursor:pointer;font-size:18px;">&times;</button>
     `;
 
     // Insert at the top of the current step
     const currentStepElement = steps[currentStep];
     if (currentStepElement) {
       currentStepElement.insertBefore(errorDiv, currentStepElement.firstChild);
-    } else if (form) {
-      form.insertBefore(errorDiv, form.firstChild);
     }
 
-    // Scroll to error message
-    errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Auto-remove after 10 seconds
+    setTimeout(() => {
+      if (errorDiv.parentElement) {
+        errorDiv.remove();
+      }
+    }, 10000);
   }
 
   /**
-   * Get selected radio value
+   * Get value of selected radio button
    */
   function getRadioValue(name) {
     const selected = form.querySelector(`input[name="${name}"]:checked`);
@@ -140,100 +147,94 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
-   * Get all checked checkbox values
+   * Get array of checked checkbox values
    */
   function getCheckedValues(name) {
-    const checkboxes = form.querySelectorAll(`input[name="${name}"]:checked, input[name="${name}[]"]:checked`);
-    return Array.from(checkboxes).map(cb => cb.value);
+    const checked = form.querySelectorAll(`input[name="${name}[]"]:checked, input[name="${name}"]:checked`);
+    return Array.from(checked).map(cb => cb.value);
   }
 
   // =========================================================================
-  // MATERIAL AND ROOF TYPE CARD INITIALIZATION
-  // =========================================================================
-
-  // Initialize material cards
-  const materialCards = document.querySelectorAll(".material-card");
-  materialCards.forEach((card) => {
-    card.addEventListener("click", function () {
-      materialCards.forEach((c) => c.classList.remove("selected"));
-      this.classList.add("selected");
-      const hiddenInput = document.getElementById("desired_material");
-      if (hiddenInput) {
-        hiddenInput.value = this.dataset.value;
-      }
-    });
-  });
-
-  // Initialize roof type cards
-  const roofTypeCards = document.querySelectorAll(".roof-type-card");
-  roofTypeCards.forEach((card) => {
-    card.addEventListener("click", function () {
-      roofTypeCards.forEach((c) => c.classList.remove("selected"));
-      this.classList.add("selected");
-      const hiddenInput = document.getElementById("roof_type");
-      if (hiddenInput) {
-        hiddenInput.value = this.dataset.value;
-      }
-    });
-  });
-
-  // =========================================================================
-  // STEP NAVIGATION
+  // FORM NAVIGATION
   // =========================================================================
 
   /**
-   * Show the current step
+   * Show a specific step
    */
   function showStep(stepIndex) {
     steps.forEach((step, index) => {
-      if (index === stepIndex) {
-        step.classList.remove("hidden");
-        step.classList.add("fade-in");
-      } else {
-        step.classList.add("hidden");
-        step.classList.remove("fade-in");
-      }
+      step.classList.toggle("hidden", index !== stepIndex);
     });
 
-    // Update progress
+    // Update progress bar
     const progress = ((stepIndex + 1) / totalSteps) * 100;
-    if (progressBar) progressBar.style.width = `${progress}%`;
-    if (progressText) progressText.textContent = `Step ${stepIndex + 1} of ${totalSteps}`;
-    if (currentStepText) currentStepText.textContent = stepIndex + 1;
+    if (progressBar) {
+      progressBar.style.width = `${progress}%`;
+    }
+    if (progressText) {
+      progressText.textContent = `${Math.round(progress)}%`;
+    }
+    if (currentStepText) {
+      currentStepText.textContent = `Step ${stepIndex + 1} of ${totalSteps}`;
+    }
 
-    // Show/hide buttons
+    // Update button visibility
     if (prevBtn) {
-      if (stepIndex === 0) {
-        prevBtn.classList.add("hidden");
-      } else {
-        prevBtn.classList.remove("hidden");
-      }
+      prevBtn.classList.toggle("hidden", stepIndex === 0);
+    }
+    if (nextBtn) {
+      nextBtn.classList.toggle("hidden", stepIndex === totalSteps - 1);
+    }
+    if (submitBtn) {
+      submitBtn.classList.toggle("hidden", stepIndex !== totalSteps - 1);
     }
 
-    if (nextBtn && submitBtn) {
-      if (stepIndex === totalSteps - 1) {
-        nextBtn.classList.add("hidden");
-        submitBtn.classList.remove("hidden");
-      } else {
-        nextBtn.classList.remove("hidden");
-        submitBtn.classList.add("hidden");
-      }
-    }
+    debugLog(`Showing step ${stepIndex + 1} of ${totalSteps}`);
   }
 
   /**
-   * Go to next step
+   * Validate current step before proceeding
+   */
+  function validateCurrentStep() {
+    const currentStepElement = steps[currentStep];
+    const requiredInputs = currentStepElement.querySelectorAll('[required]');
+    
+    for (const input of requiredInputs) {
+      if (!input.value.trim()) {
+        input.focus();
+        return false;
+      }
+    }
+    
+    // Check for radio button groups
+    const radioGroups = currentStepElement.querySelectorAll('input[type="radio"][required]');
+    const groupNames = new Set();
+    radioGroups.forEach(radio => groupNames.add(radio.name));
+    
+    for (const name of groupNames) {
+      if (!form.querySelector(`input[name="${name}"]:checked`)) {
+        return false;
+      }
+    }
+    
+    return true;
+  }
+
+  /**
+   * Move to next step
    */
   function nextStep() {
     if (currentStep < totalSteps - 1) {
-      currentStep++;
-      showStep(currentStep);
-      window.scrollTo(0, 0);
+      if (validateCurrentStep()) {
+        currentStep++;
+        showStep(currentStep);
+        window.scrollTo(0, 0);
+      }
     }
   }
 
   /**
-   * Go to previous step
+   * Move to previous step
    */
   function prevStep() {
     if (currentStep > 0) {
@@ -292,6 +293,10 @@ document.addEventListener("DOMContentLoaded", () => {
       sms_consent: form.querySelector('input[name="sms_consent"]')?.checked || false,
       terms_accepted: form.querySelector('input[name="terms"]')?.checked || false,
       
+      // Honeypot field - should always be empty for real users
+      // Bots typically fill all fields, so this catches them
+      website_url: form.querySelector('input[name="website_url"]')?.value || '',
+      
       // Source information
       source_site: URLEADS_CONFIG.sourceSite,
       category: URLEADS_CONFIG.category
@@ -302,12 +307,64 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================================================================
+  // FORM VALIDATION
+  // =========================================================================
+
+  /**
+   * Validate all required fields before submission
+   */
+  function validateFormData(data) {
+    const requiredFields = [
+      { key: 'first_name', label: 'First Name' },
+      { key: 'last_name', label: 'Last Name' },
+      { key: 'email', label: 'Email Address' },
+      { key: 'phone', label: 'Phone Number' },
+      { key: 'street_address', label: 'Street Address' },
+      { key: 'city', label: 'City' },
+      { key: 'state', label: 'State' },
+      { key: 'zip_code', label: 'Zip Code' }
+    ];
+
+    const missingFields = [];
+    
+    for (const field of requiredFields) {
+      if (!data[field.key] || data[field.key].trim() === '') {
+        missingFields.push(field.label);
+      }
+    }
+
+    // Validate email format
+    if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      return { valid: false, message: 'Please enter a valid email address.' };
+    }
+
+    // Validate phone (10 digits)
+    if (data.phone && data.phone.length !== 10) {
+      return { valid: false, message: 'Please enter a valid 10-digit phone number.' };
+    }
+
+    // Validate zip code (5 digits)
+    if (data.zip_code && !/^\d{5}$/.test(data.zip_code)) {
+      return { valid: false, message: 'Please enter a valid 5-digit zip code.' };
+    }
+
+    if (missingFields.length > 0) {
+      return { 
+        valid: false, 
+        message: `Please fill in all required fields: ${missingFields.join(', ')}` 
+      };
+    }
+
+    return { valid: true };
+  }
+
+  // =========================================================================
   // API SUBMISSION
   // =========================================================================
 
   /**
    * Submit lead data to UrLeads API
-   * Uses Authorization Bearer header for CORS compatibility
+   * No API key required - authentication is done via domain validation
    */
   async function submitToUrLeads(leadData) {
     debugLog('Submitting to UrLeads API...');
@@ -320,7 +377,6 @@ document.addEventListener("DOMContentLoaded", () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + URLEADS_CONFIG.apiKey,
           'Accept': 'application/json'
         },
         body: JSON.stringify(leadData),
@@ -358,98 +414,43 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
       // Prevent default form submission
       e.preventDefault();
+      
+      debugLog('Form submission initiated');
 
-      debugLog('Form submission started');
+      // Collect form data
+      const formData = collectFormData();
+
+      // Validate form data
+      const validation = validateFormData(formData);
+      if (!validation.valid) {
+        showErrorMessage(validation.message);
+        return;
+      }
 
       // Show loading state
       setButtonLoading(submitBtn, true);
 
-      // Remove any existing error messages
-      const existingError = document.querySelector('.urleads-error-message');
-      if (existingError) {
-        existingError.remove();
-      }
-
       try {
-        // Collect form data
-        const leadData = collectFormData();
-
-        // Validate required fields
-        const requiredFields = [
-          { key: 'first_name', label: 'First Name' },
-          { key: 'last_name', label: 'Last Name' },
-          { key: 'email', label: 'Email' },
-          { key: 'phone', label: 'Phone' },
-          { key: 'street_address', label: 'Street Address' },
-          { key: 'city', label: 'City' },
-          { key: 'state', label: 'State' },
-          { key: 'zip_code', label: 'Zip Code' }
-        ];
-        
-        const missingFields = requiredFields.filter(field => !leadData[field.key]);
-        
-        if (missingFields.length > 0) {
-          throw new Error(`Please fill in all required fields: ${missingFields.map(f => f.label).join(', ')}`);
-        }
-
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(leadData.email)) {
-          throw new Error('Please enter a valid email address.');
-        }
-
-        // Validate phone (10 digits)
-        if (leadData.phone.length !== 10) {
-          throw new Error('Please enter a valid 10-digit phone number.');
-        }
-
-        // Validate zip code (5 digits)
-        if (!/^\d{5}$/.test(leadData.zip_code)) {
-          throw new Error('Please enter a valid 5-digit zip code.');
-        }
-
-        // Store form data in localStorage for thank-you page
-        localStorage.setItem('roofingFormData', JSON.stringify(leadData));
-
         // Submit to UrLeads API
-        const response = await submitToUrLeads(leadData);
+        const result = await submitToUrLeads(formData);
 
-        if (response.success) {
-          debugLog('Lead submitted successfully:', response);
+        debugLog('Submission successful:', result);
 
-          // Store submission confirmation
-          localStorage.setItem('leadSubmissionId', response.submission_id || '');
-          localStorage.setItem('leadId', response.lead_id || '');
-
-          // Redirect to thank-you page
-          window.location.href = '/thank-you';
-        } else {
-          throw new Error(response.message || 'Submission failed. Please try again.');
-        }
+        // Redirect to thank you page on success
+        window.location.href = '/thank-you';
 
       } catch (error) {
-        console.error('[UrLeads] Form submission failed:', error);
+        debugLog('Submission error:', error);
 
         // Show user-friendly error message
-        let userMessage = 'We encountered an issue submitting your request. Please try again.';
+        let errorMessage = 'An error occurred while submitting your request. Please try again.';
         
-        if (error.message.includes('API key') || error.message.includes('Unauthorized')) {
-          userMessage = 'Configuration error. Please contact support.';
-        } else if (error.message.includes('timed out')) {
-          userMessage = 'The request timed out. Please check your connection and try again.';
-        } else if (error.message.includes('required fields') || error.message.includes('valid')) {
-          userMessage = error.message;
-        } else if (error.message.includes('duplicate') || error.message.includes('already been submitted')) {
-          userMessage = 'This request has already been submitted. We will contact you shortly.';
-          // Still redirect to thank you page for duplicates
-          setTimeout(() => {
-            window.location.href = '/thank-you';
-          }, 2000);
-        } else if (error.message) {
-          userMessage = error.message;
+        if (error.message) {
+          // Use the error message from the API if available
+          errorMessage = error.message;
         }
 
-        showErrorMessage(userMessage);
+        showErrorMessage(errorMessage);
 
       } finally {
         // Reset button state
@@ -458,5 +459,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  debugLog('Questionnaire form initialized with UrLeads integration');
+  // =========================================================================
+  // KEYBOARD NAVIGATION
+  // =========================================================================
+
+  // Allow Enter key to proceed to next step (except on textareas)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+      const isLastStep = currentStep === totalSteps - 1;
+      
+      if (!isLastStep && !e.target.closest('button')) {
+        e.preventDefault();
+        nextStep();
+      }
+    }
+  });
+
+  debugLog('Questionnaire initialized', { totalSteps, apiUrl: URLEADS_CONFIG.apiUrl });
 });
