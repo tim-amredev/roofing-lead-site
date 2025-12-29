@@ -1013,11 +1013,15 @@ if (calculatorForm) {
       debugLog('API Response:', responseData);
       
       // Calculate and display estimate (existing functionality)
+    if (typeof calculateAndDisplayEstimate === "function") {
       calculateAndDisplayEstimate();
-      
+    }
+
+      // Move user to the estimate section
+      scrollToEstimateResults();
+
       // Show success message
       alert('Thank you! Your estimate request has been submitted successfully. We will contact you shortly.');
-      
     } catch (error) {
       debugLog('Submission error:', error);
       
@@ -1035,6 +1039,24 @@ if (calculatorForm) {
     }
   });
 }
+  function scrollToEstimateResults() {
+  const resultsSection = document.getElementById("estimate-results");
+  if (!resultsSection) return;
+
+  // Ensure it’s visible before scrolling
+  resultsSection.classList.remove("hidden");
+
+  // Smooth scroll to the estimate section
+  resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  // Update URL hash without a hard jump (helps refresh/back behavior)
+  if (history && history.replaceState) {
+    history.replaceState(null, "", "#estimate-results");
+  } else {
+    window.location.hash = "#estimate-results";
+  }
+}
+
 </script>
 
 <style>
