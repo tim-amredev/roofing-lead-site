@@ -377,16 +377,24 @@ document.addEventListener("DOMContentLoaded", () => {
       materialCards.forEach(c => {
         const innerDiv = c.querySelector('div');
         if (innerDiv) {
-          innerDiv.classList.remove('border-blue-500', 'bg-blue-500/20');
-          innerDiv.classList.add('border-gray-500');
+          // Remove selection styles
+          innerDiv.style.borderColor = '';
+          innerDiv.style.borderWidth = '';
+          innerDiv.style.backgroundColor = '';
+          innerDiv.style.transform = '';
+          innerDiv.style.boxShadow = '';
         }
       });
       
       // Add selected state to clicked card
       const innerDiv = card.querySelector('div');
       if (innerDiv) {
-        innerDiv.classList.remove('border-gray-500');
-        innerDiv.classList.add('border-blue-500', 'bg-blue-500/20');
+        // Apply prominent selection styles
+        innerDiv.style.borderColor = '#3b82f6';
+        innerDiv.style.borderWidth = '3px';
+        innerDiv.style.backgroundColor = 'rgba(59, 130, 246, 0.15)';
+        innerDiv.style.transform = 'scale(1.02)';
+        innerDiv.style.boxShadow = '0 0 15px rgba(59, 130, 246, 0.5)';
       }
       
       // Store the selected value
@@ -416,16 +424,24 @@ document.addEventListener("DOMContentLoaded", () => {
       roofTypeCards.forEach(c => {
         const innerDiv = c.querySelector('div');
         if (innerDiv) {
-          innerDiv.classList.remove('border-blue-500', 'bg-blue-500/20');
-          innerDiv.classList.add('border-gray-500');
+          // Remove selection styles
+          innerDiv.style.borderColor = '';
+          innerDiv.style.borderWidth = '';
+          innerDiv.style.backgroundColor = '';
+          innerDiv.style.transform = '';
+          innerDiv.style.boxShadow = '';
         }
       });
       
       // Add selected state to clicked card
       const innerDiv = card.querySelector('div');
       if (innerDiv) {
-        innerDiv.classList.remove('border-gray-500');
-        innerDiv.classList.add('border-blue-500', 'bg-blue-500/20');
+        // Apply prominent selection styles
+        innerDiv.style.borderColor = '#3b82f6';
+        innerDiv.style.borderWidth = '3px';
+        innerDiv.style.backgroundColor = 'rgba(59, 130, 246, 0.15)';
+        innerDiv.style.transform = 'scale(1.02)';
+        innerDiv.style.boxShadow = '0 0 15px rgba(59, 130, 246, 0.5)';
       }
       
       // Store the selected value
