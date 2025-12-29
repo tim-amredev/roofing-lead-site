@@ -25,6 +25,14 @@ js: questionnaire
        <form id="questionnaire-form" class="space-y-12" action="#" method="POST">
           <!-- Form submission handled by questionnaire.js with UrLeads API integration -->
           
+          <!-- Honeypot field for spam protection - DO NOT REMOVE -->
+          <!-- This field is hidden and should remain empty. Bots that fill it will be rejected. -->
+          <input type="text" name="website_url" 
+                 style="position:absolute;left:-9999px;" 
+                 tabindex="-1" 
+                 autocomplete="off"
+                 aria-hidden="true">
+          
           <!-- Step 1: Basic Information -->
           <div id="step-1" class="questionnaire-step">
             <div class="bg-white/5 rounded-xl p-6 mb-8">
