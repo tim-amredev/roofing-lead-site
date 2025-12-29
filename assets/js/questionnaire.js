@@ -460,6 +460,62 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================================================================
+  // IMAGE CARD SELECTION HANDLERS
+  // =========================================================================
+
+  /**
+   * Handle material card selection (Question 5)
+   */
+  const materialCards = document.querySelectorAll('.material-card');
+  const desiredMaterialInput = document.getElementById('desired_material');
+  
+  materialCards.forEach(card => {
+    card.addEventListener('click', () => {
+      // Remove selected state from all cards
+      materialCards.forEach(c => {
+        c.querySelector('div').classList.remove('border-blue-500', 'bg-blue-500/20');
+        c.querySelector('div').classList.add('border-gray-500');
+      });
+      
+      // Add selected state to clicked card
+      card.querySelector('div').classList.remove('border-gray-500');
+      card.querySelector('div').classList.add('border-blue-500', 'bg-blue-500/20');
+      
+      // Update hidden input
+      if (desiredMaterialInput) {
+        desiredMaterialInput.value = card.dataset.value;
+        debugLog('Material selected:', card.dataset.value);
+      }
+    });
+  });
+
+  /**
+   * Handle roof type card selection (Question 6)
+   */
+  const roofTypeCards = document.querySelectorAll('.roof-type-card');
+  const roofTypeInput = document.getElementById('roof_type');
+  
+  roofTypeCards.forEach(card => {
+    card.addEventListener('click', () => {
+      // Remove selected state from all cards
+      roofTypeCards.forEach(c => {
+        c.querySelector('div').classList.remove('border-blue-500', 'bg-blue-500/20');
+        c.querySelector('div').classList.add('border-gray-500');
+      });
+      
+      // Add selected state to clicked card
+      card.querySelector('div').classList.remove('border-gray-500');
+      card.querySelector('div').classList.add('border-blue-500', 'bg-blue-500/20');
+      
+      // Update hidden input
+      if (roofTypeInput) {
+        roofTypeInput.value = card.dataset.value;
+        debugLog('Roof type selected:', card.dataset.value);
+      }
+    });
+  });
+
+  // =========================================================================
   // KEYBOARD NAVIGATION
   // =========================================================================
 
