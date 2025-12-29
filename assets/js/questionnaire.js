@@ -78,6 +78,147 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextBtn = document.getElementById("next-btn");
   const submitBtn = document.getElementById("submit-btn");
 
+  // =========================================================================
+  // ALTCHA (CRYPTOGRAPHIC HUMAN VERIFICATION)
+  // =========================================================================
+  // This keeps the form's look and flow unchanged. The widget stays hidden unless
+  // verification requires user interaction (e.g., a code challenge).
+  
+  const ALTCHA_CONFIG = {
+    enabled: true,
+    widgetId: 'altcha',
+    wrapId: 'altcha-wrap',
+    verifyTimeout: 20000,     // ms to wait for verification
+    initTimeout: 7000         // ms to wait for widget methods to become available
+  };
+
+  const altchaEl = document.getElementById(ALTCHA_CONFIG.widgetId);
+  const altchaWrap = document.getElementById(ALTCHA_CONFIG.wrapId);
+  let altchaPayload = null;
+
+  function showAltchaUI() {
+    if (altchaWrap) altchaWrap.style.display = 'block';
+  }
+
+  function hideAltchaUI() {
+    if (altchaWrap) altchaWrap.style.display = 'none';
+  }
+
+  function resetAltcha() {
+    altchaPayload = null;
+    try {
+      if (altchaEl && typeof altchaEl.reset === 'function') {
+        altchaEl.reset();
+      }
+    } catch (_) {
+      // ignore
+    }
+  }
+
+  function waitForAltchaReady() {
+    return new Promise((resolve, reject) => {
+      if (!ALTCHA_CONFIG.enabled) return resolve(null);
+
+      if (!altchaEl) {
+        return reject(new Error('Human verification is unavailable. Please refresh and try again.'));
+      }
+
+      if (typeof altchaEl.verify === 'function') return resolve(altchaEl);
+
+      const onLoad = () => {
+        altchaEl.removeEventListener('load', onLoad);
+        if (typeof altchaEl.verify === 'function') resolve(altchaEl);
+        else reject(new Error('Human verification did not initialize. Please refresh and try again.'));
+      };
+
+      altchaEl.addEventListener('load', onLoad);
+
+      setTimeout(() => {
+        altchaEl.removeEventListener('load', onLoad);
+        if (typeof altchaEl.verify === 'function') resolve(altchaEl);
+        else reject(new Error('Human verification did not initialize. Please refresh and try again.'));
+      }, ALTCHA_CONFIG.initTimeout);
+    });
+  }
+
+  // Capture payload and automatically show/hide UI based on state.
+  if (altchaEl) {
+    altchaEl.addEventListener('statechange', (ev) => {
+      const state = ev?.detail?.state;
+
+      if (state === 'verified' && ev?.detail?.payload) {
+        altchaPayload = ev.detail.payload;
+        hideAltchaUI();
+      }
+
+      // If a code challenge is required or an error occurs, reveal the widget UI.
+      if (state === 'code' || state === 'error') {
+        showAltchaUI();
+      }
+    });
+  }
+
+  async function getAltchaPayloadOrThrow() {
+    if (!ALTCHA_CONFIG.enabled) return null;
+    if (altchaPayload) return altchaPayload;
+
+    const widget = await waitForAltchaReady();
+
+    return new Promise((resolve, reject) => {
+      let finished = false;
+
+      const cleanup = () => {
+        if (widget) widget.removeEventListener('statechange', onState);
+      };
+
+      const onState = (ev) => {
+        const state = ev?.detail?.state;
+
+        if (state === 'verified' && ev?.detail?.payload) {
+          finished = true;
+          altchaPayload = ev.detail.payload;
+          cleanup();
+          hideAltchaUI();
+          resolve(altchaPayload);
+          return;
+        }
+
+        if (state === 'code') {
+          // Requires user input -> show UI
+          showAltchaUI();
+          return;
+        }
+
+        if (state === 'error') {
+          finished = true;
+          cleanup();
+          showAltchaUI();
+          reject(new Error('Human verification failed. Please try again.'));
+        }
+      };
+
+      widget.addEventListener('statechange', onState);
+
+      try {
+        // Start verification. For most users, this will be automatic PoW.
+        widget.verify();
+      } catch (err) {
+        cleanup();
+        showAltchaUI();
+        reject(new Error('Human verification could not start. Please try again.'));
+        return;
+      }
+
+      setTimeout(() => {
+        if (finished) return;
+        cleanup();
+        // If PoW couldn't finish in time, show UI so the user can complete it if needed.
+        showAltchaUI();
+        reject(new Error('Human verification timed out. Please try again.'));
+      }, ALTCHA_CONFIG.verifyTimeout);
+    });
+  }
+
   let currentStep = 0;
   const totalSteps = steps.length;
 
@@ -651,6 +792,12 @@ document.addEventListener("DOMContentLoaded", () => {
       setButtonLoading(submitBtn, true);
 
       try {
+        // ALTCHA (cryptographic proof-of-human)
+        const altcha = await getAltchaPayloadOrThrow();
+        if (altcha) {
+          leadData.altcha = altcha;
+        }
+
         // Store form data in localStorage for thank-you page
         const formDataForThankYou = {
           name: `${leadData.first_name} ${leadData.last_name}`.trim(),
@@ -671,6 +818,9 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = '/thank-you';
 
       } catch (error) {
+        // Reset ALTCHA so the user can retry cleanly
+        resetAltcha();
+
         debugLog('Submission error:', error);
 
         // Show user-friendly error message
